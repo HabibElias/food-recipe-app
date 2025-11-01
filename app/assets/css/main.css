@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap");
+
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes:
+    autumn --default,
+    halloween --prefersdark;
+}
+
+/* Mobile (base) */
+.font-headline-1 {
+  font-size: 38px;
+  line-height: 100%;
+  font-weight: 800;
+}
+
+.font-header-2 {
+  font-size: 26px;
+  line-height: 100%;
+  font-weight: 700;
+}
+
+.font-header-3 {
+  font-size: 21px;
+  line-height: 120%;
+  font-weight: 600;
+}
+
+.font-subtitle {
+  font-size: 16px;
+  line-height: 100%;
+  font-weight: 600;
+}
+
+.font-tagline {
+  font-size: 16px;
+  line-height: 100%;
+  font-weight: 600;
+}
+
+.font-paragraph-1 {
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 400;
+}
+
+.font-paragraph-2 {
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 400;
+}
+
+.font-button-text {
+  font-size: 14px;
+  line-height: 100%;
+  font-weight: 600;
+}
+
+.font-small-text {
+  font-size: 12px;
+  line-height: 120%;
+  font-weight: 400;
+}
+
+.font-link-text {
+  font-size: 16px;
+  line-height: 120%;
+  font-weight: 500;
+}
+
+.font-bold-text {
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 700;
+}
+
+/* Desktop / larger screens */
+@media (min-width: 768px) {
+  .font-headline-1 {
+    font-size: 80px;
+    line-height: 100%;
+    font-weight: bolder;
+  }
+
+  .font-header-2 {
+    font-size: 40px;
+    line-height: 100%;
+  }
+
+  .font-header-3 {
+    font-size: 24px;
+    line-height: 120%;
+  }
+
+  .font-subtitle {
+    font-size: 18px;
+    line-height: 100%;
+  }
+
+  .font-tagline {
+    font-size: 18px;
+    line-height: 100%;
+  }
+
+  .font-paragraph-1 {
+    font-size: 21px;
+    line-height: 140%;
+  }
+
+  .font-paragraph-2 {
+    font-size: 16px;
+    line-height: 140%;
+  }
+
+  .font-button-text {
+    font-size: 14px;
+    line-height: 100%;
+  }
+
+  .font-small-text {
+    font-size: 12px;
+    line-height: 120%;
+  }
+
+  .font-link-text {
+    font-size: 16px;
+    line-height: 120%;
+  }
+
+  .font-bold-text {
+    font-size: 16px;
+    line-height: 120%;
+  }
+}
