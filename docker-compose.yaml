@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      .env
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  graphql-engine:
+    image: hasura/graphql-engine:v2.0.1
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    restart: always
+    env_file:
+      .env
+    environment:
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: ${HASURA_GRAPHQL_METADATA_DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      HASURA_GRAPHQL_ENABLE_CONSOLE: ${HASURA_GRAPHQL_ENABLE_CONSOLE}
+      HASURA_GRAPHQL_DEV_MODE: ${HASURA_GRAPHQL_DEV_MODE}
+      HASURA_GRAPHQL_ENABLE_LOG_TYPES: ${HASURA_GRAPHQL_ENABLE_LOG_TYPES}
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: ${HASURA_GRAPHQL_UNAUTHORIZED_ROLE}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  db_data:

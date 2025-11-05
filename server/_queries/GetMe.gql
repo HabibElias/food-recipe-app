@@ -1,0 +1,12 @@
+query GetMe {
+  user {
+    id
+    email
+    username
+    FirstName
+    LastName
+    avatar_url
+    created_at
+    updated_at
+  }
+}

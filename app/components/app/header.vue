@@ -1,6 +1,10 @@
 <script setup lang="ts">
 const route = useRoute();
 
+const userStore = useUserStore();
+
+const isRouteLogin = computed(() => route.path === "/auth/login");
+
 const routes: [string, string, [string, string][]][] = [
   ["Home", "/", []],
   ["Recipes", "/recipes", [
@@ -32,16 +36,18 @@ const routes: [string, string, [string, string][]][] = [
           :class="route.fullPath === value[1] ? 'duration-200 border-b-3 border-b-primary hover:border-b-amber-700' : 'duration-200 border-b-3 border-b-transparent hover:border-b-amber-700'"
         >
           <nuxt-link
+            v-if="!(value[2].length > 0)"
             :to="value[1]"
           >
-            {{ !(value[2].length > 0) ? value[0].toUpperCase() : "" }}
+            {{ value[0].toUpperCase() }}
           </nuxt-link>
           <div v-if="value[2].length > 0" class="dropdown dropdown-hover p-0">
-            <div
-              tabindex="0" role="link" class=""
+            <nuxt-link
+              :to="value[1]"
+              class="cursor-pointer"
             >
               {{ value[0].toUpperCase() }}
-            </div>
+            </nuxt-link>
             <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
               <li v-for="subValue in value[2]" :key="subValue[1]">
                 <nuxt-link :to="subValue[1]">
@@ -56,13 +62,28 @@ const routes: [string, string, [string, string][]][] = [
 
     <div class="items-center gap-3 hidden md:flex">
       <color-mode />
-      <button class="btn rounded-full p-3">
-        <icon name="lucide:user-round" />
-      </button>
+      <div v-cloak v-if="userStore.user === null">
+        <nuxt-link v-if="!isRouteLogin" to="/auth/login" class="btn btn-outline rounded-full">
+          <icon name="lucide:mail" />
+          Login
+        </nuxt-link>
+        <nuxt-link v-else to="/auth/sign-up" class="btn btn-outline rounded-full">
+          <icon name="lucide:mail-plus" />
+          Sign up
+        </nuxt-link>
+        <!-- Email -->
+        <button class="" />
+      </div>
+      <div v-cloak v-else>
+        <nuxt-link to="/auth/log-out" class="btn btn-outline rounded-full btn-primary">
+          <icon name="lucide:log-out" />
+          Logout
+        </nuxt-link>
+      </div>
     </div>
 
     <div class="flex-none md:hidden">
-      <label for="my-drawer-2" aria-label="open sidebar" class="btn btn-circle">
+      <label for="my-drawer-2" aria-label="open sidebar" class="btn btn-circle btn-outline">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

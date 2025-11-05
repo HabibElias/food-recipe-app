@@ -64,8 +64,8 @@ const recipes = ref<Recipe[]>([
 </script>
 
 <template>
-  <!-- Hero -->
   <div>
+    <!-- Hero -->
     <div
       class="hero min-h-[80vh] rounded-4xl"
       style="background-image: url('/img/hero2.jpeg')"
@@ -216,9 +216,9 @@ const recipes = ref<Recipe[]>([
         <h2 class="font-header-2 mb-3">
           EMBARK ON A JOURNEY
         </h2>
-        <P class="font-paragraph-2 mb-10">
+        <p class="font-paragraph-2 mb-10">
           With our diverse collection of recipes we have something to satisfy every palate.
-        </P>
+        </p>
 
         <!-- btns -->
         <div class="*:btn *:btn-outline *:rounded-full flex items-center justify-around flex-wrap gap-2">
@@ -277,9 +277,9 @@ const recipes = ref<Recipe[]>([
           JOIN THE FUN <br>
           SUBSCRIBE NOW!
         </h1>
-        <P class="font-paragraph-1 mb-12">
+        <p class="font-paragraph-1 mb-12">
           Subscribe to our newsletter for a weekly serving of recipes, cooking tips, and exclusive insights straight to your inbox.
-        </P>
+        </p>
       </div>
       <div class="join text-base-content bg-none rounded-full">
         <div>

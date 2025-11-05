@@ -10,14 +10,15 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "@nuxt/icon",
     "@nuxt/image",
+    "@nuxtjs/apollo",
     "@nuxtjs/color-mode",
+    "@pinia/nuxt",
   ],
   vite: {
     plugins: [
       tailwindcss(),
     ],
   },
-
   colorMode: {
     dataValue: "theme",
   },
@@ -30,6 +31,36 @@ export default defineNuxtConfig({
   fonts: {
     defaults: {
       weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    },
+  },
+  apollo: {
+    clients: {
+      default: {
+        httpEndpoint: "http://localhost:8080/v1/graphql",
+        wsEndpoint: "ws://localhost:8080/v1/graphql",
+        tokenStorage: "cookie",
+        tokenName: "apollo-token",
+        authType: "Bearer",
+        httpLinkOptions: {
+          credentials: "include",
+        },
+        defaultOptions: {
+          query: {
+            context: {
+              headers: {
+                "X-Hasura-Role": "anon",
+              },
+            },
+          },
+          mutate: {
+            context: {
+              headers: {
+                "X-Hasura-Role": "anon",
+              },
+            },
+          },
+        },
+      },
     },
   },
 });
