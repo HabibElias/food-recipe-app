@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     "@nuxtjs/apollo",
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
+    "nuxt-toast",
   ],
   vite: {
     plugins: [
@@ -44,23 +45,19 @@ export default defineNuxtConfig({
         httpLinkOptions: {
           credentials: "include",
         },
-        defaultOptions: {
-          query: {
-            context: {
-              headers: {
-                "X-Hasura-Role": "anon",
-              },
-            },
-          },
-          mutate: {
-            context: {
-              headers: {
-                "X-Hasura-Role": "anon",
-              },
-            },
-          },
-        },
       },
+    },
+  },
+  app: {
+    head: {
+      title: "Food Recipe App",
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+      ],
+      link: [
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      ],
     },
   },
 });

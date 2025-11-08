@@ -7,25 +7,30 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     user: null as User | null,
     token: null as string | null,
+    loading: false as boolean,
   }),
 
   getters: {
     isLoggedIn: state => !!state.token,
+    isLoading: state => state.loading,
   },
 
   actions: {
     async init() {
       const token = useCookie("apollo-token");
 
+      this.loading = true;
       if (token.value) {
         try {
-          this.token = token.value;
-
           const client = useApolloClient().client;
 
-          const { data } = await client.query<{ user: User }>({ query: GET_ME_QUERY });
+          const { onLogin } = useApollo();
 
-          this.user = data.user;
+          const { data } = await client.query<{ user: User[] }>({ query: GET_ME_QUERY });
+
+          this.user = data.user[0] || null;
+          onLogin(token.value);
+          this.token = token.value;
         }
         catch {
           token.value = "";
@@ -33,6 +38,7 @@ export const useUserStore = defineStore("user", {
           this.user = null;
         }
       }
+      this.loading = false;
     },
 
     async login(email: string, password: string) {
@@ -91,6 +97,7 @@ export const useUserStore = defineStore("user", {
       onLogout("default");
       cookie.value = "";
       this.user = null;
+      this.token = null;
       navigateTo("/auth/login");
     },
   },

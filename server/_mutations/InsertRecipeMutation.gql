@@ -1,0 +1,29 @@
+mutation InsertRecipeMutation(
+  $title: String!
+  $category_id: Int!
+  $description: String!
+  $is_paid: Boolean!
+  $prep_time: Int!
+  $price: Float
+  $recipe_ingredients: recipe_ingredient_arr_rel_insert_input
+  $recipe_steps: recipe_step_arr_rel_insert_input
+  $user_id: uuid
+) {
+  insert_recipe(
+    objects: {
+      title: $title
+      category_id: $category_id
+      description: $description
+      is_paid: $is_paid
+      prep_time: $prep_time
+      price: $price
+      recipe_ingredients: $recipe_ingredients
+      recipe_steps: $recipe_steps
+      user_id: $user_id
+    }
+  ) {
+    returning {
+      id
+    }
+  }
+}

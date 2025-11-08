@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-
 const categories: { name: string; icon: string }[] = [
   { name: "Breakfast", icon: "/img/breakfast.svg" },
   { name: "Lunch", icon: "/img/lunch.svg" },
@@ -24,43 +22,68 @@ function right() {
   window.location.hash = `#${prev}`;
 }
 
+const client = useApolloClient().client;
+
+const GET_RECIPE_QUERY = gql`
+query recipe($limit: Int!) {
+  recipe(limit: $limit) {
+    id
+    title
+    description
+    category {
+      id
+      category_name
+    }
+    recipe_images(where: {is_thumbnail: {_eq: true}}) {
+      id
+      img_url
+      is_thumbnail
+    }
+    prep_time
+    recipe_ingredients_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+`;
+
 type Recipe = {
+  id: number;
   title: string;
-  imgUrl: string;
-  prepTime: string;
-  ingredientsCount: number;
   description: string;
+  category: {
+    id: number;
+    category_name: string;
+  };
+  recipe_images: {
+    id: number;
+    img_url: string;
+    is_thumbnail: boolean;
+  }[];
+  prep_time: number;
+  recipe_ingredients_aggregate: {
+    aggregate: {
+      count: number;
+    };
+  };
 };
 
-const recipes = ref<Recipe[]>([
-  {
-    title: "Classic Cheeseburger",
-    imgUrl:
-      "https://cdn.britannica.com/98/235798-050-3C3BA15D/Hamburger-and-french-fries-paper-box.jpg",
-    prepTime: "20 MIN",
-    ingredientsCount: 7,
-    description:
-      "Juicy grilled beef patty with melted cheddar, crisp lettuce, tomato, and a tangy house sauce on a toasted bun.",
-  },
-  {
-    title: "Avocado Toast with Poached Egg",
-    imgUrl:
-    "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=1200&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=5b2a1f3b0b2e0a9f6c2b6c2c6d0b1f9b",
-    prepTime: "10 MIN",
-    ingredientsCount: 6,
-    description:
-      "Crushed ripe avocado seasoned with lemon and chili flakes, topped with a silky poached egg on sourdough.",
-  },
-  {
-    title: "Spaghetti Bolognese",
-    imgUrl:
-      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=1200&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=5b2a1f3b0b2e0a9f6c2b6c2c6d0b1f9b",
-    prepTime: "45 MIN",
-    ingredientsCount: 12,
-    description:
-      "Rich slow-simmered tomato and beef ragù served over al dente spaghetti, finished with grated Parmesan.",
-  },
-]);
+const recipes = ref<Recipe[]>([]);
+
+try {
+  const { data } = await client.query<{ recipe: Recipe[] }>({
+    query: GET_RECIPE_QUERY,
+    variables: { limit: 4 },
+  });
+
+  recipes.value = data.recipe;
+  console.log(data);
+}
+catch (err) {
+  console.error(err);
+}
 </script>
 
 <template>
@@ -79,9 +102,9 @@ const recipes = ref<Recipe[]>([
           <p class="mb-5 font-paragraph-1 font-light">
             Explore a world of flavors, discover handcrafted recipes, and let the aroma of our passion for cooking fill your kitchen
           </p>
-          <button class="btn btn-primary rounded-full font-button-text">
+          <nuxt-link to="/dashboard" class="btn btn-primary rounded-full font-button-text">
             Get Started
-          </button>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -142,67 +165,19 @@ const recipes = ref<Recipe[]>([
       </div>
 
       <div class="carousel w-full relative py-4">
-        <div id="slide1" class="carousel-item relative w-full gap-4 flex-col md:flex-row">
-          <div
+        <div id="slide1" class="carousel-item relative w-full gap-4 flex-col md:flex-row *:flex-1">
+          <app-recipe-card
             v-for="recipe in recipes.slice(0, 2)"
             :key="recipe.title"
-            class="card bg-base-100 shadow-sm"
-          >
-            <figure>
-              <img
-                :src="recipe.imgUrl"
-                :alt="recipe.title"
-                class="object-cover md:h-70 lg:h-100 w-full"
-              >
-            </figure>
-            <div class="card-body">
-              <h2 class="card-title font-header-3">
-                {{ recipe.title }}
-              </h2>
-              <p class="font-paragraph-2">
-                {{ recipe.description }}
-              </p>
-              <div class="card-actions items-center justify-between">
-                <div class="font-small-text mb-2 md:mb-0">
-                  {{ recipe.prepTime }} - {{ recipe.ingredientsCount }} INGREDIENTS
-                </div>
-                <button class="btn btn-outline rounded-full self-end w-full md:w-fit">
-                  VIEW RECIPE
-                </button>
-              </div>
-            </div>
-          </div>
+            :recipe="recipe"
+          />
         </div>
-        <div id="slide2" class="carousel-item relative w-full gap-4 flex-col md:flex-row">
-          <div
+        <div id="slide2" class="carousel-item relative w-full gap-4 flex-col md:flex-row *:flex-1">
+          <app-recipe-card
             v-for="recipe in recipes.slice(0, 2)"
             :key="recipe.title"
-            class="card bg-base-100 shadow-sm"
-          >
-            <figure>
-              <img
-                :src="recipe.imgUrl"
-                :alt="recipe.title"
-                class="object-cover md:h-70 lg:h-100 w-full"
-              >
-            </figure>
-            <div class="card-body">
-              <h2 class="card-title font-header-3">
-                {{ recipe.title }}
-              </h2>
-              <p class="font-paragraph-2">
-                {{ recipe.description }}
-              </p>
-              <div class="card-actions items-start md:items-center flex-col justify-between md:flex-row">
-                <div class="font-small-text mb-2 md:mb-0">
-                  {{ recipe.prepTime }} - {{ recipe.ingredientsCount }} INGREDIENTS
-                </div>
-                <button class="btn btn-outline rounded-full self-end w-full md:w-fit">
-                  VIEW RECIPE
-                </button>
-              </div>
-            </div>
-          </div>
+            :recipe="recipe"
+          />
         </div>
       </div>
     </div>
@@ -235,76 +210,11 @@ const recipes = ref<Recipe[]>([
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        <div
+        <app-recipe-card
           v-for="recipe in [...recipes, ...recipes.map((r) => ({ ...r, title: `${r.title}2` }))]"
           :key="recipe.title"
-          class="card bg-base-100 shadow-sm"
-        >
-          <figure>
-            <img
-              :src="recipe.imgUrl"
-              :alt="recipe.title"
-              class="object-cover md:h-70 lg:h-100 w-full"
-            >
-          </figure>
-          <div class="card-body">
-            <h2 class="card-title font-header-3">
-              {{ recipe.title }}
-            </h2>
-            <p class="font-paragraph-2">
-              {{ recipe.description }}
-            </p>
-            <div class="card-actions items-start md:items-center flex-col justify-between md:flex-row">
-              <div class="font-small-text mb-2 md:mb-0">
-                {{ recipe.prepTime }} - {{ recipe.ingredientsCount }} INGREDIENTS
-              </div>
-              <button class="btn btn-outline rounded-full self-end w-full md:w-fit">
-                VIEW RECIPE
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- subscription -->
-    <div class="relative min-h-[60vh] bg-success-content/75 px-4 rounded-4xl text-success text-center flex flex-col items-center justify-center">
-      <div class="max-w-4xl space-y-3">
-        <p class="font-tagline">
-          SUBSCRIBE
-        </p>
-        <h1 class="font-headline-1">
-          JOIN THE FUN <br>
-          SUBSCRIBE NOW!
-        </h1>
-        <p class="font-paragraph-1 mb-12">
-          Subscribe to our newsletter for a weekly serving of recipes, cooking tips, and exclusive insights straight to your inbox.
-        </p>
-      </div>
-      <div class="join text-base-content bg-none rounded-full">
-        <div>
-          <label class="input validator rounded-l-full join-item">
-            <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <g
-                stroke-linejoin="round"
-                stroke-linecap="round"
-                stroke-width="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <rect width="20" height="16" x="2" y="4" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </g>
-            </svg>
-            <input type="email" placeholder="mail@site.com" required>
-          </label>
-          <div class="validator-hint text-success hidden">
-            Enter valid email address
-          </div>
-        </div>
-        <button class="btn btn-success rounded-r-full join-item">
-          Join
-        </button>
+          :recipe="recipe"
+        />
       </div>
     </div>
   </div>

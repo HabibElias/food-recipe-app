@@ -5,7 +5,7 @@ await userStore.init();
 </script>
 
 <template>
-  <div class="drawer font-[Onest] container mx-auto px-2">
+  <div class="drawer font-[Montserrat] container mx-auto px-2">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle">
     <div class="drawer-content flex flex-col">
       <!-- Navbar -->

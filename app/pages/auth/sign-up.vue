@@ -3,6 +3,14 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { Form, useForm } from "vee-validate";
 import z from "zod";
 
+definePageMeta({
+  middleware: [() => {
+    const userStore = useUserStore();
+
+    return userStore.isLoggedIn ? navigateTo("/") : true;
+  }],
+});
+
 const loginSchema = toTypedSchema(z.object({
   email: z.email({ message: "Field required" }),
   password: z.string({ message: "Field required" }).min(6, { message: "Minimum of 6 characters needed for a password" }),

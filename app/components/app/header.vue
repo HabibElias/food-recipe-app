@@ -5,27 +5,41 @@ const userStore = useUserStore();
 
 const isRouteLogin = computed(() => route.path === "/auth/login");
 
-const routes: [string, string, [string, string][]][] = [
+type RouteTuple = [string, string, Array<[string, string]>];
+
+const recipeChildren: Array<[string, string]> = [
+  ["Breakfast", "/recipes/breakfast"],
+  ["Lunch", "/recipes/lunch"],
+  ["Dinner", "/recipes/dinner"],
+  ["Dessert", "/recipes/dessert"],
+  ["Snacks", "/recipes/snacks"],
+];
+
+const commonRoutes: RouteTuple[] = [
   ["Home", "/", []],
-  ["Recipes", "/recipes", [
-    ["Breakfast", "/recipes/breakfast"],
-    ["Lunch", "/recipes/lunch"],
-    ["Dinner", "/recipes/dinner"],
-    ["Dessert", "/recipes/dessert"],
-    ["Snacks", "/recipes/snacks"],
-  ]],
-  ["Cooking Tips", "/cooking-tips", []],
+  ["Recipes", "/recipes", recipeChildren],
   ["About us", "/about-us", []],
 ];
+
+const loggedRoutes: RouteTuple[] = [
+  ["My Recipes", "/myrecipes", []],
+  ["Recipes", "/recipes", recipeChildren],
+  ["About us", "/about-us", []],
+];
+
+const routes = computed<RouteTuple[]>(() => {
+  // return a fresh shallow copy to keep the source immutable for consumers
+  return userStore.isLoggedIn ? loggedRoutes.map(([label, path, children]) => [label, path, children]) : commonRoutes.map(([label, path, children]) => [label, path, children]);
+});
 </script>
 
 <template>
   <header class="my-4 flex border items-center border-base-content/50 rounded-full p-4 item-center justify-between">
     <!-- logo -->
-    <div class="font-bold">
+    <nuxt-link to="/" class="font-bold">
       <span class="bg-primary p-3 px-4 text-white rounded-full">R</span>
       Recipe
-    </div>
+    </nuxt-link>
 
     <!-- nav -->
     <nav class="hidden md:block">
@@ -62,7 +76,7 @@ const routes: [string, string, [string, string][]][] = [
 
     <div class="items-center gap-3 hidden md:flex">
       <color-mode />
-      <div v-cloak v-if="userStore.user === null">
+      <div v-cloak v-if="!userStore.isLoggedIn">
         <nuxt-link v-if="!isRouteLogin" to="/auth/login" class="btn btn-outline rounded-full">
           <icon name="lucide:mail" />
           Login
@@ -71,8 +85,6 @@ const routes: [string, string, [string, string][]][] = [
           <icon name="lucide:mail-plus" />
           Sign up
         </nuxt-link>
-        <!-- Email -->
-        <button class="" />
       </div>
       <div v-cloak v-else>
         <nuxt-link to="/auth/log-out" class="btn btn-outline rounded-full btn-primary">
