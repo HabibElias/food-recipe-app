@@ -1,0 +1,5 @@
+mutation UploadRecipeImages($input: UploadRecipeImagesInput!) {
+  uploadRecipeImages(input: $input) {
+    success
+  }
+}

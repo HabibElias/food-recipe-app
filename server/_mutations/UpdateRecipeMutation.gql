@@ -1,0 +1,26 @@
+mutation UpdateRecipeMutation(
+  $id: Int!
+  $title: String!
+  $category_id: Int!
+  $description: String!
+  $is_paid: Boolean!
+  $prep_time: Int!
+  $price: Float
+) {
+  update_recipe(
+    where: { id: { _eq: $id } }
+    _set: {
+      title: $title
+      category_id: $category_id
+      description: $description
+      is_paid: $is_paid
+      prep_time: $prep_time
+      price: $price
+    }
+  ) {
+    returning {
+      id
+    }
+  }
+}
+

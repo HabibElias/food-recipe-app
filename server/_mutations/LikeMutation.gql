@@ -1,0 +1,7 @@
+mutation LikeRecipe($recipe_id: Int!, $user_id: uuid) {
+  insert_recipe_like(objects: { recipe_id: $recipe_id, user_id: $user_id }) {
+    returning {
+      id
+    }
+  }
+}

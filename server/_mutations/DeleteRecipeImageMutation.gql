@@ -1,0 +1,8 @@
+mutation DeleteRecipeImageMutation($id: Int!) {
+  delete_recipe_image(where: { id: { _eq: $id } }) {
+    returning {
+      id
+    }
+  }
+}
+

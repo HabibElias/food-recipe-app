@@ -1,7 +1,13 @@
+<script setup lang="ts">
+const props = defineProps<{
+  withSubscribe: boolean;
+}>();
+</script>
+
 <template>
   <footer class="my-4">
     <!-- subscription -->
-    <div class="relative min-h-[60vh] bg-success-content/75 px-4 rounded-4xl text-success text-center flex flex-col items-center justify-center mb-4">
+    <div v-if="props.withSubscribe" class="relative min-h-[60vh] bg-success-content/75 px-4 rounded-4xl text-success text-center flex flex-col items-center justify-center mb-4">
       <div class="max-w-4xl space-y-3">
         <p class="font-tagline">
           SUBSCRIBE

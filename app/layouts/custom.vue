@@ -12,9 +12,9 @@ await userStore.init();
       <AppHeader />
       <!-- Page content here -->
       <div>
-        <NuxtPage />
+        <slot />
       </div>
-      <AppFooter with-subscribe />
+      <AppFooter :with-subscribe="false" />
     </div>
     <div class="drawer-side">
       <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay" />

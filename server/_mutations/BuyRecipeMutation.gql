@@ -1,0 +1,7 @@
+mutation InitiatePayment($recipe_id: Int!, $amount: numeric!) {
+  initializePayment(recipe_id: $recipe_id, amount: $amount) {
+    checkout_url
+    tx_ref
+    status
+  }
+}

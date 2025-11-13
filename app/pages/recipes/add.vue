@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { toTypedSchema } from "@vee-validate/zod";
 import INSERT_RECIPE_MUTATION from "~~/server/_mutations/InsertRecipeMutation.gql";
+import UPLOAD_RECIPE_IMAGES_MUTATION from "~~/server/_mutations/UploadRecipeImagesMutation.gql";
 import { Form, useForm } from "vee-validate";
 import { ref } from "vue";
 import z from "zod";
@@ -69,10 +70,15 @@ const [prep_time, prepTimeProps] = defineField("prep_time");
 
 const error = ref<string>("");
 const loading = ref<boolean>(false);
+const uploadingImages = ref(false);
 
 // Ingredients and steps inputs handling
 const newIngredient = ref("");
 const newStepDescription = ref("");
+
+// Images handling
+const imageFiles = ref<File[]>([]);
+const imagePreviews = ref<string[]>([]);
 
 function addIngredient() {
   const val = newIngredient.value.trim();
@@ -104,6 +110,55 @@ function removeStep(index: number) {
   setValues({ steps: [...values.steps?.map((s, i) => ({ ...s, step_no: i + 1 })) ?? []] });
 }
 
+function handleImageSelect(event: Event) {
+  const target = event.target as HTMLInputElement;
+  if (target.files) {
+    const files = Array.from(target.files);
+    files.forEach((file) => {
+      if (file.type.startsWith("image/")) {
+        imageFiles.value.push(file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            imagePreviews.value.push(e.target.result as string);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    // Reset the input so the same file can be selected again
+    target.value = "";
+  }
+}
+
+function removeImagePreview(index: number) {
+  imageFiles.value.splice(index, 1);
+  imagePreviews.value.splice(index, 1);
+}
+
+async function convertFileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      // Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
+      const result = reader.result;
+      if (!result || typeof result !== "string") {
+        reject(new Error("Failed to read file as data URL"));
+        return;
+      }
+      const parts = result.split(",");
+      const base64String = parts[1] ?? "";
+      if (!base64String) {
+        reject(new Error("Invalid data URL format"));
+        return;
+      }
+      resolve(base64String);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 const onSubmit = handleSubmit(async (values) => {
   loading.value = true;
   error.value = "";
@@ -122,20 +177,69 @@ const onSubmit = handleSubmit(async (values) => {
       user_id: useUserStore().user?.id,
     };
 
-    console.log(variables);
-
-    const returning = await client.mutate({
+    // Insert the recipe first
+    const result = await client.mutate<{
+      insert_recipe: {
+        returning: {
+          id: number;
+        }[];
+      };
+    }>({
       mutation: INSERT_RECIPE_MUTATION,
       variables,
     });
 
-    toast.success({ title: "Recipe Inserted", message: "Go to manage and add your images for the recipes" });
-    console.log(returning);
+    const recipeId = result.data?.insert_recipe?.returning?.[0]?.id;
+
+    if (!recipeId) {
+      throw new Error("Failed to create recipe");
+    }
+
+    // Upload images if any were selected
+    if (imageFiles.value.length > 0) {
+      uploadingImages.value = true;
+      try {
+        const recipeImages = await Promise.all(
+          imageFiles.value.map(async (file, index) => {
+            const base64String = await convertFileToBase64(file);
+            return {
+              image_name: file.name,
+              image_type: file.type,
+              image_base64str: base64String,
+              is_thumbnail: index === 0, // First image is thumbnail
+            };
+          }),
+        );
+
+        await client.mutate({
+          mutation: UPLOAD_RECIPE_IMAGES_MUTATION,
+          variables: {
+            input: {
+              recipe_id: recipeId,
+              recipe_images: recipeImages,
+            },
+          },
+        });
+      }
+      catch (imageErr: any) {
+        console.error("Image upload error:", imageErr);
+        toast.error({ title: "Image Upload Error", message: imageErr.message || "Failed to upload images" });
+        // Don't throw - recipe was created successfully
+      }
+      finally {
+        uploadingImages.value = false;
+      }
+    }
+
+    toast.success({ title: "Recipe Created", message: "Your recipe has been successfully created" });
     resetForm();
+    imageFiles.value = [];
+    imagePreviews.value = [];
   }
   catch (err: any) {
-    console.error(err.message);
+    console.error(err);
     error.value = err.message || "Something went wrong";
+    toast.error({ title: "Error", message: error.value });
   }
   finally {
     loading.value = false;
@@ -201,6 +305,55 @@ const onSubmit = handleSubmit(async (values) => {
         <label v-if="errors.description" class="label">
           <span class="label-text-alt text-error text-xs">{{ Array.isArray(errors.description) ? errors.description[0] : errors.description }}</span>
         </label>
+      </div>
+
+      <!-- Images Section -->
+      <div class="form-control mb-4">
+        <label class="label">
+          <span class="label-text">Recipe Images</span>
+        </label>
+
+        <!-- Image Upload -->
+        <div class="space-y-2">
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            class="file-input file-input-bordered w-full"
+            :disabled="loading || uploadingImages"
+            @change="handleImageSelect"
+          >
+          <p class="text-xs text-base-content/70">
+            You can select multiple images at once. The first image will be set as the thumbnail.
+          </p>
+        </div>
+
+        <!-- Image Previews -->
+        <div v-if="imagePreviews.length > 0" class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+          <div
+            v-for="(preview, index) in imagePreviews"
+            :key="index"
+            class="relative"
+          >
+            <img
+              :src="preview"
+              :alt="`Preview ${index + 1}`"
+              class="w-full h-32 object-cover rounded-lg border"
+              :class="{ 'border-primary border-2': index === 0 }"
+            >
+            <div v-if="index === 0" class="absolute top-2 left-2 badge badge-primary badge-sm">
+              Thumbnail
+            </div>
+            <button
+              type="button"
+              class="absolute top-2 right-2 btn btn-sm btn-circle btn-error"
+              :disabled="loading || uploadingImages"
+              @click="removeImagePreview(index)"
+            >
+              <icon name="lucide:x" />
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Ingredients input -->
@@ -341,11 +494,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <button
         type="submit"
-        :disabled="loading"
+        :disabled="loading || uploadingImages"
         class="btn btn-primary w-full mb-4"
       >
-        <span v-if="loading" class="loading loading-dots loading-md" />
-        {{ loading ? "Adding" : "Add" }}
+        <span v-if="loading || uploadingImages" class="loading loading-dots loading-md" />
+        {{ uploadingImages ? "Uploading Images..." : loading ? "Adding" : "Add Recipe" }}
       </button>
       <div v-if="error" role="alert" class="alert alert-error">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">

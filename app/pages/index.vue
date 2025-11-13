@@ -9,6 +9,80 @@ const categories: { name: string; icon: string }[] = [
 
 const slides = ["slide1", "slide2"];
 
+const GET_RECIPES = gql`
+query GetRecipes($limit: Int!) {
+  recipe(limit: $limit) {
+    id
+    title
+    description
+    is_paid
+    user_id
+    price
+    prep_time
+    category {
+      id
+      category_name
+    }
+    user {
+      username
+      avatar_url
+      FirstName
+      LastName
+      bio
+    }
+    recipe_ratings_aggregate {
+      aggregate {
+        avg {
+          rating
+        }
+      }
+    }
+    recipe_ratings {
+      user {
+        username
+        FirstName
+        avatar_url
+      }
+      rating
+    }
+    recipe_steps(order_by: { step_no: asc }) {
+      id
+      step_no
+      step_description
+    }
+    recipe_ingredients {
+      id
+      ingredient
+    }
+    recipe_ingredients_aggregate {
+      aggregate {
+        count
+      }
+    }
+    recipe_images(order_by: [{ is_thumbnail: desc }, { id: asc }]) {
+      id
+      img_url
+      is_thumbnail
+    }
+    recipe_likes_aggregate {
+      aggregate {
+        count
+      }
+    }
+    recipe_comments(order_by: { created_at: desc }) {
+      id
+      comment_body
+      created_at
+      user {
+        username
+        avatar_url
+        FirstName
+      }
+    }
+  }
+}
+`;
+
 function left() {
   const current = window.location.hash.replace("#", "") || "slide1";
   const idx = slides.indexOf(current);
@@ -24,62 +98,15 @@ function right() {
 
 const client = useApolloClient().client;
 
-const GET_RECIPE_QUERY = gql`
-query recipe($limit: Int!) {
-  recipe(limit: $limit) {
-    id
-    title
-    description
-    category {
-      id
-      category_name
-    }
-    recipe_images(where: {is_thumbnail: {_eq: true}}) {
-      id
-      img_url
-      is_thumbnail
-    }
-    prep_time
-    recipe_ingredients_aggregate {
-      aggregate {
-        count
-      }
-    }
-  }
-}
-`;
-
-type Recipe = {
-  id: number;
-  title: string;
-  description: string;
-  category: {
-    id: number;
-    category_name: string;
-  };
-  recipe_images: {
-    id: number;
-    img_url: string;
-    is_thumbnail: boolean;
-  }[];
-  prep_time: number;
-  recipe_ingredients_aggregate: {
-    aggregate: {
-      count: number;
-    };
-  };
-};
-
 const recipes = ref<Recipe[]>([]);
 
 try {
   const { data } = await client.query<{ recipe: Recipe[] }>({
-    query: GET_RECIPE_QUERY,
-    variables: { limit: 4 },
+    query: GET_RECIPES,
+    variables: { limit: 6 },
   });
 
   recipes.value = data.recipe;
-  console.log(data);
 }
 catch (err) {
   console.error(err);
@@ -102,7 +129,7 @@ catch (err) {
           <p class="mb-5 font-paragraph-1 font-light">
             Explore a world of flavors, discover handcrafted recipes, and let the aroma of our passion for cooking fill your kitchen
           </p>
-          <nuxt-link to="/dashboard" class="btn btn-primary rounded-full font-button-text">
+          <nuxt-link to="/myrecipes" class="btn btn-primary rounded-full font-button-text">
             Get Started
           </nuxt-link>
         </div>

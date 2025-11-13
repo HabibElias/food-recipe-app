@@ -1,0 +1,14 @@
+mutation UpdateRecipeIngredientsMutation(
+  $recipe_id: Int!
+  $ingredients: [recipe_ingredient_insert_input!]!
+) {
+  delete_recipe_ingredient(where: { recipe_id: { _eq: $recipe_id } }) {
+    affected_rows
+  }
+  insert_recipe_ingredient(objects: $ingredients) {
+    returning {
+      id
+    }
+  }
+}
+

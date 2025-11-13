@@ -8,28 +8,37 @@ export const useUserStore = defineStore("user", {
     user: null as User | null,
     token: null as string | null,
     loading: false as boolean,
+    initialized: false as boolean,
   }),
 
   getters: {
     isLoggedIn: state => !!state.token,
     isLoading: state => state.loading,
+    isInitialized: state => state.initialized,
   },
 
   actions: {
     async init() {
-      const token = useCookie("apollo-token");
+      // Avoid running init multiple times
+      if (this.initialized) {
+        return;
+      }
 
+      const token = useCookie("apollo-token");
       this.loading = true;
+
       if (token.value) {
         try {
           const client = useApolloClient().client;
-
           const { onLogin } = useApollo();
 
-          const { data } = await client.query<{ user: User[] }>({ query: GET_ME_QUERY });
+          const { data } = await client.mutate<{ Me: { user: User; token: string } }>({ mutation: GET_ME_QUERY, variables: { token: token.value } });
 
-          this.user = data.user[0] || null;
-          onLogin(token.value);
+          this.user = data?.Me.user || null;
+
+          if (import.meta.client) {
+            await onLogin(data?.Me.token ?? token.value);
+          }
           this.token = token.value;
         }
         catch {
@@ -38,7 +47,9 @@ export const useUserStore = defineStore("user", {
           this.user = null;
         }
       }
+
       this.loading = false;
+      this.initialized = true;
     },
 
     async login(email: string, password: string) {
@@ -58,7 +69,9 @@ export const useUserStore = defineStore("user", {
         this.token = token;
         this.user = user;
 
-        await onLogin(token);
+        if (import.meta.client) {
+          await onLogin(token);
+        }
         navigateTo("/");
       }
       catch (err: any) {
@@ -83,7 +96,9 @@ export const useUserStore = defineStore("user", {
         this.token = token;
         this.user = user;
 
-        await onLogin(token);
+        if (import.meta.client) {
+          await onLogin(token);
+        }
         navigateTo("/");
       }
       catch (err: any) {
@@ -94,7 +109,9 @@ export const useUserStore = defineStore("user", {
     async logout() {
       const { onLogout } = useApollo();
       const cookie = useCookie("apollo-token", { path: "/", sameSite: "lax" });
-      onLogout("default");
+      if (import.meta.client) {
+        onLogout("default");
+      }
       cookie.value = "";
       this.user = null;
       this.token = null;

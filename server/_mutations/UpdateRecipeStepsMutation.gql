@@ -1,0 +1,10 @@
+mutation UpdateRecipeStepsMutation($recipe_id: Int!, $steps: [recipe_step_insert_input!]!) {
+  delete_recipe_step(where: { recipe_id: { _eq: $recipe_id } }) {
+    affected_rows
+  }
+  insert_recipe_step(objects: $steps) {
+    returning {
+      id
+    }
+  }
+}

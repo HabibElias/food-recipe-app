@@ -1,0 +1,11 @@
+query GetRecipeCreators {
+  recipe(distinct_on: user_id, order_by: { user_id: asc }) {
+    user {
+      id
+      username
+      FirstName
+      LastName
+      avatar_url
+    }
+  }
+}

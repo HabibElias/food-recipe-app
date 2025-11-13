@@ -1,0 +1,27 @@
+query GetMyRecipesWithCount($limit: Int!, $user_id: uuid, $offset: Int!) {
+  recipe(offset: $offset, limit: $limit, order_by: { created_at: desc }, where: { user_id: { _eq: $user_id } }) {
+    id
+    title
+    description
+    category {
+      id
+      category_name
+    }
+    recipe_images(where: { is_thumbnail: { _eq: true } }) {
+      id
+      img_url
+      is_thumbnail
+    }
+    prep_time
+    recipe_ingredients_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+  recipe_aggregate(where: { user_id: { _eq: $user_id } }) {
+    aggregate {
+      count
+    }
+  }
+}

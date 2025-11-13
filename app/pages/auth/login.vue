@@ -89,6 +89,7 @@ const onSubmit = handleSubmit(async (values) => {
           <span class="label-text-alt text-error text-xs">{{ Array.isArray(errors.password) ? errors.password[0] : errors.password }}</span>
         </label>
       </div>
+
       <nuxt-link class="link link-primary text-xs text-center mb-4" to="/auth/sign-up">
         Doesn't have an account? click here
       </nuxt-link>
@@ -101,6 +102,7 @@ const onSubmit = handleSubmit(async (values) => {
         <span v-if="loading" class="loading loading-dots loading-md" />
         {{ loading ? "Logging In" : "Login" }}
       </button>
+
       <div v-if="error" role="alert" class="alert alert-error">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />

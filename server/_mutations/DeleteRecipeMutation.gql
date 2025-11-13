@@ -1,0 +1,7 @@
+mutation DeleteRecipeMutation($id: Int!) {
+  delete_recipe(where: { id: { _eq: $id } }) {
+    returning {
+      id
+    }
+  }
+}

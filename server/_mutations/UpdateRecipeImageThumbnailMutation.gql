@@ -1,0 +1,23 @@
+mutation UpdateRecipeImageThumbnailMutation(
+  $recipe_id: Int!
+  $image_id: Int!
+) {
+  # Set all images to not thumbnail
+  update_recipe_image(
+    where: { recipe_id: { _eq: $recipe_id } }
+    _set: { is_thumbnail: false }
+  ) {
+    affected_rows
+  }
+  # Set the selected image as thumbnail
+  update_recipe_image(
+    where: { id: { _eq: $image_id } }
+    _set: { is_thumbnail: true }
+  ) {
+    returning {
+      id
+      is_thumbnail
+    }
+  }
+}
+

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import DELETE_RECIPE_MUTATION from "~~/server/_mutations/DeleteRecipeMutation.gql";
+import GET_MY_RECIPES_WITH_COUNT from "~~/server/_queries/GetMyRecipesWithCount.gql";
+import { computed, onMounted, ref, watch } from "vue";
 
 definePageMeta({
   middleware: ["auth"],
@@ -7,6 +9,8 @@ definePageMeta({
 });
 
 const userStore = useUserStore();
+const toast = useToast();
+
 const stats = ref([
   { label: "My Recipes", value: 20 },
   { label: "Total Likes", value: 100 },
@@ -14,48 +18,15 @@ const stats = ref([
   { label: "Sold", value: 20 },
 ]);
 
-const client = useApolloClient().client;
+const itemsPerPage = ref(6);
+const currentPage = ref(1);
+const loading = ref(true);
 
-const GET_RECIPE_QUERY = gql`
-query recipe($limit: Int!, $user_id: uuid) {
-  recipe(limit: $limit, where: {user_id: {_eq: $user_id}}) {
-    id
-    title
-    description
-    category {
-      id
-      category_name
-    }
-    recipe_images(where: {is_thumbnail: {_eq: true}}) {
-      id
-      img_url
-      is_thumbnail
-    }
-    prep_time
-    recipe_ingredients_aggregate {
-      aggregate {
-        count
-      }
-    }
-  }
-}
-`;
+const offset = computed(() => (currentPage.value - 1) * itemsPerPage.value);
 
-type Recipe = {
-  id: number;
-  title: string;
-  description: string;
-  category: {
-    id: number;
-    category_name: string;
-  };
-  recipe_images: {
-    id: number;
-    img_url: string;
-    is_thumbnail: boolean;
-  }[];
-  prep_time: number;
-  recipe_ingredients_aggregate: {
+type RecipeData = {
+  recipe: Recipe[];
+  recipe_aggregate: {
     aggregate: {
       count: number;
     };
@@ -63,25 +34,82 @@ type Recipe = {
 };
 
 const recipes = ref<Recipe[]>([]);
+const totalCount = ref(0);
+const totalPages = computed(() => Math.ceil(totalCount.value / itemsPerPage.value));
 
-try {
-  console.log(userStore.user?.id);
+const deletingId = ref<number | null>(null);
 
-  const { data } = await client.query<{ recipe: Recipe[] }>({
-    query: GET_RECIPE_QUERY,
-    variables: { limit: 6, user_id: userStore.user?.id },
-  });
+async function loadRecipes() {
+  loading.value = true;
+  try {
+    const client = useApolloClient().client;
+    const { data } = await client.query<RecipeData>({
+      query: GET_MY_RECIPES_WITH_COUNT,
+      variables: {
+        user_id: userStore.user?.id,
+        limit: itemsPerPage.value,
+        offset: offset.value,
+      },
+    });
 
-  recipes.value = data.recipe;
-  console.log(data);
+    recipes.value = data.recipe ?? [];
+    totalCount.value = data.recipe_aggregate?.aggregate?.count ?? 0;
+    // Update stats with actual count
+    if (stats.value[0]) {
+      stats.value[0].value = totalCount.value;
+    }
+  }
+  catch (err: any) {
+    console.error(err);
+    toast.error({ title: "Error", message: err.message || "Failed to load recipes" });
+  }
+  finally {
+    loading.value = false;
+  }
 }
-catch (err) {
-  console.error(err);
+
+async function handleDelete(id: number) {
+  // eslint-disable-next-line no-alert
+  if (!confirm("Are you sure you want to delete this recipe? This action cannot be undone.")) {
+    return;
+  }
+
+  deletingId.value = id;
+  try {
+    const client = useApolloClient().client;
+    await client.mutate({
+      mutation: DELETE_RECIPE_MUTATION,
+      variables: { id },
+    });
+    toast.success({ title: "Recipe Deleted", message: "Recipe has been successfully deleted" });
+    await loadRecipes();
+  }
+  catch (err: any) {
+    console.error(err);
+    toast.error({ title: "Error", message: err.message || "Failed to delete recipe" });
+  }
+  finally {
+    deletingId.value = null;
+  }
 }
+
+function goToPage(page: number) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+}
+
+watch([currentPage, itemsPerPage], () => {
+  loadRecipes();
+});
+
+onMounted(() => {
+  loadRecipes();
+});
 </script>
 
 <template>
-  <div class="p-8 space-y-8 border border-base-content/50 rounded-4xl">
+  <div v-if="recipes.length >= 0 && !loading" class="p-8 space-y-8 border border-base-content/50 rounded-4xl">
     <!-- USER GREETINGS -->
     <div>
       <div class="font-header-3">
@@ -107,7 +135,7 @@ catch (err) {
               My Recipes
             </h2>
             <p class="font-header-2">
-              {{ 20 }}
+              {{ totalCount }}
             </p>
           </div>
         </div>
@@ -128,16 +156,66 @@ catch (err) {
 
     <!-- Recent Recipes -->
     <div>
-      <h2 class="font-header-3 mb-8">
-        Your Recent Recipes
-      </h2>
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="font-header-3">
+          Your Recipes
+        </h2>
+        <p v-if="totalCount > 0" class="font-paragraph-2 text-base-content/70">
+          Showing {{ recipes.length }} of {{ totalCount }} recipes
+        </p>
+      </div>
 
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <app-recipe-card
-          v-for="recipe in recipes"
-          :key="recipe.id"
-          :recipe="recipe"
-        />
+      <div v-if="recipes.length > 0" class="space-y-6">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <app-manage-recipe-card
+            v-for="recipe in recipes"
+            :key="recipe.id"
+            :recipe="recipe"
+            :class="{ 'opacity-50 pointer-events-none': deletingId === recipe.id }"
+            @delete="handleDelete"
+          />
+        </div>
+
+        <!-- Pagination -->
+        <div v-if="totalPages > 1" class="flex items-center justify-center gap-2 pt-4">
+          <button
+            class="btn btn-sm rounded-full"
+            :disabled="currentPage === 1 || loading"
+            @click="goToPage(currentPage - 1)"
+          >
+            <icon name="lucide:chevron-left" />
+            Previous
+          </button>
+
+          <div class="flex gap-1">
+            <button
+              v-for="page in totalPages"
+              :key="page"
+              class="btn btn-sm btn-circle"
+              :class="{ 'btn-primary': currentPage === page, 'btn-ghost': currentPage !== page }"
+              :disabled="loading"
+              @click="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button
+            class="btn btn-sm rounded-full"
+            :disabled="currentPage === totalPages || loading"
+            @click="goToPage(currentPage + 1)"
+          >
+            Next
+            <icon name="lucide:chevron-right" />
+          </button>
+        </div>
+      </div>
+
+      <div v-else class="flex flex-col items-center justify-center py-12 space-y-4">
+        <icon name="lucide:chef-hat" size="48" class="opacity-50" />
+        <p class="font-paragraph-2 text-center opacity-70">
+          No recipes yet. Start by adding your first recipe!
+        </p>
       </div>
     </div>
 
@@ -151,11 +229,18 @@ catch (err) {
           <icon name="lucide:plus" size="30" />
           Add Recipes
         </nuxt-link>
-        <button class="btn btn-primary button-text py-10 btn-outline rounded-full">
+        <nuxt-link to="/myrecipes/manage" class="btn btn-primary button-text py-10 btn-outline rounded-full">
           <icon name="lucide:link" size="30" />
           Manage All
-        </button>
+        </nuxt-link>
       </div>
     </div>
+  </div>
+
+  <div v-else class="flex flex-col min-h-[80vh] items-center justify-center my-auto">
+    <span class="loading loading-dots loading-xl" />
+    <p class="mt-4">
+      Loading recipes...
+    </p>
   </div>
 </template>

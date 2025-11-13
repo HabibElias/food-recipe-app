@@ -1,0 +1,20 @@
+mutation InsertRecipeImageMutation(
+  $recipe_id: Int!
+  $img_url: String!
+  $is_thumbnail: Boolean!
+) {
+  insert_recipe_image(
+    objects: {
+      recipe_id: $recipe_id
+      img_url: $img_url
+      is_thumbnail: $is_thumbnail
+    }
+  ) {
+    returning {
+      id
+      img_url
+      is_thumbnail
+    }
+  }
+}
+

@@ -21,15 +21,9 @@ const commonRoutes: RouteTuple[] = [
   ["About us", "/about-us", []],
 ];
 
-const loggedRoutes: RouteTuple[] = [
-  ["My Recipes", "/myrecipes", []],
-  ["Recipes", "/recipes", recipeChildren],
-  ["About us", "/about-us", []],
-];
-
 const routes = computed<RouteTuple[]>(() => {
   // return a fresh shallow copy to keep the source immutable for consumers
-  return userStore.isLoggedIn ? loggedRoutes.map(([label, path, children]) => [label, path, children]) : commonRoutes.map(([label, path, children]) => [label, path, children]);
+  return commonRoutes.map(([label, path, children]) => [label, path, children]);
 });
 </script>
 
@@ -75,6 +69,9 @@ const routes = computed<RouteTuple[]>(() => {
     </nav>
 
     <div class="items-center gap-3 hidden md:flex">
+      <nuxt-link to="/browse">
+        <icon name="lucide:search" size="28" class="mt-1" />
+      </nuxt-link>
       <color-mode />
       <div v-cloak v-if="!userStore.isLoggedIn">
         <nuxt-link v-if="!isRouteLogin" to="/auth/login" class="btn btn-outline rounded-full">
@@ -86,11 +83,55 @@ const routes = computed<RouteTuple[]>(() => {
           Sign up
         </nuxt-link>
       </div>
-      <div v-cloak v-else>
-        <nuxt-link to="/auth/log-out" class="btn btn-outline rounded-full btn-primary">
-          <icon name="lucide:log-out" />
-          Logout
-        </nuxt-link>
+      <div v-else class="dropdown dropdown-bottom dropdown-center">
+        <div v-if="userStore.user?.avatar_url" tabindex="0" class="avatar cursor-pointer">
+          <div class="w-12 rounded">
+            <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp">
+          </div>
+        </div>
+        <div v-else tabindex="0" class="avatar avatar-placeholder h-fit cursor-pointer">
+          <div class="bg-neutral text-neutral-content w-12 rounded-full">
+            <span class="text-xl">{{ userStore.user?.FirstName.slice(0, 1).toUpperCase() }}</span>
+          </div>
+        </div>
+        <div tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-10 w-60 p-3 shadow-sm space-y-1 divide-y divide-base-200">
+          <div class="px-2 pb-2">
+            <div class="font-semibold text-sm leading-snug">
+              {{ userStore.user?.FirstName || userStore.user?.username || 'User' }}
+            </div>
+            <div class="text-xs opacity-80 truncate">
+              {{ userStore.user?.email }}
+            </div>
+          </div>
+
+          <div class="py-2 flex flex-col gap-2">
+            <nuxt-link v-if="userStore.isLoggedIn" to="/profile" class="block px-3 py-2 rounded hover:bg-base-200">
+              Profile
+            </nuxt-link>
+            <nuxt-link v-if="userStore.isLoggedIn" to="/myrecipes" class="block px-3 py-2 rounded hover:bg-base-200">
+              My Recipes
+            </nuxt-link>
+          </div>
+
+          <div class="px-3 py-2">
+            <button
+              v-if="userStore.isLoggedIn"
+              class="btn btn-outline btn-error w-full rounded-full"
+              @click="userStore.logout()"
+            >
+              <icon name="lucide:log-out" />
+              Logout
+            </button>
+
+            <nuxt-link
+              v-else
+              to="/auth/login"
+              class="btn btn-outline btn-sm w-full rounded-full text-center"
+            >
+              Login
+            </nuxt-link>
+          </div>
+        </div>
       </div>
     </div>
 

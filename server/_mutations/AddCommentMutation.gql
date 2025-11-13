@@ -1,0 +1,13 @@
+mutation AddRecipeComment($recipe_id: Int!, $commentBody: String!, $user_id: uuid) {
+  insert_recipe_comment(objects: { recipe_id: $recipe_id, comment_body: $commentBody, user_id: $user_id }) {
+    returning {
+      id
+      comment_body
+      created_at
+      user {
+        username
+        avatar_url
+      }
+    }
+  }
+}

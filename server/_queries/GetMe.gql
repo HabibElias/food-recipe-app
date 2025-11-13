@@ -1,12 +1,15 @@
-query GetMe {
-  user {
-    id
-    email
-    username
-    FirstName
-    LastName
-    avatar_url
-    created_at
-    updated_at
+mutation GetMe($token: String!) {
+  Me(input: { token: $token }) {
+    token
+    user {
+      id
+      email
+      username
+      FirstName
+      LastName
+      avatar_url
+      created_at
+      updated_at
+    }
   }
 }
