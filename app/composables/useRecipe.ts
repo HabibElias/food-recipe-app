@@ -8,6 +8,7 @@ import GET_RECIPE_NOT_LOGGED_IN from "~~/server/_queries/GetRecipeNotLoggedIn.gq
 export default function useRecipe(id: string) {
   const toast = useToast();
   const loading = ref<boolean>(false);
+  const checkingOut = ref<boolean>(false);
   const liking = ref<boolean>(false);
   const posting = ref<boolean>(false);
   const recipe = ref<Recipe>();
@@ -108,6 +109,7 @@ export default function useRecipe(id: string) {
       toast.info({ title: "Login required", message: "Please login to like recipes." });
       return;
     }
+    checkingOut.value = true;
     try {
       const { data } = await useApolloClient().client.mutate({
         mutation: BUY_RECIPE_MUTATION,
@@ -117,7 +119,11 @@ export default function useRecipe(id: string) {
       window.location.href = checkoutUrl;
     }
     catch (error) {
+      toast.error({ title: "Checkout", message: "Checkout is not available try again later." });
       console.error("Payment error:", error);
+    }
+    finally {
+      checkingOut.value = false;
     }
   }
 
@@ -229,6 +235,7 @@ export default function useRecipe(id: string) {
     posting,
     toggleLike,
     buyRecipe,
+    checkingOut,
     newComment,
   };
 }

@@ -1,8 +1,9 @@
-query BrowseRecipes($limit: Int!, $offset: Int!, $where: recipe_bool_exp) {
+query BrowseRecipes($limit: Int!, $offset: Int!, $where: recipe_bool_exp, $user_id: uuid) {
   recipe(limit: $limit, offset: $offset, order_by: { created_at: desc }, where: $where) {
     id
     title
     description
+    is_paid
     category {
       id
       category_name
@@ -31,6 +32,9 @@ query BrowseRecipes($limit: Int!, $offset: Int!, $where: recipe_bool_exp) {
           rating
         }
       }
+    }
+    bookmarks(where: { user_id: { _eq: $user_id } }) {
+      id
     }
   }
   recipe_aggregate(where: $where) {

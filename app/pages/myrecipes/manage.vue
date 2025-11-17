@@ -17,36 +17,6 @@ const loading = ref(true);
 
 const offset = computed(() => (currentPage.value - 1) * itemsPerPage.value);
 
-type Recipe = {
-  id: number;
-  title: string;
-  description: string;
-  category: {
-    id: number;
-    category_name: string;
-  };
-  recipe_images: {
-    id: number;
-    img_url: string;
-    is_thumbnail: boolean;
-  }[];
-  prep_time: number;
-  recipe_ingredients_aggregate: {
-    aggregate: {
-      count: number;
-    };
-  };
-};
-
-type RecipeData = {
-  recipe: Recipe[];
-  recipe_aggregate: {
-    aggregate: {
-      count: number;
-    };
-  };
-};
-
 const recipes = ref<Recipe[]>([]);
 const totalCount = ref(0);
 const totalPages = computed(() => Math.ceil(totalCount.value / itemsPerPage.value));
@@ -57,7 +27,7 @@ async function loadRecipes() {
   loading.value = true;
   try {
     const client = useApolloClient().client;
-    const { data } = await client.query<RecipeData>({
+    const { data } = await client.query<{ recipe: Recipe[]; recipe_aggregate: { aggregate: { count: number } } }>({
       query: GET_MY_RECIPES_WITH_COUNT,
       variables: {
         user_id: userStore.user?.id,

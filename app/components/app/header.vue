@@ -21,9 +21,15 @@ const commonRoutes: RouteTuple[] = [
   ["About us", "/about-us", []],
 ];
 
+const loggedRoutes: RouteTuple[] = [
+  ["My Recipes", "/myrecipes", []],
+  ["Recipes", "/recipes", recipeChildren],
+  ["Notification", "/notifications", []],
+  ["About us", "/about-us", []],
+];
+
 const routes = computed<RouteTuple[]>(() => {
-  // return a fresh shallow copy to keep the source immutable for consumers
-  return commonRoutes.map(([label, path, children]) => [label, path, children]);
+  return userStore.isLoggedIn ? loggedRoutes.map(([label, path, children]) => [label, path, children]) : commonRoutes.map(([label, path, children]) => [label, path, children]);
 });
 </script>
 
@@ -68,7 +74,7 @@ const routes = computed<RouteTuple[]>(() => {
       </div>
     </nav>
 
-    <div class="items-center gap-3 hidden md:flex">
+    <div class="items-center gap-5 hidden md:flex">
       <nuxt-link to="/browse">
         <icon name="lucide:search" size="28" class="mt-1" />
       </nuxt-link>
@@ -104,12 +110,15 @@ const routes = computed<RouteTuple[]>(() => {
             </div>
           </div>
 
-          <div class="py-2 flex flex-col gap-2">
-            <nuxt-link v-if="userStore.isLoggedIn" to="/profile" class="block px-3 py-2 rounded hover:bg-base-200">
+          <div v-if="userStore.isLoggedIn" class="py-2 flex flex-col gap-2">
+            <nuxt-link to="/profile" class="block px-3 py-2 rounded hover:bg-base-200">
               Profile
             </nuxt-link>
-            <nuxt-link v-if="userStore.isLoggedIn" to="/myrecipes" class="block px-3 py-2 rounded hover:bg-base-200">
+            <nuxt-link to="/myrecipes" class="block px-3 py-2 rounded hover:bg-base-200">
               My Recipes
+            </nuxt-link>
+            <nuxt-link to="/bookmarks" class="block px-3 py-2 rounded hover:bg-base-200">
+              Bookmarks
             </nuxt-link>
           </div>
 

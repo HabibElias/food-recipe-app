@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { toTypedSchema } from "@vee-validate/zod";
-import UPDATE_RECIPE_MUTATION from "~~/server/_mutations/UpdateRecipeMutation.gql";
-import UPDATE_RECIPE_INGREDIENTS_MUTATION from "~~/server/_mutations/UpdateRecipeIngredientsMutation.gql";
-import UPDATE_RECIPE_STEPS_MUTATION from "~~/server/_mutations/UpdateRecipeStepsMutation.gql";
-import INSERT_RECIPE_IMAGE_MUTATION from "~~/server/_mutations/InsertRecipeImageMutation.gql";
 import DELETE_RECIPE_IMAGE_MUTATION from "~~/server/_mutations/DeleteRecipeImageMutation.gql";
 import UPDATE_RECIPE_IMAGE_THUMBNAIL_MUTATION from "~~/server/_mutations/UpdateRecipeImageThumbnailMutation.gql";
+import UPDATE_RECIPE_INGREDIENTS_MUTATION from "~~/server/_mutations/UpdateRecipeIngredientsMutation.gql";
+import UPDATE_RECIPE_MUTATION from "~~/server/_mutations/UpdateRecipeMutation.gql";
+import UPDATE_RECIPE_STEPS_MUTATION from "~~/server/_mutations/UpdateRecipeStepsMutation.gql";
+import UPLOAD_RECIPE_IMAGES_MUTATION from "~~/server/_mutations/UploadRecipeImagesMutation.gql";
 import { Form, useForm } from "vee-validate";
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import z from "zod";
 
@@ -20,7 +20,7 @@ const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 
-const recipeId = parseInt(route.params.id as string);
+const recipeId = Number.parseInt(route.params.id as string);
 const categories = ref<Category[]>([]);
 const loading = ref<boolean>(true);
 const error = ref<string>("");
@@ -71,7 +71,8 @@ try {
     query: GET_CATEGORIES,
   });
   categories.value = data.category;
-} catch (err) {
+}
+catch (err) {
   console.error(err);
 }
 
@@ -178,17 +179,24 @@ function removeImagePreview(index: number) {
   imagePreviews.value.splice(index, 1);
 }
 
-async function uploadImage(file: File): Promise<string> {
-  // This is a placeholder - you'll need to implement your actual image upload logic
-  // For now, we'll create a data URL or use a file upload service
-  // You might want to use a service like Cloudinary, AWS S3, or your own server endpoint
-  return new Promise((resolve) => {
+async function convertFileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = (e) => {
-      // In a real app, you'd upload to a server and get back a URL
-      // For now, we'll use the data URL (not recommended for production)
-      resolve(e.target?.result as string);
+    reader.onload = () => {
+      const result = reader.result;
+      if (!result || typeof result !== "string") {
+        reject(new Error("Failed to read file as data URL"));
+        return;
+      }
+      const parts = result.split(",");
+      const base64String = parts[1] ?? "";
+      if (!base64String) {
+        reject(new Error("Invalid data URL format"));
+        return;
+      }
+      resolve(base64String);
     };
+    reader.onerror = reject;
     reader.readAsDataURL(file);
   });
 }
@@ -203,7 +211,8 @@ async function deleteImage(imageId: number) {
     recipeImages.value = recipeImages.value.filter(img => img.id !== imageId);
     toast.success({ title: "Image Deleted", message: "Image has been successfully deleted" });
     await loadRecipe();
-  } catch (err: any) {
+  }
+  catch (err: any) {
     console.error(err);
     toast.error({ title: "Error", message: err.message || "Failed to delete image" });
   }
@@ -225,7 +234,8 @@ async function setThumbnail(imageId: number) {
     }));
     toast.success({ title: "Thumbnail Updated", message: "Thumbnail has been set" });
     await loadRecipe();
-  } catch (err: any) {
+  }
+  catch (err: any) {
     console.error(err);
     toast.error({ title: "Error", message: err.message || "Failed to update thumbnail" });
   }
@@ -270,29 +280,31 @@ async function loadRecipe() {
     }
 
     const recipe = data.recipe[0];
-    
+
     // Populate form with existing data
     setValues({
-      title: recipe.title,
-      description: recipe.description,
-      category_id: recipe.category_id,
-      is_paid: recipe.is_paid,
-      prep_time: recipe.prep_time,
-      price: recipe.price ?? 0,
-      steps: recipe.recipe_steps.map(s => ({
+      title: recipe?.title,
+      description: recipe?.description,
+      category_id: recipe?.category_id,
+      is_paid: recipe?.is_paid,
+      prep_time: recipe?.prep_time,
+      price: recipe?.price ?? 0,
+      steps: recipe?.recipe_steps.map(s => ({
         step_no: s.step_no,
         step_description: s.step_description,
       })),
-      ingredients: recipe.recipe_ingredients.map(i => ({
+      ingredients: recipe?.recipe_ingredients.map(i => ({
         ingredient: i.ingredient,
       })),
     });
 
-    recipeImages.value = recipe.recipe_images || [];
-  } catch (err: any) {
+    recipeImages.value = recipe?.recipe_images || [];
+  }
+  catch (err: any) {
     console.error(err);
     error.value = err.message || "Failed to load recipe";
-  } finally {
+  }
+  finally {
     loading.value = false;
   }
 }
@@ -347,42 +359,53 @@ const onSubmit = handleSubmit(async (values) => {
       },
     });
 
-    // Upload new images
+    // Upload new images (batch via Hasura action)
     if (imageFiles.value.length > 0) {
       uploadingImages.value = true;
       try {
-        for (let i = 0; i < imageFiles.value.length; i++) {
-          const file = imageFiles.value[i];
-          const imgUrl = await uploadImage(file);
-          
-          // Check if this should be the thumbnail (first image if no thumbnail exists)
-          const hasThumbnail = recipeImages.value.some(img => img.is_thumbnail);
-          const isThumbnail = !hasThumbnail && i === 0;
+        // determine if there is already a thumbnail among existing images
+        const hasThumbnail = recipeImages.value.some(img => img.is_thumbnail);
 
-          await client.mutate({
-            mutation: INSERT_RECIPE_IMAGE_MUTATION,
-            variables: {
+        const recipeImagesPayload = await Promise.all(imageFiles.value.map(async (file, index) => ({
+          image_name: file.name,
+          image_type: file.type,
+          image_base64str: await convertFileToBase64(file),
+          is_thumbnail: !hasThumbnail && index === 0,
+        })));
+
+        await client.mutate({
+          mutation: UPLOAD_RECIPE_IMAGES_MUTATION,
+          variables: {
+            input: {
               recipe_id: recipeId,
-              img_url: imgUrl,
-              is_thumbnail: isThumbnail,
+              recipe_images: recipeImagesPayload,
             },
-          });
-        }
+          },
+        });
+
+        // clear selected files and previews and reload images
         imageFiles.value = [];
         imagePreviews.value = [];
         await loadRecipe();
-      } finally {
+      }
+      catch (imageErr: any) {
+        console.error("Image upload error:", imageErr);
+        toast.error({ title: "Image Upload Error", message: imageErr.message || "Failed to upload images" });
+      }
+      finally {
         uploadingImages.value = false;
       }
     }
 
     toast.success({ title: "Recipe Updated", message: "Your recipe has been successfully updated" });
     router.push("/myrecipes/manage");
-  } catch (err: any) {
+  }
+  catch (err: any) {
     console.error(err);
     error.value = err.message || "Something went wrong";
     toast.error({ title: "Error", message: error.value });
-  } finally {
+  }
+  finally {
     loading.value = false;
   }
 });
@@ -392,7 +415,9 @@ const onSubmit = handleSubmit(async (values) => {
   <div class="flex justify-center items-center flex-col font-[poppins] min-h-[80vh] rounded-4xl border border-base-content/50 py-10">
     <div v-if="loading && !values.title" class="flex flex-col items-center justify-center">
       <span class="loading loading-dots loading-xl" />
-      <p class="mt-4">Loading recipe...</p>
+      <p class="mt-4">
+        Loading recipe...
+      </p>
     </div>
 
     <div v-else-if="error && !values.title" class="alert alert-error">
@@ -467,7 +492,7 @@ const onSubmit = handleSubmit(async (values) => {
           <label class="label">
             <span class="label-text">Recipe Images</span>
           </label>
-          
+
           <!-- Existing Images -->
           <div v-if="recipeImages.length > 0" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
             <div

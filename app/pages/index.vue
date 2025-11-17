@@ -1,87 +1,19 @@
 <script lang="ts" setup>
+import BrowseRecipesQuery from "~~/server/_queries/BrowseRecipesQuery.gql";
+import HomeRecipeQueryNotLoggedIn from "~~/server/_queries/HomeRecipeNotLoggedIn.gql";
+import HomeRecipeQuery from "~~/server/_queries/HomeRecipeQuery.gql";
+
 const categories: { name: string; icon: string }[] = [
   { name: "Breakfast", icon: "/img/breakfast.svg" },
   { name: "Lunch", icon: "/img/lunch.svg" },
   { name: "Dinner", icon: "/img/dinner.svg" },
   { name: "Dessert", icon: "/img/dessert.svg" },
-  { name: "Quick bite", icon: "/img/quickbite.svg" },
+  { name: "Snacks", icon: "/img/quickbite.svg" },
 ];
 
 const slides = ["slide1", "slide2"];
 
-const GET_RECIPES = gql`
-query GetRecipes($limit: Int!) {
-  recipe(limit: $limit) {
-    id
-    title
-    description
-    is_paid
-    user_id
-    price
-    prep_time
-    category {
-      id
-      category_name
-    }
-    user {
-      username
-      avatar_url
-      FirstName
-      LastName
-      bio
-    }
-    recipe_ratings_aggregate {
-      aggregate {
-        avg {
-          rating
-        }
-      }
-    }
-    recipe_ratings {
-      user {
-        username
-        FirstName
-        avatar_url
-      }
-      rating
-    }
-    recipe_steps(order_by: { step_no: asc }) {
-      id
-      step_no
-      step_description
-    }
-    recipe_ingredients {
-      id
-      ingredient
-    }
-    recipe_ingredients_aggregate {
-      aggregate {
-        count
-      }
-    }
-    recipe_images(order_by: [{ is_thumbnail: desc }, { id: asc }]) {
-      id
-      img_url
-      is_thumbnail
-    }
-    recipe_likes_aggregate {
-      aggregate {
-        count
-      }
-    }
-    recipe_comments(order_by: { created_at: desc }) {
-      id
-      comment_body
-      created_at
-      user {
-        username
-        avatar_url
-        FirstName
-      }
-    }
-  }
-}
-`;
+const GET_RECIPES = computed(() => useUserStore().isLoggedIn ? HomeRecipeQuery : HomeRecipeQueryNotLoggedIn);
 
 function left() {
   const current = window.location.hash.replace("#", "") || "slide1";
@@ -99,14 +31,40 @@ function right() {
 const client = useApolloClient().client;
 
 const recipes = ref<Recipe[]>([]);
+const selectedCategory = ref<string | null>(null);
 
+const categoryButtons = computed(() => ["All", ...categories.map(c => c.name)]);
+
+async function fetchRecipesForCategory(cat: string | null) {
+  selectedCategory.value = cat;
+  try {
+    if (!cat) {
+      // load defaults
+      const { data } = await client.query<{ recipe: Recipe[] }>({
+        query: GET_RECIPES.value,
+        variables: { limit: 12, user_id: useUserStore().user?.id },
+        fetchPolicy: "network-only",
+      });
+      recipes.value = data.recipe ?? [];
+      return;
+    }
+
+    const where = { category: { category_name: { _ilike: `%${cat}%` } } };
+    const { data } = await client.query({
+      query: BrowseRecipesQuery,
+      variables: { limit: 12, offset: 0, where, user_id: useUserStore().user?.id },
+      fetchPolicy: "network-only",
+    });
+    recipes.value = data.recipe ?? [];
+  }
+  catch (err) {
+    console.error(err);
+  }
+}
+
+// initial load
 try {
-  const { data } = await client.query<{ recipe: Recipe[] }>({
-    query: GET_RECIPES,
-    variables: { limit: 6 },
-  });
-
-  recipes.value = data.recipe;
+  await fetchRecipesForCategory(null);
 }
 catch (err) {
   console.error(err);
@@ -197,6 +155,8 @@ catch (err) {
             v-for="recipe in recipes.slice(0, 2)"
             :key="recipe.title"
             :recipe="recipe"
+            :bookmark="hasBookmark(recipe)"
+            :bookmark-id="getBookmarkId(recipe)"
           />
         </div>
         <div id="slide2" class="carousel-item relative w-full gap-4 flex-col md:flex-row *:flex-1">
@@ -204,6 +164,8 @@ catch (err) {
             v-for="recipe in recipes.slice(0, 2)"
             :key="recipe.title"
             :recipe="recipe"
+            :bookmark="hasBookmark(recipe)"
+            :bookmark-id="getBookmarkId(recipe)"
           />
         </div>
       </div>
@@ -222,18 +184,18 @@ catch (err) {
           With our diverse collection of recipes we have something to satisfy every palate.
         </p>
 
-        <!-- btns -->
+        <!-- btns for categories -->
         <div class="*:btn *:btn-outline *:rounded-full flex items-center justify-around flex-wrap gap-2">
-          <button class="btn-active">
-            All
+          <button
+            v-for="cat in categoryButtons"
+            :key="cat"
+            type="button"
+            class="btn"
+            :class="(cat === 'All' ? (!selectedCategory) : selectedCategory === cat) ? 'btn-active' : 'btn-outline'"
+            @click="fetchRecipesForCategory(cat === 'All' ? null : cat)"
+          >
+            {{ cat }}
           </button>
-          <button>Breakfast</button>
-          <button>Lunch</button>
-          <button>
-            Dinner
-          </button>
-          <button>Dessert</button>
-          <button>quick bite!</button>
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -241,6 +203,8 @@ catch (err) {
           v-for="recipe in [...recipes, ...recipes.map((r) => ({ ...r, title: `${r.title}2` }))]"
           :key="recipe.title"
           :recipe="recipe"
+          :bookmark="hasBookmark(recipe)"
+          :bookmark-id="getBookmarkId(recipe)"
         />
       </div>
     </div>

@@ -6,6 +6,7 @@ mutation GetMe($token: String!) {
       email
       username
       FirstName
+      bio
       LastName
       avatar_url
       created_at

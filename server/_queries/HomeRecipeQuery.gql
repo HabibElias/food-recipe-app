@@ -1,0 +1,74 @@
+query GetRecipes($limit: Int!, $user_id: uuid) {
+  recipe(limit: $limit) {
+    id
+    title
+    description
+    is_paid
+    user_id
+    price
+    prep_time
+    category {
+      id
+      category_name
+    }
+    user {
+      username
+      avatar_url
+      FirstName
+      LastName
+      bio
+    }
+    recipe_ratings_aggregate {
+      aggregate {
+        avg {
+          rating
+        }
+      }
+    }
+    bookmarks(where: { user_id: { _eq: $user_id } }) {
+      id
+    }
+    recipe_ratings {
+      user {
+        username
+        FirstName
+        avatar_url
+      }
+      rating
+    }
+    recipe_steps(order_by: { step_no: asc }) {
+      id
+      step_no
+      step_description
+    }
+    recipe_ingredients {
+      id
+      ingredient
+    }
+    recipe_ingredients_aggregate {
+      aggregate {
+        count
+      }
+    }
+    recipe_images(order_by: [{ is_thumbnail: desc }, { id: asc }]) {
+      id
+      img_url
+      is_thumbnail
+    }
+    recipe_likes_aggregate {
+      aggregate {
+        count
+      }
+    }
+    recipe_comments(order_by: { created_at: desc }) {
+      id
+      comment_body
+      created_at
+      user {
+        username
+        avatar_url
+        FirstName
+      }
+    }
+  }
+}

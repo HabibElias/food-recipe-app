@@ -2,6 +2,7 @@
 import type { Category } from "~~/shared/types/Category";
 
 import BrowseRecipesQuery from "~~/server/_queries/BrowseRecipesQuery.gql";
+import BrowseRecipesQueryNotLoggedIn from "~~/server/_queries/BrowseRecipesQueryNotLoggedIn.gql";
 import GetRecipeCreatorsQuery from "~~/server/_queries/GetRecipeCreators.gql";
 import { computed, onMounted, ref, watch } from "vue";
 
@@ -31,6 +32,14 @@ const loading = ref(false);
 
 const offset = computed(() => (currentPage.value - 1) * itemsPerPage.value);
 const totalPages = computed(() => Math.ceil(totalCount.value / itemsPerPage.value));
+
+function hasBookmark(rec: any) {
+  return !!(rec && rec.bookmarks && rec.bookmarks.length > 0);
+}
+
+function getBookmarkId(rec: any) {
+  return rec && rec.bookmarks && rec.bookmarks[0] ? rec.bookmarks[0].id : undefined;
+}
 
 // Fetch categories
 const GET_CATEGORIES = gql`
@@ -93,11 +102,12 @@ async function loadRecipes() {
     const where = buildWhereClause();
 
     const { data } = await client.query({
-      query: BrowseRecipesQuery,
+      query: useUserStore().isLoggedIn ? BrowseRecipesQuery : BrowseRecipesQueryNotLoggedIn,
       variables: {
         limit: itemsPerPage.value,
         offset: offset.value,
         where,
+        user_id: useUserStore().user?.id,
       },
       fetchPolicy: "network-only",
     });
@@ -329,6 +339,8 @@ onMounted(async () => {
             v-for="recipe in recipes"
             :key="recipe.id"
             :recipe="recipe"
+            :bookmark="hasBookmark(recipe)"
+            :bookmark-id="getBookmarkId(recipe)"
           />
         </div>
 

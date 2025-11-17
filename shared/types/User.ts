@@ -5,6 +5,7 @@ export type User = {
   FirstName: string;
   LastName: string;
   avatar_url: string;
+  bio: string;
   created_at: string;
   updated_at: string;
 };

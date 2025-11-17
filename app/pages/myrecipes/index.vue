@@ -5,6 +5,7 @@ import { computed, onMounted, ref, watch } from "vue";
 
 definePageMeta({
   middleware: ["auth"],
+  layout: "custom",
   requiresAuth: true,
 });
 
@@ -237,7 +238,7 @@ onMounted(() => {
     </div>
   </div>
 
-  <div v-else class="flex flex-col min-h-[80vh] items-center justify-center my-auto">
+  <div v-else class="flex flex-col min-h-[80vh] items-center justify-center my-auto border border-base-content/50 rounded-4xl">
     <span class="loading loading-dots loading-xl" />
     <p class="mt-4">
       Loading recipes...

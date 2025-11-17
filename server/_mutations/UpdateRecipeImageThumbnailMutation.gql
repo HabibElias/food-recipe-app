@@ -1,17 +1,11 @@
-mutation UpdateRecipeImageThumbnailMutation(
-  $recipe_id: Int!
-  $image_id: Int!
-) {
+mutation UpdateRecipeImageThumbnailMutation($recipe_id: Int!, $image_id: uuid) {
   # Set all images to not thumbnail
-  update_recipe_image(
-    where: { recipe_id: { _eq: $recipe_id } }
-    _set: { is_thumbnail: false }
-  ) {
+  unset_thumbnails: update_recipe_image(where: { recipe_id: { _eq: $recipe_id } }, _set: { is_thumbnail: false }) {
     affected_rows
   }
   # Set the selected image as thumbnail
-  update_recipe_image(
-    where: { id: { _eq: $image_id } }
+  set_thumbnail: update_recipe_image(
+    where: { id: { _eq: $image_id }, recipe_id: { _eq: $recipe_id } }
     _set: { is_thumbnail: true }
   ) {
     returning {
@@ -20,4 +14,3 @@ mutation UpdateRecipeImageThumbnailMutation(
     }
   }
 }
-

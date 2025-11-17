@@ -7,7 +7,7 @@ import useRecipe from "~/composables/useRecipe";
 const route = useRoute();
 const userStore = useUserStore();
 
-const { selectedRating, onRatingChange, submitRating, ratingMessage, recipe, likesCount, addComment, liking, buyRecipe, loadRecipe, loading, posting, toggleLike, userHasLiked, newComment } = useRecipe(String(route.params.id));
+const { checkingOut, selectedRating, onRatingChange, submitRating, ratingMessage, recipe, likesCount, addComment, liking, buyRecipe, loadRecipe, loading, posting, toggleLike, userHasLiked, newComment } = useRecipe(String(route.params.id));
 
 const copied = ref(false);
 const currentUrl = ref("");
@@ -82,8 +82,10 @@ async function copyLink() {
                 </p>
                 <button
                   class="btn btn-primary rounded-full px-6"
+                  :disabled="checkingOut"
                   @click="buyRecipe"
                 >
+                  <Icon v-if="checkingOut" name="lucide:loader" class="animate-spin" />
                   Buy Recipe
                 </button>
               </div>

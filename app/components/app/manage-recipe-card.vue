@@ -37,7 +37,7 @@ function handleDelete() {
           {{ props.recipe.prep_time }} min - {{ props.recipe.recipe_ingredients_aggregate.aggregate.count }} INGREDIENTS
         </div>
         <div class="flex gap-2 self-end w-full md:w-fit">
-          <nuxt-link :to="`myrecipes/edit/${props.recipe.id}`" class="btn btn-primary btn-outline rounded-full btn-circle tooltip tooltip-primary" data-tip="Edit">
+          <nuxt-link :to="`/myrecipes/edit/${props.recipe.id}`" class="btn btn-primary btn-outline rounded-full btn-circle tooltip tooltip-primary" data-tip="Edit">
             <icon name="lucide:edit" />
           </nuxt-link>
           <button class="btn btn-error btn-outline rounded-full tooltip tooltip-error btn-circle" data-tip="Delete" @click="handleDelete">

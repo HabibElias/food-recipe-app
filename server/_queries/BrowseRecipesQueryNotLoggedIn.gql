@@ -1,0 +1,42 @@
+query BrowseRecipes($limit: Int!, $offset: Int!, $where: recipe_bool_exp, $user_id: uuid) {
+  recipe(limit: $limit, offset: $offset, order_by: { created_at: desc }, where: $where) {
+    id
+    title
+    description
+    is_paid
+    category {
+      id
+      category_name
+    }
+    user {
+      id
+      username
+      FirstName
+      LastName
+      avatar_url
+    }
+    recipe_images(where: { is_thumbnail: { _eq: true } }) {
+      id
+      img_url
+      is_thumbnail
+    }
+    prep_time
+    recipe_ingredients_aggregate {
+      aggregate {
+        count
+      }
+    }
+    recipe_ratings_aggregate {
+      aggregate {
+        avg {
+          rating
+        }
+      }
+    }
+  }
+  recipe_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
