@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DELETE_RECIPE_MUTATION from "~~/server/_mutations/DeleteRecipeMutation.gql";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
@@ -6,6 +7,7 @@ import useRecipe from "~/composables/useRecipe";
 
 const route = useRoute();
 const userStore = useUserStore();
+const toast = useToast();
 
 const { checkingOut, selectedRating, onRatingChange, submitRating, ratingMessage, recipe, likesCount, addComment, liking, buyRecipe, loadRecipe, loading, posting, toggleLike, userHasLiked, newComment } = useRecipe(String(route.params.id));
 
@@ -27,6 +29,25 @@ async function copyLink() {
   }
   catch (err) {
     console.error("Failed to copy:", err);
+  }
+}
+
+async function handleDelete(id: number) {
+  // eslint-disable-next-line no-alert
+  if (!confirm("Are you sure you want to delete this recipe? This action cannot be undone.")) {
+    return;
+  }
+  try {
+    const client = useApolloClient().client;
+    await client.mutate({
+      mutation: DELETE_RECIPE_MUTATION,
+      variables: { id },
+    });
+    toast.success({ title: "Recipe Deleted", message: "Recipe has been successfully deleted" });
+  }
+  catch (err: any) {
+    console.error(err);
+    toast.error({ title: "Error", message: err.message || "Failed to delete recipe" });
   }
 }
 </script>
@@ -119,6 +140,14 @@ async function copyLink() {
             <span>{{ likesCount }}</span>
             <span v-if="liking" class="loading loading-spinner loading-xs ml-2" />
           </button>
+          <div v-if="recipe?.user_id === userStore.user?.id" class="flex gap-2 self-end w-full md:w-fit">
+            <nuxt-link :to="`/myrecipes/edit/${recipe?.id}`" class="btn btn-primary btn-outline rounded-full btn-circle tooltip tooltip-primary" data-tip="Edit">
+              <icon name="lucide:edit" />
+            </nuxt-link>
+            <button class="btn btn-error btn-outline rounded-full tooltip tooltip-error btn-circle" data-tip="Delete" @click="handleDelete(Number(recipe?.id))">
+              <icon name="lucide:trash-2" />
+            </button>
+          </div>
         </div>
 
         <!-- INSTRUCTION -->
@@ -193,8 +222,8 @@ async function copyLink() {
       <!-- USER -->
       <div class="flex gap-4 mb-4 lg:flex-row flex-col">
         <div v-if="recipe?.user?.avatar_url" class="avatar">
-          <div class="w-24 rounded">
-            <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp">
+          <div class="w-24 rounded-full">
+            <img :src="userStore.user?.avatar_url">
           </div>
         </div>
         <div v-else class="avatar avatar-placeholder h-fit">
@@ -244,8 +273,8 @@ async function copyLink() {
         <div v-for="rated in recipe?.recipe_ratings" :key="rated.user.username" class="flex items-center gap-4">
           <div>
             <div v-if="rated?.user.avatar_url ?? false" class="avatar">
-              <div class="w-12 rounded">
-                <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp">
+              <div class="w-12 rounded-full">
+                <img :src="userStore.user?.avatar_url">
               </div>
             </div>
             <div v-else class="avatar avatar-placeholder h-fit">
@@ -274,8 +303,8 @@ async function copyLink() {
 
       <div v-if="userStore.user" class="flex items-start gap-3 mb-6">
         <div v-if="userStore.user.avatar_url" class="avatar">
-          <div class="w-12 rounded">
-            <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp">
+          <div class="w-12 rounded-full">
+            <img :src="userStore.user?.avatar_url">
           </div>
         </div>
         <div v-else class="avatar avatar-placeholder h-fit">

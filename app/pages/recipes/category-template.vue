@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import BrowseRecipesQuery from "~~/server/_queries/BrowseRecipesQuery.gql";
+import BrowseRecipesQueryNotLoggedIn from "~~/server/_queries/BrowseRecipesQueryNotLoggedIn.gql";
 import { computed, onMounted, ref, watch } from "vue";
 
 const props = defineProps<{ categoryName: string }>();
@@ -21,6 +22,8 @@ const loading = ref(false);
 
 const recipes = ref<any[]>([]);
 const totalCount = ref(0);
+
+const BrowseRecipes = computed(() => useUserStore().isLoggedIn ? BrowseRecipesQuery : BrowseRecipesQueryNotLoggedIn);
 
 const offset = computed(() => (currentPage.value - 1) * itemsPerPage.value);
 const totalPages = computed(() => Math.ceil(totalCount.value / itemsPerPage.value));
@@ -83,7 +86,7 @@ async function loadRecipes() {
   try {
     const where = buildWhereClause();
     const { data } = await client.query({
-      query: BrowseRecipesQuery,
+      query: BrowseRecipes.value,
       variables: { limit: itemsPerPage.value, offset: offset.value, where, user_id: useUserStore().user?.id },
       fetchPolicy: "network-only",
     });

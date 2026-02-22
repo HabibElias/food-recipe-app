@@ -19,7 +19,22 @@ query GetMyRecipesWithCount($limit: Int!, $user_id: uuid, $offset: Int!) {
       }
     }
   }
-  recipe_aggregate(where: { user_id: { _eq: $user_id } }) {
+  recipe_count: recipe_aggregate(where: { user_id: { _eq: $user_id } }) {
+    aggregate {
+      count
+    }
+  }
+  like_count: recipe_like_aggregate(where: { recipe: { user_id: { _eq: $user_id } } }) {
+    aggregate {
+      count
+    }
+  }
+  on_sale_count: recipe_aggregate(where: { user_id: { _eq: $user_id }, is_paid: { _eq: true } }) {
+    aggregate {
+      count
+    }
+  }
+  sold_count: payment_aggregate(where: { recipe: { user_id: { _eq: $user_id } } }) {
     aggregate {
       count
     }

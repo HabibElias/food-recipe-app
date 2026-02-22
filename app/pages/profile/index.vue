@@ -11,8 +11,8 @@ const user = computed(() => userStore.user);
       <div class="flex flex-col md:flex-row items-center gap-6">
         <div>
           <div v-if="userStore.user?.avatar_url" tabindex="0" class="avatar cursor-pointer">
-            <div class="w-24 rounded">
-              <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp">
+            <div class="w-24 rounded-full">
+              <img :src="userStore.user?.avatar_url">
             </div>
           </div>
           <div v-else tabindex="0" class="avatar avatar-placeholder h-fit cursor-pointer">

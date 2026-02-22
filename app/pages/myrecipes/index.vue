@@ -27,7 +27,22 @@ const offset = computed(() => (currentPage.value - 1) * itemsPerPage.value);
 
 type RecipeData = {
   recipe: Recipe[];
-  recipe_aggregate: {
+  recipe_count: {
+    aggregate: {
+      count: number;
+    };
+  };
+  on_sale_count: {
+    aggregate: {
+      count: number;
+    };
+  };
+  like_count: {
+    aggregate: {
+      count: number;
+    };
+  };
+  sold_count: {
     aggregate: {
       count: number;
     };
@@ -54,10 +69,11 @@ async function loadRecipes() {
     });
 
     recipes.value = data.recipe ?? [];
-    totalCount.value = data.recipe_aggregate?.aggregate?.count ?? 0;
-    // Update stats with actual count
-    if (stats.value[0]) {
-      stats.value[0].value = totalCount.value;
+    if (stats.value[0] && stats.value[1] && stats.value[2] && stats.value[3]) {
+      stats.value[0].value = data.recipe_count?.aggregate?.count ?? 0;
+      stats.value[1].value = data.like_count?.aggregate?.count ?? 0;
+      stats.value[2].value = data.on_sale_count?.aggregate?.count ?? 0;
+      stats.value[3].value = data.sold_count?.aggregate?.count ?? 0;
     }
   }
   catch (err: any) {
@@ -136,12 +152,12 @@ onMounted(() => {
               My Recipes
             </h2>
             <p class="font-header-2">
-              {{ totalCount }}
+              {{ stats[0]?.value }}
             </p>
           </div>
         </div>
       </div>
-      <div v-for="stat in stats.slice(1, 4)" :key="stat.label" class="card bg-base-100 shadow-md hover:shadow-lg transition">
+      <div v-for="stat in stats.slice(1)" :key="stat.label" class="card bg-base-100 shadow-md hover:shadow-lg transition">
         <div class="card border-base-300 w-full border shadow-sm">
           <div class="card-body">
             <h2 class="card-title font-paragraph-2">

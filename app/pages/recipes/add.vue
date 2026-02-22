@@ -6,6 +6,12 @@ import { Form, useForm } from "vee-validate";
 import { ref } from "vue";
 import z from "zod";
 
+definePageMeta({
+  middleware: ["auth"],
+  requireAuth: true,
+  layout: "custom",
+});
+
 const categories = ref<Category[]>([]);
 
 const toast = useToast();
@@ -224,7 +230,6 @@ const onSubmit = handleSubmit(async (values) => {
       catch (imageErr: any) {
         console.error("Image upload error:", imageErr);
         toast.error({ title: "Image Upload Error", message: imageErr.message || "Failed to upload images" });
-        // Don't throw - recipe was created successfully
       }
       finally {
         uploadingImages.value = false;

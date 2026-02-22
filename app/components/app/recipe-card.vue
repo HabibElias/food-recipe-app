@@ -24,7 +24,6 @@ async function bookmarkFn(id: number | undefined, recipe_id: number) {
         await deleteBookmark(id);
       }
       else {
-        // fallback: reload bookmarks to find id then remove via composable UI
         await loadRecipes();
       }
       bookmarked.value = false;

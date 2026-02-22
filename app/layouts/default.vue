@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import type { RouteTuple } from "~~/shared/types/routes";
+
 const userStore = useUserStore();
 
 await userStore.init();
+
+const routes = computed<RouteTuple[]>(() => {
+  return userStore.isLoggedIn ? loggedRoutes.map(([label, path, children]) => [label, path, children]) : commonRoutes.map(([label, path, children]) => [label, path, children]);
+});
 </script>
 
 <template>
@@ -23,50 +29,17 @@ await userStore.init();
           <span>Navigation</span>
           <color-mode />
         </li>
-        <li>
-          <NuxtLink to="/">
-            Home
-          </NuxtLink>
-        </li>
-        <li>
-          <a class="justify-between">Recipes</a>
-          <ul>
-            <li>
-              <NuxtLink to="/recipes/breakfast">
-                Breakfast
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/recipes/lunch">
-                Lunch
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/recipes/dinner">
-                Dinner
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/recipes/dessert">
-                Dessert
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/recipes/snacks">
-                Snacks
-              </NuxtLink>
+        <li v-for="route in routes" :key="route[0]">
+          <nuxt-link class="justify-between" :to="route[1]">
+            {{ route[0] }}
+          </nuxt-link>
+          <ul v-if="route[2].length > 0">
+            <li v-for="value in route[2]" :key="value[0]">
+              <nuxt-link :to="value[1]">
+                {{ value[0] }}
+              </nuxt-link>
             </li>
           </ul>
-        </li>
-        <li>
-          <NuxtLink to="/cooking-tips">
-            Cooking Tips
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/about-us">
-            About us
-          </NuxtLink>
         </li>
       </ul>
     </div>

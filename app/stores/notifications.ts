@@ -50,7 +50,7 @@ export const useNotificationsStore = defineStore("notifications", () => {
         variables: { user_id: userStore.user.id },
       });
 
-      notifications.value = [...notifications.value.map((n: any) => ({ ...n, read: true }))];
+      notifications.value = [];
       useToast()?.success?.({ message: "Marked all notifications read." });
       return data?.update_notifications ?? null;
     }

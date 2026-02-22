@@ -1,6 +1,4 @@
 <script setup lang="ts">
-definePageMeta({ layout: "default", middleware: ["auth"], requiresAuth: true });
-
 const categories: { name: string; slug: string; icon: string }[] = [
   { name: "Breakfast", slug: "breakfast", icon: "/img/breakfast.svg" },
   { name: "Lunch", slug: "lunch", icon: "/img/lunch.svg" },

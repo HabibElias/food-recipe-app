@@ -7,27 +7,6 @@ const isRouteLogin = computed(() => route.path === "/auth/login");
 
 type RouteTuple = [string, string, Array<[string, string]>];
 
-const recipeChildren: Array<[string, string]> = [
-  ["Breakfast", "/recipes/breakfast"],
-  ["Lunch", "/recipes/lunch"],
-  ["Dinner", "/recipes/dinner"],
-  ["Dessert", "/recipes/dessert"],
-  ["Snacks", "/recipes/snacks"],
-];
-
-const commonRoutes: RouteTuple[] = [
-  ["Home", "/", []],
-  ["Recipes", "/recipes", recipeChildren],
-  ["About us", "/about-us", []],
-];
-
-const loggedRoutes: RouteTuple[] = [
-  ["My Recipes", "/myrecipes", []],
-  ["Recipes", "/recipes", recipeChildren],
-  ["Notification", "/notifications", []],
-  ["About us", "/about-us", []],
-];
-
 const routes = computed<RouteTuple[]>(() => {
   return userStore.isLoggedIn ? loggedRoutes.map(([label, path, children]) => [label, path, children]) : commonRoutes.map(([label, path, children]) => [label, path, children]);
 });
@@ -91,8 +70,8 @@ const routes = computed<RouteTuple[]>(() => {
       </div>
       <div v-else class="dropdown dropdown-bottom dropdown-center">
         <div v-if="userStore.user?.avatar_url" tabindex="0" class="avatar cursor-pointer">
-          <div class="w-12 rounded">
-            <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp">
+          <div class="w-12 rounded-full">
+            <img :src="userStore.user?.avatar_url">
           </div>
         </div>
         <div v-else tabindex="0" class="avatar avatar-placeholder h-fit cursor-pointer">
