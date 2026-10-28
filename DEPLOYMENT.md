@@ -28,12 +28,15 @@ Hasura needs the appropriate role permissions, actions, and relationships.
 
 ## Backend prerequisite
 
-This frontend expects Hasura GraphQL tables/relationships including
-`recipe_steps`, `recipe_ingredients`, `recipe_ratings`, categories, and comments,
-plus fields such as `recipe.is_paid` and `recipe.prep_time`. They are not all
-defined by the backend repository's current `init.sql`. Deployment configuration
-does not resolve that mismatch: supply the matching database migrations and
-Hasura metadata before treating recipe flows as working.
+For a new database, run the backend repository's
+`deploy/hasura/bootstrap.py --initialize-empty-database` after deploying Hasura
+and the Go API. It supplies the frontend tables, relationships, authentication
+actions, permissions, and notification trigger that the original `init.sql`
+alone did not contain. The backend deployment guide lists its required settings.
+
+Image-upload and payment actions remain admin-only until their external
+integrations and authorization checks are completed. Core signup, recipe data,
+and notification flows use the deployed Hasura service.
 
 The current Hasura GraphQL Engine v2/PostgreSQL stack cannot use a Turso libSQL
 URL as its PostgreSQL connection string. Keeping this frontend and Hasura stack

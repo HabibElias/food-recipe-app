@@ -4,7 +4,7 @@ mutation InsertRecipeMutation(
   $description: String!
   $is_paid: Boolean!
   $prep_time: Int!
-  $price: Float
+  $price: numeric
   $recipe_ingredients: recipe_ingredient_arr_rel_insert_input
   $recipe_steps: recipe_step_arr_rel_insert_input
   $user_id: uuid

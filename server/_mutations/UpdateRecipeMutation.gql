@@ -5,7 +5,7 @@ mutation UpdateRecipeMutation(
   $description: String!
   $is_paid: Boolean!
   $prep_time: Int!
-  $price: Float
+  $price: numeric
 ) {
   update_recipe(
     where: { id: { _eq: $id } }
