@@ -5,6 +5,13 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
 
+  runtimeConfig: {
+    public: {
+      graphqlHttpEndpoint: "http://localhost:8080/v1/graphql",
+      graphqlWsEndpoint: "ws://localhost:8080/v1/graphql",
+    },
+  },
+
   modules: [
     "@nuxt/eslint",
     "@nuxt/fonts",
