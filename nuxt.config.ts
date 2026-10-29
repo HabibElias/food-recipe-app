@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   runtimeConfig: {
+    authHealthEndpoint: "",
     public: {
       graphqlHttpEndpoint: "http://localhost:8080/v1/graphql",
       graphqlWsEndpoint: "ws://localhost:8080/v1/graphql",

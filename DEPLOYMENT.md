@@ -11,8 +11,13 @@
    | --- | --- |
    | `NUXT_PUBLIC_GRAPHQL_HTTP_ENDPOINT` | `https://your-hasura-service.onrender.com/v1/graphql` |
    | `NUXT_PUBLIC_GRAPHQL_WS_ENDPOINT` | `wss://your-hasura-service.onrender.com/v1/graphql` |
+   | `NUXT_AUTH_HEALTH_ENDPOINT` | `https://your-go-api.onrender.com/v1/healthz` |
 
-   Both URLs must point to the public Hasura service, not the Go API service.
+   The two public GraphQL URLs must point to Hasura. The server-only health URL
+   points to the Go API. Authentication first checks both services through
+   `/api/auth/ready`, so a sleeping free Render service can start before account
+   creation or login is submitted. Only readiness checks are retried; account
+   mutations are sent once. An unavailable service does not clear a saved session.
    WebSocket subscriptions connect directly from the browser to Hasura. Use HTTPS
    and WSS in production. These settings are public and are also used during SSR.
 3. Configure Hasura's allowed CORS origins to include the exact Vercel production
@@ -21,6 +26,9 @@
 4. Check the homepage, login, and recipe queries, then a notification subscription
    after signing in. Check Vercel server logs and Hasura logs when a page loads
    but data is missing.
+
+The production domain is `https://bowlsuup.vercel.app`. Include this exact origin
+in Hasura's `HASURA_GRAPHQL_CORS_DOMAIN` and the Go API's `ALLOWED_ORIGINS`.
 
 Never expose `HASURA_GRAPHQL_ADMIN_SECRET`, database credentials, the JWT signing
 secret, or a Turso token in `NUXT_PUBLIC_*`. Browsers authenticate using user JWTs;
