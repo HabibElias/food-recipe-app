@@ -158,8 +158,12 @@ spacing:
   row: "40px"
   wide: "48px"
   cooking: "64px"
-  landing-section: "76px"
-  landing-section-wide: "100px"
+  landing-section: "72px"
+  landing-section-phone: "80px"
+  landing-section-tablet: "96px"
+  landing-section-inset: "112px"
+  landing-section-wide: "128px"
+  landing-heading-gap: "56px"
 components:
   rating-star:
     width: "44px"
@@ -336,13 +340,15 @@ App recipe grids have three equal desktop columns with horizontal gaps (28px) an
 
 Detail and creator screens use their own task-specific splits. At phone widths, these sections stack, catalog search spans both filter columns, advanced filters become a single column, and editor side content follows the main form. Cooking ingredients and instructions stack with a gap (36px). The former homepage's near-equal discovery split remains legacy CSS and does not describe the current landing.
 
-The header is a horizontal logo-and-navigation row (108px tall), reducing to 84px on phones. Desktop navigation folds into a labeled menu at 760px on app routes and 900px on the landing. Authentication forms are capped at 440px; profile content at 840px; reading pages at 960px. Reuse the observed spacing steps rather than forcing all gaps onto a newly invented scale.
+The header is a sticky horizontal logo-and-navigation row (108px tall), reducing to 84px on phones. After deliberate downward travel it moves above the viewport; upward travel returns it. Keyboard focus and open menus keep it reachable, and reduced motion keeps it visible. Its layout height stays constant. Desktop navigation folds into a labeled menu at 760px on app routes and 900px on the landing; the open menu scrolls within the available viewport. Authentication forms are capped at 440px; profile content at 840px; reading pages at 960px.
 
 Standard app page titles reduce to 32px on phones; detail titles reduce to 36px below 1000px and 34px on phones. App recipe-card titles reduce to 21px and then 19px.
 
 The landing uses full-width color fields with the shared frame inside. Its opening title/copy grid is asymmetric (1.5:0.8, gap 72px); the recipe/search row is 1.4:1 with an 80px gap. At 900px the title and explanation stack while recipe and search remain side by side. At 600px search leads the one-column lower row, placing explanation and working controls before the food photograph. The opening recipe leaf uses a fixed-height crop (320px desktop, 300px tablet, 225px phone).
 
-The desktop journey pairs three tall narrative chapters (minimum 430px each) with a sticky recipe sheet at 28px from the top; the grid is 1:1.15 with a 100px gap. At 900px the sticky behavior ends: the preview precedes the currently selected chapter, and explicit controls switch all three states. The preview is 580px tall, becoming 540px at 600px. Benefits, sharing, founder and closing use asymmetric or equal splits, then stack at 600px. Landing starter dishes use three columns through tablet widths, then one at 600px; FAQ text moves from two columns to one. Common landing section spacing is 76–100px on wide screens and 52–58px on phones.
+The desktop journey preserves its three 430px narrative chapters and its 1:1.15 grid with a 100px gap. The sticky recipe sheet sits 124px from the top to clear the returning header. At widths of 900px or less, or desktop window heights below 820px, the preview precedes the selected chapter and direct controls choose all three states. Recipe-sheet geometry is unchanged: 580px tall, becoming 540px at 600px. Benefits, sharing, founder and closing retain their existing splits, stacking at 600px. Starter dishes retain three columns through tablet widths, then one on phones; FAQ reading text moves from two columns to one.
+
+Landing chapter space is 128px for benefits/founder/recipe endings and 112px for colored chapters on desktop, 96/80px on tablets, and 80/72px on phones. The opening uses 56/76px top/bottom padding, becoming 36/64px on phones, with 48px title-to-content separation (40px on phones). Section-heading-to-content gaps are 56px desktop and 40px phone. Benefit groups use 28px vertical padding, then 24px on tablets/phones; FAQ rows use 40px desktop and 36px smaller-screen gaps. Starter entries use 36px desktop and 48px phone gaps. Keep labels and their inputs close; do not enlarge the journey's internal geometry or add empty scroll distance.
 
 The landing display becomes 70px at 1100px, 76px in the stacked layout at 900px, 48px at 600px and 40px at 370px. The shared landing heading becomes 36px at 600px and 32px at 370px; individual phone headings deliberately vary by role: journey/benefits/sharing (38px), founder introduction (35px), starters (33px), FAQ (34px), closing (46px), and search (26px). The final 370px rule brings the general h2 headings to 32px; the more specific starter heading remains 33px and search remains 26px. Journey recipe titles reduce from 31px to 27px at 1100px, 26px at 600px and 24px at 370px. Chapter titles reduce from 33px to 31px and 28px. Founder names move from 58px to 48px, then 42px at tablet and back to 48px in the phone stack. These are current scoped role adjustments, not a mandate to expand app typography.
 
@@ -352,15 +358,17 @@ Surfaces are flat at rest. Tonal panels, image crops, spacing, and fine separato
 
 **The Flat At Rest Rule.** Preserve flat recipe cards and task panels; reserve the small ambient shadow for the floating account menu.
 
-Operate motion uses the shared tokens in `app/assets/css/motion.css`: 140ms feedback, 220ms UI transitions and 420ms arrivals, with `cubic-bezier(.16,1,.3,1)` for arrivals. The stylesheet retains the former featured-meal entrance (640ms); the current home uses its own recipe-leaf entrance. App recipe cards enter once when visible, with at most 90ms sibling delay. Filter changes use Vue list moves; navigation and mobile menus use short transitions. Saved marks, ingredient checks, star fills and button presses acknowledge their actual state. No autoplay loops, global scroll listener or motion dependency is used.
+Operate motion retains the shared tokens in `app/assets/css/motion.css`: 140ms feedback, 220ms UI transitions and 420ms arrivals, with `cubic-bezier(.16,1,.3,1)` for arrivals. App recipe cards, list moves, menus, saved marks, ingredient checks and ratings retain their feedback. A single passive scroll listener schedules a frame only when needed for the header: 40px deliberate downward travel tucks it away beyond the first half viewport; 16px upward travel returns it. The header travels for 360ms and its task links settle with 35ms sibling offsets. Keyboard focus reveals it immediately, open menus hold it, navigation closes menus, and reduced motion suppresses travel. No motion dependency or autoplay loop is added.
 
-The landing's opening leaf lays onto the page once (750ms). A single bounded journey changes the same recipe sheet through Find, Save and Cook: the saved leaf appears beneath it, the bookmark inks in, then the photo crops and the title moves to expose real ingredient checks. Spatial transitions use the same arrival easing (700ms); supporting opacity uses 180–300ms and bookmark color/fill uses 350ms. Native scrolling and `IntersectionObserver` choose the desktop chapter; direct keyboard and touch buttons choose any phase, with smooth `scrollIntoView` only on desktop. A supported CSS view timeline gently settles one benefits photograph; the picture stays visible without that feature. Starter-photo hover translates up (5px over 450ms). The home-only sticky footer sits beneath the opaque main sheet as a curtain reveal. No repeated section-wide entrance pattern or stock motion footage is part of the system.
+The existing recipe transformation remains the landing's focal motion: 750ms opening leaf and 700ms Find/Save/Cook state changes, with direct keyboard/touch controls. Supporting one-shot section transitions use `IntersectionObserver` and the Web Animations API: a benefits photo uncovers onto its leaf, the sharing recipe passes into place, the founder name inks across its baseline, and starter leaves settle with at most 140ms total sibling delay. Selected headings uncover without a whole-section opacity fade. These run for 720ms (800ms for the signature), start from visible default content, cancel cleanly on unmount or preference change, and do not replay when scrolling back. Approved logo artwork is never rotated or distorted. The existing photo view timeline, hover feedback and footer curtain remain. No stock motion footage or repeated section-wide fade is introduced.
 
 Rating controls use five real SVG stars, 27px inside 44px touch targets. Selected stars fill with Saffron and a dark outline; hover previews a choice without replacing the saved selection. The radio group supports arrows, Home, End, Space and Enter. Loading prevents duplicate submissions, and the saved rating returns on reload.
 
 Reduced motion removes spatial transforms, animated crop reveals and scripted card entrances. The landing keeps direct phase selection, exposes the final cooking layout by explicit top positions, applies the phase crop without interpolation, and returns the footer to normal flow. Short color and opacity feedback remains; smooth scrolling is disabled. Static introduction, founder and FAQ content renders without JavaScript; interactive phase selection requires it. Do not make animation necessary to understand state.
 
 ## Shapes
+
+The user-requested background pattern repeats the approved Cream icon without changing its paths, color or proportions. The tile is `public/brand/bowlup-pattern-cream.svg`; it contains two uniformly scaled, unrotated copies. Hero and closing fields print it at 10% opacity with a 180×216px repeat. Keep it behind content, ignore it for pointer/assistive-technology interaction, and retain a solid background when images are unavailable. This implements the brand guide's quiet-icon-pattern guidance, not a new mark or a site-wide texture.
 
 Pills identify actions, category controls, and app search. Editable fields and landing search use soft corners; photographs and quiet panels use broader corners. App desktop card photos and panels share the panel radius; detail photographs use the detail-photo radius and reduce to 20px on phones. Phone app card photos reduce to the compact-photo radius. Circles are reserved for save controls, compact icon controls, and avatar initials.
 

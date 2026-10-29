@@ -45,7 +45,7 @@ function select(index: number) {
 }
 
 onMounted(() => {
-  desktop = window.matchMedia("(min-width: 901px)");
+  desktop = window.matchMedia("(min-width: 901px) and (min-height: 820px)");
   desktop.addEventListener("change", observeChapters);
   observeChapters();
 });

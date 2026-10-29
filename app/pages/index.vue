@@ -3,6 +3,8 @@ import type { LandingRecipe } from "~~/shared/types/LandingRecipe";
 import starterRecipes from "~/data/landing-recipes.json";
 
 const user = useUserStore();
+const landing = ref<HTMLElement | null>(null);
+useLandingMotion(landing);
 const recipes = starterRecipes as LandingRecipe[];
 const featured = recipes[0]!;
 const search = ref("");
@@ -46,7 +48,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="landing-page">
+  <div ref="landing" class="landing-page">
     <section class="landing-opening" aria-labelledby="landing-title">
       <div class="site-frame opening-inner">
         <div class="opening-title-row">
@@ -74,8 +76,8 @@ useSeoMeta({
     <LandingRecipeJourney :recipe="featured" :recipe-link="recipeLink(featured)" />
 
     <section id="your-kitchen" class="landing-kitchen site-frame" aria-labelledby="kitchen-benefits-title">
-      <div class="landing-kitchen-photo"><img src="/images/recipes/avocado-toast.webp" alt="Avocado toast topped with colorful tomatoes" width="700" height="760" loading="lazy"><p>Avocado and Tomato Toast<span>A little good in 10 minutes.</span></p></div>
-      <div class="landing-kitchen-copy"><h2 id="kitchen-benefits-title">A kitchen that<br>fits your life.</h2>
+      <div class="landing-kitchen-photo" data-reveal="photo"><img src="/images/recipes/avocado-toast.webp" alt="Avocado toast topped with colorful tomatoes" width="700" height="760" loading="lazy"><p>Avocado and Tomato Toast<span>A little good in 10 minutes.</span></p></div>
+      <div class="landing-kitchen-copy"><h2 id="kitchen-benefits-title" data-reveal="print">A kitchen that<br>fits your life.</h2>
         <div class="kitchen-benefit"><h3>Start with what you have.</h3><p>A few tomatoes? A little time? Search by dish, cooking time, or ingredient instead of starting from scratch.</p></div>
         <div class="kitchen-benefit"><h3>Keep your go-to meals close.</h3><p>Your saved recipes become a personal recipe book. The quick lunch and the weekend favorite both have a place.</p></div>
         <div class="kitchen-benefit"><h3>Leave a little kitchen wisdom.</h3><p>A helpful swap, a cooking tip, or a rating after dinner. Share what worked with the next person who makes it.</p></div>
@@ -84,21 +86,21 @@ useSeoMeta({
     </section>
 
     <section class="landing-share" aria-labelledby="share-title"><div class="site-frame share-layout">
-      <div><h2 id="share-title">Pass a little<br>of your kitchen on.</h2><p>The weekday fix. The family favorite. The dish you finally got right. Give it a name, write down what goes in, and show another cook how it comes together.</p><NuxtLink :to="user.isLoggedIn ? '/recipes/add' : '/auth/sign-up'" class="btn btn-outline">Share your first recipe<Icon name="lucide:arrow-up-right" size="17" /></NuxtLink></div>
-      <div class="share-recipe-note"><img src="/images/recipes/shiro.webp" alt="Shiro served on injera with a fresh salad" width="500" height="360" loading="lazy"><p>Some recipes feel like home.</p><span>Make room for yours.</span></div>
+      <div><h2 id="share-title" data-reveal="print">Pass a little<br>of your kitchen on.</h2><p>The weekday fix. The family favorite. The dish you finally got right. Give it a name, write down what goes in, and show another cook how it comes together.</p><NuxtLink :to="user.isLoggedIn ? '/recipes/add' : '/auth/sign-up'" class="btn btn-outline">Share your first recipe<Icon name="lucide:arrow-up-right" size="17" /></NuxtLink></div>
+      <div class="share-recipe-note" data-reveal="pass"><img src="/images/recipes/shiro.webp" alt="Shiro served on injera with a fresh salad" width="500" height="360" loading="lazy"><p>Some recipes feel like home.</p><span>Make room for yours.</span></div>
     </div></section>
 
     <section id="our-kitchen" class="landing-founder site-frame" aria-labelledby="founder-title">
       <div class="founder-introduction"><h2 id="founder-title">A small beginning.<br>An everyday idea.</h2><p>Bowlup is built by Habib Elias around one simple belief: good food should feel easy.</p><p>The aim is a friendly place to find a meal, keep the recipes you love, and build a little confidence in the kitchen. One good dish at a time.</p></div>
-      <div class="founder-name"><img src="/brand/bowlup-icon-orange.svg" alt="" width="90" height="90" loading="lazy"><h3>Habib Elias</h3><p>Founder & builder of Bowlup</p><span>Made for everyday home cooking.</span></div>
+      <div class="founder-name"><img src="/brand/bowlup-icon-orange.svg" alt="" width="90" height="90" loading="lazy"><h3 data-reveal="signature">Habib Elias</h3><p>Founder & builder of Bowlup</p><span>Made for everyday home cooking.</span></div>
     </section>
 
     <section id="recipes" class="landing-starters site-frame" aria-labelledby="starters-title">
       <header class="landing-section-heading"><div><h2 id="starters-title">A good place to start.</h2><p>Real dishes from the Bowlup starter kitchen. Find the one that sounds like tonight.</p></div><NuxtLink to="/browse" class="text-link">Explore all recipes<Icon name="lucide:arrow-up-right" size="18" /></NuxtLink></header>
-      <div class="starter-recipe-grid"><article v-for="recipe in recipes" :key="recipe.key" class="starter-recipe"><NuxtLink :to="recipeLink(recipe)" :aria-label="'Cook '+recipe.title"><img :src="recipe.image" :alt="recipe.title" width="600" height="470" loading="lazy"><div><h3>{{ recipe.title }}</h3><span class="starter-recipe-facts">{{ recipe.category }} · {{ recipe.minutes }} min</span><p>{{ recipe.description }}</p><span class="text-link">Let's cook<Icon name="lucide:arrow-up-right" size="17" /></span></div></NuxtLink></article></div>
+      <div class="starter-recipe-grid"><article v-for="(recipe,index) in recipes" :key="recipe.key" class="starter-recipe" data-reveal="recipe" :data-reveal-delay="index * 70"><NuxtLink :to="recipeLink(recipe)" :aria-label="'Cook '+recipe.title"><img :src="recipe.image" :alt="recipe.title" width="600" height="470" loading="lazy"><div><h3>{{ recipe.title }}</h3><span class="starter-recipe-facts">{{ recipe.category }} · {{ recipe.minutes }} min</span><p>{{ recipe.description }}</p><span class="text-link">Let's cook<Icon name="lucide:arrow-up-right" size="17" /></span></div></NuxtLink></article></div>
     </section>
 
-    <section id="good-to-know" class="landing-faq" aria-labelledby="faq-title"><div class="site-frame"><h2 id="faq-title">A few things to know.</h2><div class="landing-answers"><p v-for="faq in faqs" :key="faq.question"><strong>{{ faq.question }}</strong>{{ faq.answer }}</p></div></div></section>
+    <section id="good-to-know" class="landing-faq" aria-labelledby="faq-title"><div class="site-frame"><h2 id="faq-title" data-reveal="print">A few things to know.</h2><div class="landing-answers"><p v-for="faq in faqs" :key="faq.question"><strong>{{ faq.question }}</strong>{{ faq.answer }}</p></div></div></section>
 
     <section class="landing-closing" aria-labelledby="closing-title"><div class="site-frame closing-layout"><div><h2 id="closing-title">Something good<br>starts here.</h2><p>Find a recipe for tonight. Keep it for next time.</p><NuxtLink :to="user.isLoggedIn ? '/bookmarks' : '/auth/sign-up'" class="text-link">{{ user.isLoggedIn ? 'Your recipe book' : 'Create your free account' }}<Icon name="lucide:arrow-up-right" size="18" /></NuxtLink></div><form class="closing-search" role="search" aria-label="Find your next Bowlup recipe" @submit.prevent="findRecipe"><label for="closing-search">What would you like to make?</label><div class="landing-search-field"><Icon name="lucide:search" size="19" /><input id="closing-search" v-model="search" type="search" placeholder="Find your next favorite"></div><button class="btn opening-search-button" type="submit">Find a recipe<Icon name="lucide:arrow-right" size="18" /></button></form></div></section>
   </div>
