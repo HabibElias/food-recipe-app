@@ -17,6 +17,8 @@ export const useBookmarksStore = defineStore("bookmarks", () => {
           id
         title
         description
+        is_paid
+        price
         category {
           id
           category_name

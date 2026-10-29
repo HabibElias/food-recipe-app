@@ -1,43 +1,13 @@
 <script setup lang="ts">
-definePageMeta({ middleware: ["auth"], requiresAuth: true, layout: "custom" });
-
-const userStore = useUserStore();
-const user = computed(() => userStore.user);
+definePageMeta({ middleware: ["auth"], requiresAuth: true });
+useSeoMeta({ title: "Your profile · Bowlup" });
+const store = useUserStore();
+const user = computed(() => store.user);
 </script>
-
 <template>
-  <div class="border-base-content/50 border rounded-4xl p-8 min-h-[60vh]">
-    <div class="space-y-6">
-      <div class="flex flex-col md:flex-row items-center gap-6">
-        <div>
-          <div v-if="userStore.user?.avatar_url" tabindex="0" class="avatar cursor-pointer">
-            <div class="w-24 rounded-full">
-              <img :src="userStore.user?.avatar_url">
-            </div>
-          </div>
-          <div v-else tabindex="0" class="avatar avatar-placeholder h-fit cursor-pointer">
-            <div class="bg-neutral text-neutral-content w-24 rounded-full">
-              <span class="text-xl">{{ userStore.user?.FirstName.slice(0, 1).toUpperCase() }}</span>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="font-header-2">
-            {{ user?.FirstName || user?.username }}
-          </div>
-          <div class="text-sm text-base-content/70">
-            {{ user?.email }}
-          </div>
-          <div class="mt-2 text-sm text-base-content/60">
-            {{ user?.bio || 'No bio yet.' }}
-          </div>
-          <div class="ml-auto mt-4">
-            <NuxtLink to="/profile/edit" class="btn">
-              Edit profile
-            </NuxtLink>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+ <section class="profile-page">
+  <header class="page-heading"><h1>A place at the table.</h1><p>Your profile and everything you bring to the kitchen.</p></header>
+  <div class="profile-intro"><img v-if="user?.avatar_url" :src="user.avatar_url" class="profile-avatar" alt="Your profile photo"><span v-else class="profile-avatar" aria-hidden="true">{{ (user?.FirstName || user?.username || 'Y').slice(0,1).toUpperCase() }}</span><div><h2>{{ user?.FirstName }} {{ user?.LastName }}</h2><p>@{{ user?.username }}</p><p>{{ user?.bio || "Tell other cooks a little about yourself." }}</p><NuxtLink to="/profile/edit" class="btn btn-outline mt-4">Edit your profile<Icon name="lucide:pencil" size="16" /></NuxtLink></div></div>
+  <div class="profile-links"><NuxtLink to="/myrecipes"><Icon name="lucide:notebook-pen" size="23" /><span class="profile-link-copy"><strong>Your recipes</strong><small>Create, edit and manage what you share.</small></span><Icon name="lucide:arrow-right" size="20" /></NuxtLink><NuxtLink to="/bookmarks"><Icon name="lucide:bookmark" size="23" /><span class="profile-link-copy"><strong>Saved for later</strong><small>Your next good meal is waiting.</small></span><Icon name="lucide:arrow-right" size="20" /></NuxtLink></div>
+ </section>
 </template>

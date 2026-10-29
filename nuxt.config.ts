@@ -29,6 +29,8 @@ export default defineNuxtConfig({
   },
   colorMode: {
     dataValue: "theme",
+    preference: "light",
+    fallback: "light",
   },
   css: ["~/assets/css/main.css"],
   eslint: {
@@ -37,6 +39,7 @@ export default defineNuxtConfig({
     },
   },
   fonts: {
+    providers: { google: false, googleicons: false, bunny: false, fontshare: false, fontsource: false, adobe: false },
     defaults: {
       weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
     },
@@ -57,13 +60,16 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: "Food Recipe App",
+      title: "Bowlup — Cook something good tonight",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
       ],
       link: [
-        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+        { rel: "icon", type: "image/svg+xml", href: "/brand/bowlup-app-icon-orange.svg" },
+        { rel: "apple-touch-icon", href: "/brand/bowlup-app-icon-orange-180.png" },
+        { rel: "preload", href: "/fonts/Outfit.woff2", as: "font", type: "font/woff2", crossorigin: "anonymous" },
+        { rel: "preload", href: "/fonts/DM-Sans.woff2", as: "font", type: "font/woff2", crossorigin: "anonymous" },
       ],
     },
   },

@@ -1,65 +1,9 @@
 <script setup lang="ts">
-definePageMeta({ middleware: ["auth"], requiresAuth: true, layout: "custom" });
-
-const notificationsStore = useNotificationsStore();
+definePageMeta({ middleware: ["auth"], requiresAuth: true });
+useSeoMeta({ title: "Notifications · Bowlup" });
+const store = useNotificationsStore();
+onMounted(()=>store.loadInitial());
 </script>
-
 <template>
-  <div class="mx-auto border border-base-content/50 rounded-4xl p-8 min-h-[70vh]">
-    <div class="flex items-center justify-between mb-4">
-      <h1 class="font-header-3">
-        Notifications
-      </h1>
-      <button
-        class="btn btn-ghost btn-sm"
-        @click="notificationsStore.clear()"
-      >
-        Clear
-      </button>
-    </div>
-
-    <div
-      v-if="notificationsStore.isLoading.value"
-      class="text-sm text-base-content/60"
-    >
-      Loading...
-    </div>
-
-    <ul v-else-if="notificationsStore.notifications.length > 0">
-      <li
-        v-for="note in notificationsStore.notifications"
-        :key="note.id"
-        class="p-4 border-b last:border-b-0 flex justify-between items-start"
-      >
-        <div>
-          <div class="font-semibold">
-            {{ note.message }}
-          </div>
-          <div class="text-xs text-base-content/50 mt-2">
-            {{ new Date(note.created_at).toLocaleString() }}
-          </div>
-        </div>
-      </li>
-    </ul>
-    <div
-      v-else
-      class="flex flex-col items-center justify-center py-12 text-center text-base-content/60"
-    >
-      <icon name="lucide:bell-dot" size="24" />
-
-      <h2 class="mt-4 font-semibold">
-        No notifications
-      </h2>
-      <p class="mt-2 text-sm">
-        You're all caught up — there are no notifications right now.
-      </p>
-      <button
-        class="btn btn-sm btn-ghost mt-4"
-        aria-label="Refresh notifications"
-        @click="notificationsStore.loadInitial()"
-      >
-        Refresh
-      </button>
-    </div>
-  </div>
+ <section class="profile-page"><header class="page-heading section-heading"><div><h1>From the kitchen.</h1><p>A little activity around the recipes you share.</p></div><button v-if="store.notifications.length" class="btn btn-outline" :disabled="store.loading" @click="store.clear">Mark all as read</button></header><p v-if="store.error" class="form-error" role="alert">{{ store.error }} <button class="text-link" @click="store.loadInitial">Try again</button></p><div v-if="store.loading" class="empty-state" role="status"><p>Checking for something new…</p></div><ul v-else-if="store.notifications.length" class="notification-list"><li v-for="note in store.notifications" :key="note.id"><Icon name="lucide:bell" size="20" /><div><p>{{ note.message }}</p><time :datetime="note.created_at">{{ new Date(note.created_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}) }}</time></div></li></ul><div v-else class="empty-state"><Icon name="lucide:bell" size="30" /><h2>All caught up.</h2><p>When there's something new around your recipes, you'll find it here.</p><button class="btn btn-outline mt-4" @click="store.loadInitial">Check again</button></div></section>
 </template>

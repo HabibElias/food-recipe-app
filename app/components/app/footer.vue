@@ -1,104 +1,11 @@
 <script setup lang="ts">
-const props = defineProps<{
-  withSubscribe: boolean;
-}>();
+defineProps<{ withSubscribe?: boolean }>();
 </script>
-
 <template>
-  <footer class="my-4">
-    <!-- subscription -->
-    <div v-if="props.withSubscribe" class="relative min-h-[60vh] bg-success-content/75 px-4 rounded-4xl text-success text-center flex flex-col items-center justify-center mb-4">
-      <div class="max-w-4xl space-y-3">
-        <p class="font-tagline">
-          SUBSCRIBE
-        </p>
-        <h1 class="font-headline-1">
-          JOIN THE FUN <br>
-          SUBSCRIBE NOW!
-        </h1>
-        <p class="font-paragraph-1 mb-12">
-          Subscribe to our newsletter for a weekly serving of recipes, cooking tips, and exclusive insights straight to your inbox.
-        </p>
-      </div>
-      <div class="join text-base-content bg-none rounded-full">
-        <div>
-          <label class="input validator rounded-l-full join-item">
-            <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <g
-                stroke-linejoin="round"
-                stroke-linecap="round"
-                stroke-width="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <rect width="20" height="16" x="2" y="4" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </g>
-            </svg>
-            <input type="email" placeholder="mail@site.com" required>
-          </label>
-          <div class="validator-hint text-success hidden">
-            Enter valid email address
-          </div>
-        </div>
-        <button class="btn btn-success rounded-r-full join-item">
-          Join
-        </button>
-      </div>
-    </div>
-    <div class="footer footer-horizontal footer-center bg-success text-base-100 rounded-4xl p-10">
-      <nav class="grid grid-flow-col gap-4 *:font-button-text">
-        <a class="font-button-text border-b-2 border-b-transparent pb-2 duration-200 cursor-pointer hover:border-b-base-100">HOME</a>
-        <a class="font-button-text border-b-2 border-b-transparent pb-2 duration-200 cursor-pointer hover:border-b-base-100">RECIPES</a>
-        <a class="font-button-text border-b-2 border-b-transparent pb-2 duration-200 cursor-pointer hover:border-b-base-100">COOKING TIPS</a>
-        <a class="font-button-text border-b-2 border-b-transparent pb-2 duration-200 cursor-pointer hover:border-b-base-100">ABOUT US</a>
-      </nav>
-      <nav>
-        <div class="grid grid-flow-col gap-4">
-          <a>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              class="fill-current"
-            >
-              <path
-                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
-              />
-            </svg>
-          </a>
-          <a>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              class="fill-current"
-            >
-              <path
-                d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"
-              />
-            </svg>
-          </a>
-          <a>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              class="fill-current"
-            >
-              <path
-                d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"
-              />
-            </svg>
-          </a>
-        </div>
-      </nav>
-      <aside class="font-small-text">
-        <p>Copyright © {{ new Date().getFullYear() }} - All right reserved by Recipe</p>
-      </aside>
-    </div>
-  </footer>
+ <footer class="site-footer"><div class="site-frame">
+  <div class="footer-top"><div><NuxtLink to="/" aria-label="Bowlup home"><img class="footer-logo" src="/brand/bowlup-logo-horizontal-cream.svg" alt="Bowlup" width="142" height="47"></NuxtLink><p>Good food. A little inspiration.<br>Something worth making tonight.</p></div>
+   <nav class="footer-nav" aria-label="Footer"><NuxtLink to="/browse">Find a recipe</NuxtLink><NuxtLink to="/bookmarks">Saved recipes</NuxtLink><NuxtLink to="/recipes/add">Share your cooking</NuxtLink><NuxtLink to="/cooking-tips">In the kitchen</NuxtLink><NuxtLink to="/about-us">About Bowlup</NuxtLink><NuxtLink to="/auth/sign-up">Join Bowlup</NuxtLink></nav>
+  </div>
+  <div class="footer-bottom"><span>© {{ new Date().getFullYear() }} Bowlup. Cook something good tonight.</span><NuxtLink to="/photo-credits">Food photography &amp; credits</NuxtLink></div>
+ </div></footer>
 </template>

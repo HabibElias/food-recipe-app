@@ -1,44 +1,13 @@
 <script setup lang="ts">
-definePageMeta({ middleware: ["auth"], requiresAuth: true });
-const store = useBookmarksStore();
-onMounted(() => store.loadBookmarks());
+definePageMeta({middleware:["auth"],requiresAuth:true});
+const store=useBookmarksStore();
+onMounted(()=>store.loadBookmarks());
+useSeoMeta({title:"Saved recipes — Bowlup"});
 </script>
-
 <template>
-  <div class="border border-base-content/50 rounded-4xl p-8">
-    <div v-if="!store.isLoading">
-      <div class="font-header-3 mb-6">
-        Bookmarks
-      </div>
-
-      <div v-if="store.bookmarks && store.bookmarks.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        <app-recipe-card
-          v-for="bookmark in store.bookmarks"
-          :key="bookmark.recipe.id"
-          :recipe="bookmark.recipe"
-          bookmark
-          :bookmark-id="bookmark.id"
-        />
-      </div>
-      <div v-else class="flex flex-col min-h-[80vh] items-center justify-center my-auto space-y-4">
-        <icon name="lucide:bookmark" size="64" class="opacity-50" />
-        <p class="font-header-2 text-center">
-          No Bookmarked Recipes found
-        </p>
-        <p class="font-paragraph-2 text-center opacity-70">
-          Start by Bookmarking your first recipe!
-        </p>
-        <nuxt-link to="/recipes/" class="btn btn-primary rounded-full">
-          <icon name="lucide:search" />
-          Browse Recipes
-        </nuxt-link>
-      </div>
-    </div>
-    <div v-else class="flex flex-col min-h-[80vh] items-center justify-center my-auto">
-      <span class="loading loading-dots loading-xl" />
-      <p class="mt-4">
-        Loading recipes...
-      </p>
-    </div>
-  </div>
+ <section style="padding-bottom:64px"><header class="page-heading"><h1>Worth making again.</h1><p>A recipe book filled with your favorites.</p></header>
+  <div v-if="store.loading" class="skeleton-grid" aria-label="Loading saved recipes"><div v-for="i in 3" :key="i" class="recipe-skeleton" /></div>
+  <div v-else-if="store.bookmarks.length" class="recipe-grid"><AppRecipeCard v-for="entry in store.bookmarks" :key="entry.id" :recipe="entry.recipe" bookmark :bookmark-id="entry.id" /></div>
+  <div v-else class="empty-state"><Icon name="lucide:bookmark" size="30" /><h2>A little inspiration for later.</h2><p>Tap the bookmark on a recipe you love. We'll keep it here for you.</p><NuxtLink to="/browse" class="btn btn-primary">Find something good <Icon name="lucide:arrow-right" size="16" /></NuxtLink></div>
+ </section>
 </template>

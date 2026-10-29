@@ -39,7 +39,7 @@ export default function useRecipe(id: string) {
     try {
       const INSERT_RATING_MUTATION = gql`
     mutation InsertRatingMutation($recipe_id: Int!, $user_id: uuid, $rating: Int!) {
-      insert_recipe_rating(objects: {recipe_id: $recipe_id, user_id: $user_id, rating: $rating}) {
+      insert_recipe_rating(objects: {recipe_id: $recipe_id, user_id: $user_id, rating: $rating}, on_conflict: {constraint: recipe_rating_recipe_id_user_id_key, update_columns: [rating]}) {
         returning {
           id
         }
@@ -52,22 +52,7 @@ export default function useRecipe(id: string) {
         variables: { recipe_id: recipe.value?.id, user_id: userStore.user.id, rating: Number(selectedRating.value) },
       });
 
-      if (recipe.value) {
-        const newRating = {
-          user: {
-            avatar_url: userStore.user.avatar_url,
-            username: userStore.user.username,
-            FirstName: userStore.user.FirstName,
-          },
-          rating: selectedRating.value,
-        };
-        const newRecipe = {
-          ...recipe.value,
-          recipe_ratings: [...(recipe.value.recipe_ratings ?? []), newRating],
-        };
-        // replace the whole recipe.value to avoid mutating read-only nested props
-        recipe.value = newRecipe;
-      }
+      await loadRecipe();
       ratingMessage.value = "Thanks for your rating!";
     }
     catch (err) {
@@ -83,6 +68,7 @@ export default function useRecipe(id: string) {
         recipe: NonNullable<typeof recipe.value>[];
       }>({
         query: GET_RECIPE_QUERY.value,
+        fetchPolicy: "network-only",
         variables: userStore.isLoggedIn
           ? {
               id: Number(id),

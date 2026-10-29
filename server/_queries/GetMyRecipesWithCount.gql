@@ -3,6 +3,9 @@ query GetMyRecipesWithCount($limit: Int!, $user_id: uuid, $offset: Int!) {
     id
     title
     description
+    is_paid
+    price
+    user { username FirstName LastName }
     category {
       id
       category_name

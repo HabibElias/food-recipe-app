@@ -6,6 +6,9 @@
 .cache
 dist
 .vercel
+.taste-skill/
+.impeccable/review/
+.impeccable/mocks/
 
 # Node dependencies
 node_modules

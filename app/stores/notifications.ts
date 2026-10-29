@@ -5,8 +5,9 @@ export const useNotificationsStore = defineStore("notifications", () => {
   const userStore = useUserStore();
   const notifications = ref<Array<any>>([]);
   const loading = ref(false);
+  const error = ref("");
 
-  const isLoading = computed(() => loading);
+  const isLoading = computed(() => loading.value);
 
   function setNotifications(data: any[]) {
     notifications.value = data ?? [];
@@ -17,6 +18,7 @@ export const useNotificationsStore = defineStore("notifications", () => {
       return;
 
     loading.value = true;
+    error.value = "";
     try {
       const client = useApolloClient().client;
       const { data } = await client.query({
@@ -29,6 +31,7 @@ export const useNotificationsStore = defineStore("notifications", () => {
       setNotifications(data?.notifications ?? []);
     }
     catch (err) {
+      error.value = "We couldn't check your notifications. Please try again.";
       console.error("Failed to load notifications", err);
     }
     finally {
@@ -38,11 +41,11 @@ export const useNotificationsStore = defineStore("notifications", () => {
 
   async function clear() {
     if (!import.meta.client || !userStore.user?.id) {
-      notifications.value = notifications.value.map((n: any) => ({ ...n, read: true }));
       return;
     }
 
     loading.value = true;
+    error.value = "";
     try {
       const client = useApolloClient().client;
       const { data } = await client.mutate({
@@ -57,7 +60,7 @@ export const useNotificationsStore = defineStore("notifications", () => {
     catch (err: any) {
       console.error("Failed to mark notifications read", err);
       useToast()?.error?.({ message: err?.message || String(err) });
-      notifications.value = notifications.value.map((n: any) => ({ ...n, read: true }));
+      error.value = "We couldn't mark these as read. Please try again.";
     }
     finally {
       loading.value = false;
@@ -74,5 +77,5 @@ export const useNotificationsStore = defineStore("notifications", () => {
     }
   }, { immediate: true });
 
-  return { isLoading, notifications, loading, loadInitial, clear };
+  return { isLoading, notifications, loading, error, loadInitial, clear };
 });
