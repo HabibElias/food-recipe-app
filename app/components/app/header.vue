@@ -6,8 +6,10 @@ watch(() => userStore.isLoggedIn, (loggedIn) => { if (loggedIn) bookmarks.loadBo
 const route = useRoute();
 const menuOpen = ref(false);
 watch(() => route.fullPath, () => { menuOpen.value = false; });
-const nav = [{ label: "Recipes", to: "/browse" }, { label: "Saved recipes", to: "/bookmarks" }, { label: "Cooking tips", to: "/cooking-tips" }];
-function active(path: string) { return route.path.startsWith(path) ? "page" : undefined; }
+const nav = computed(() => route.path === "/"
+ ? [{label:"How it works",to:"/#how-it-works"},{label:"Your kitchen",to:"/#your-kitchen"},{label:"Recipes",to:"/browse"},{label:"Meet Habib",to:"/#our-kitchen"}]
+ : [{label:"Recipes",to:"/browse"},{label:"Saved recipes",to:"/bookmarks"},{label:"Cooking tips",to:"/cooking-tips"}]);
+function active(path: string) { return path.startsWith("/#") ? route.hash === path.slice(1) ? "location" : undefined : route.path.startsWith(path) ? "page" : undefined; }
 </script>
 <template>
  <header class="site-header" @keydown.esc="menuOpen = false">

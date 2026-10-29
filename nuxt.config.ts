@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     preference: "light",
     fallback: "light",
   },
-  css: ["~/assets/css/main.css", "~/assets/css/motion.css"],
+  css: ["~/assets/css/main.css", "~/assets/css/motion.css", "~/assets/css/landing.css"],
   eslint: {
     config: {
       standalone: false,

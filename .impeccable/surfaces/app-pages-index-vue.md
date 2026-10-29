@@ -2,19 +2,19 @@
 version: 1
 slug: "app-pages-index-vue"
 primary_target: "app/pages/index.vue"
-related_targets: ["app/components/app/header.vue","app/components/app/recipe-card.vue","app/pages/browse/index.vue"]
+related_targets: ["app/components/landing-recipe-journey.vue", "app/assets/css/landing.css", "app/components/app/header.vue"]
 ---
 
-# Bowlup recipe experience
+# Bowlup — from an idea to your table
 
-Mode: Operate, with a public discovery opening. Fixed Bowlup branding comes from the supplied reference, not from the discarded Recipe UI. Code-led app-screen workflow for this session; no global comp preference is recorded.
+Mode: Persuade. The home route introduces Bowlup to first-time cooks, demonstrates its real workflow, and offers a working recipe search and account path. App routes retain their Operate system.
 
 ## Direction contract
-THESIS: The meal is the interface: real, generous food photography opens a direct path from discovery to ingredients and clear cooking steps, without stock marketing claims.
-OWN-WORLD: Approved orange Bowlup wordmark on cream, dark roast text, Outfit headlines and DM Sans controls. Quiet warm tonal surfaces, a shared 12-column frame, rounded photographs, one orange primary action per view.
-STORY: Discover something appetizing, check the time, save it, and cook. Creation, editing, uploads and paid recipes remain in the product, with truthful available and unavailable states.
-FIRST VIEWPORT: A plain logo-led top navigation; a two-column greeting and large real-food photograph; a direct recipe search and category controls lead to the actual catalog. On phones the menu folds and content stacks without hiding the primary task.
-FORM: Taste editorial-greeting, seed 661168651, with palette/type retained. The brand guide's explicit top navigation replaces the dealt workspace sidebar; recipe data replaces irrelevant dashboard KPIs. The provided brand reference governs this code-led implementation. No Impeccable concept-seed roll or catalog QUALITY BAR was produced; this is a disclosed workflow limitation, not an exemption.
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
-
-Screen questions: home—what shall I cook? Browse—which recipe fits my time and ingredients? Detail—what do I need and what do I do next? Saved—what did I want to cook? Creator—how do I share this recipe? Paid and upload states must remain visible and honest.
+THESIS: Follow one real Shakshuka recipe through discovery, a saved recipe leaf, and a cooking sheet. Visitors learn the app by watching its actual material change purpose.
+OWN-WORLD: The approved Bowlup marks, Ember, Saffron, Cream and Dark Roast; Outfit and DM Sans; real credited dish photography. A recipe sheet is the page's recurring object. Flat rest surfaces, strong color chapters, readable app fragments.
+STORY: Understand the app, try the find/save/cook preview, understand the personal kitchen and creator tools, meet founder Habib Elias, browse actual starter dishes, get practical answers, then search or join.
+FIRST VIEWPORT: A large left-aligned brand headline and direct product explanation sit above an actual recipe leaf and a working title/time recipe search. The opening is a recipe-sheet composition rather than the former copy/photo split catalog. New visitors can understand and act before any API request finishes.
+FORM: Impeccable surface seed:e9dbf295ca036dc7 dealt grounded candidates 5/1/6; the user explicitly chose candidate5, Follow one recipe, through the structured tool (the chat cannot open a local decision board). Taste page draw1843819450, page-is-the-object, keeps brand type/palette. Code-led for the scroll, keyboard and touch demonstration; no generated/approved comp is claimed. The direction contract and provided brand reference carry fidelity.
+SIGNATURE: In one bounded scroll scene, the same recipe sheet tilts into a saved stack, the bookmark inks in, then the photograph crops and the title makes room for an interactive ingredient checklist. Manual controls work at every size; phones use direct stage controls. Other sections do not repeat that choreography. The footer reveals like the back of the sheet.
+TRUTH: Founder is Habib Elias, currently solo, confirmed by user. No invented portrait, biography, quotations, testimonials, usage totals, earnings, upload availability or checkout promises. The interactive preview is clearly labeled and never pretends to save to an account.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
