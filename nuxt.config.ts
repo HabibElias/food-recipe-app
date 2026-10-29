@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     preference: "light",
     fallback: "light",
   },
-  css: ["~/assets/css/main.css"],
+  css: ["~/assets/css/main.css", "~/assets/css/motion.css"],
   eslint: {
     config: {
       standalone: false,
@@ -59,6 +59,7 @@ export default defineNuxtConfig({
     },
   },
   app: {
+    pageTransition: { name: "bowlup-page", mode: "out-in" },
     head: {
       title: "Bowlup — Cook something good tonight",
       meta: [

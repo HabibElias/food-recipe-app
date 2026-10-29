@@ -5,6 +5,8 @@ colors:
   ember: "#F26B2A"
   ember-hover: "#FF813F"
   saffron: "#FFB547"
+  rating-ink: "#654008"
+  rating-hover: "#F6E7CF"
   roast: "#2B1D14"
   cream: "#FBF7F2"
   surface: "#F2EBE2"
@@ -85,6 +87,14 @@ spacing:
   wide: "48px"
   cooking: "64px"
 components:
+  rating-star:
+    width: "44px"
+    height: "44px"
+    color: "#7B6A58"
+    fill: "none"
+  rating-star-selected:
+    color: "#654008"
+    fill: "{colors.saffron}"
   button-primary:
     backgroundColor: "{colors.ember}"
     textColor: "{colors.roast}"
@@ -225,7 +235,11 @@ Surfaces are flat at rest. Tonal panels, image crops, spacing, and fine separato
 
 **The Flat At Rest Rule.** Preserve flat recipe cards and task panels; reserve the small ambient shadow for the floating account menu.
 
-State transitions are brief: button fills and active press movement use 180ms; recipe photographs gently enlarge on hover over 450ms with `cubic-bezier(.2,.8,.2,1)`. Reduced-motion preferences reduce transition and animation durations to 0.01ms and disable smooth scrolling. Do not make animation necessary to understand state.
+Motion uses the shared tokens in `app/assets/css/motion.css`: 140ms feedback, 220ms UI transitions, 420ms arrivals, and one 640ms featured-meal entrance, with `cubic-bezier(.16,1,.3,1)` for arrivals. The featured photograph opens from a shallow rounded crop and settles into its frame; copy stays immediately readable. Recipe cards enter once when visible, with at most 90ms sibling delay. Filter changes use Vue list moves; navigation and mobile menus use short transitions. Saved marks, ingredient checks, star fills and button presses acknowledge their actual state. No autoplay loops, global scroll listener or motion dependency is used.
+
+Rating controls use five real SVG stars, 27px inside 44px touch targets. Selected stars fill with Saffron and a dark outline; hover previews a choice without replacing the saved selection. The radio group supports arrows, Home, End, Space and Enter. Loading prevents duplicate submissions, and the saved rating returns on reload.
+
+Reduced motion removes spatial transforms, crop reveals and scripted card entrances. Short color and opacity feedback remains; smooth scrolling is disabled. Default content stays visible without JavaScript. Do not make animation necessary to understand state.
 
 ## Shapes
 

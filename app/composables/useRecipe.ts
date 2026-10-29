@@ -20,6 +20,7 @@ export default function useRecipe(id: string) {
   const GET_RECIPE_QUERY = computed(() => userStore.isLoggedIn ? GET_RECIPE_LOGGED_IN : GET_RECIPE_NOT_LOGGED_IN);
 
   const selectedRating = ref<number>(0);
+  const submittingRating = ref(false);
   const ratingMessage = ref("");
   function onRatingChange(value: number) {
     selectedRating.value = value;
@@ -27,6 +28,7 @@ export default function useRecipe(id: string) {
   }
 
   async function submitRating() {
+    if (submittingRating.value) return;
     if (!userStore.user) {
       return navigateTo("/auth/login");
     }
@@ -36,6 +38,7 @@ export default function useRecipe(id: string) {
       return;
     }
 
+    submittingRating.value = true;
     try {
       const INSERT_RATING_MUTATION = gql`
     mutation InsertRatingMutation($recipe_id: Int!, $user_id: uuid, $rating: Int!) {
@@ -59,6 +62,7 @@ export default function useRecipe(id: string) {
       console.error(err);
       ratingMessage.value = "Failed to submit rating.";
     }
+    finally { submittingRating.value = false; }
   }
 
   async function loadRecipe() {
@@ -80,6 +84,7 @@ export default function useRecipe(id: string) {
       });
 
       recipe.value = data.recipe[0];
+      selectedRating.value = recipe.value?.recipe_ratings?.find(rating => rating.user?.username === userStore.user?.username)?.rating ?? 0;
     }
     catch (err: any) {
       console.error(err);
@@ -208,6 +213,7 @@ export default function useRecipe(id: string) {
   }
   return {
     selectedRating,
+    submittingRating,
     onRatingChange,
     submitRating,
     ratingMessage,

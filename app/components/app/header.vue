@@ -21,6 +21,6 @@ function active(path: string) { return route.path.startsWith(path) ? "page" : un
     <button class="icon-button menu-toggle" type="button" :aria-expanded="menuOpen" aria-controls="mobile-navigation" :aria-label="menuOpen ? 'Close navigation' : 'Open navigation'" @click="menuOpen = !menuOpen"><Icon :name="menuOpen ? 'lucide:x' : 'lucide:menu'" size="24" /></button>
    </div>
   </div>
-  <nav v-if="menuOpen" id="mobile-navigation" class="mobile-nav" aria-label="Mobile navigation"><NuxtLink v-for="item in nav" :key="item.to" :to="item.to" :aria-current="active(item.to)">{{ item.label }}</NuxtLink><NuxtLink to="/recipes/add">Create a recipe</NuxtLink><NuxtLink to="/about-us">Our kitchen</NuxtLink><NuxtLink v-if="!userStore.isLoggedIn" to="/auth/login">Sign in</NuxtLink></nav>
+  <Transition name="mobile-menu"><nav v-if="menuOpen" id="mobile-navigation" class="mobile-nav" aria-label="Mobile navigation"><NuxtLink v-for="item in nav" :key="item.to" :to="item.to" :aria-current="active(item.to)">{{ item.label }}</NuxtLink><NuxtLink to="/recipes/add">Create a recipe</NuxtLink><NuxtLink to="/about-us">Our kitchen</NuxtLink><NuxtLink v-if="!userStore.isLoggedIn" to="/auth/login">Sign in</NuxtLink></nav></Transition>
  </header>
 </template>

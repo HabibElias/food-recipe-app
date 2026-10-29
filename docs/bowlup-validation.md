@@ -67,3 +67,15 @@ subsequent **ship** verdict. The measured search-placeholder contrast is
 6.15:1. All twenty recaptures were valid, with no fix-batch regressions observed.
 The verdict covers those fixes; no independent catalog quality ceiling was
 scored because no catalog QUALITY BAR card was used.
+
+## Rating and motion follow-up
+
+The CSS-mask rating icons were replaced with true SVG stars so selected values
+have actual gold fills. Five 44px radio targets support hover preview, arrows,
+Home/End, touch, pending submission, failure/retry, and restored saved ratings.
+The motion layer adds a featured-food crop reveal, one-time card arrivals,
+filter/list moves, page/menu transitions and action feedback, using CSS and the
+native Web Animations API. Reduced motion removes spatial effects and keeps
+state feedback. The interface remains visible when JavaScript is disabled.
+Seventeen browser checks passed against the production build in an isolated
+PostgreSQL/Hasura environment, with zero page runtime errors.

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{ recipe: Recipe; bookmark?: boolean; bookmarkId?: number }>();
+const props = defineProps<{ recipe: Recipe; bookmark?: boolean; bookmarkId?: number; motionIndex?: number }>();
+const card = ref<HTMLElement | null>(null);
+useFoodReveal(card, ((props.motionIndex || 0) % 3) * 45);
 const store = useBookmarksStore();
 const user = useUserStore();
 const busy = ref(false);
@@ -16,7 +18,7 @@ async function toggleSaved() {
 }
 </script>
 <template>
- <article class="recipe-card">
+ <article ref="card" class="recipe-card">
   <NuxtLink :to="'/recipes/' + recipe.id" class="recipe-photo-wrap" :aria-label="'View ' + recipe.title"><img v-if="cover" class="recipe-photo" :src="cover" :alt="recipe.title" loading="lazy" width="600" height="440"><img v-else class="recipe-photo" src="/brand/bowlup-icon-orange.svg" alt="Recipe photo coming soon" loading="lazy"></NuxtLink>
   <button type="button" class="save-button" :aria-pressed="saved" :aria-label="saved ? 'Unsave ' + recipe.title : 'Save ' + recipe.title" :disabled="busy" @click="toggleSaved"><Icon :name="busy ? 'lucide:loader-circle' : 'lucide:bookmark'" size="19" :class="{ 'animate-spin': busy }" :style="saved ? { fill: 'currentColor' } : undefined" /></button>
   <div class="recipe-card-info"><div class="recipe-card-meta"><span>{{ recipe.category?.category_name || "Recipe" }}</span><span class="meta-dot" /><span>{{ recipe.prep_time }} min</span></div><h3><NuxtLink :to="'/recipes/' + recipe.id">{{ recipe.title }}</NuxtLink></h3><p class="recipe-card-note"><span v-if="recipe.is_paid" class="price-note">{{ Number(recipe.price).toFixed(2) }} ETB · </span>By {{ recipe.user?.FirstName || recipe.user?.username || "the kitchen" }} {{ recipe.user?.LastName || "" }}</p></div>
