@@ -441,3 +441,6 @@ Not canonized or repaired by this documentation pass: unrelated incumbent drift 
 
 ## Compact recipe carousel
 On tablet and phone widths (up to 900px), and short desktop windows, the second landing section uses a native horizontal scroll-snap story rail beneath its transforming recipe preview. Adjacent story leaves peek into the rail. Scrolling updates the shared Find/Save/Cook preview; buttons, progress indicators, keyboard arrows and Home/End select the same phases. Horizontal swipes on the preview also advance phases without blocking vertical page scroll or ingredient inputs. No auto-advance. Reduced motion uses immediate scrolling and preserves the static preview states. Wide, tall desktop windows retain the original sticky scroll journey.
+
+## Viewport scroll scene
+The compact second section now pins a scene within the visible viewport while a 300svh outer section supplies native vertical scroll progress. Find, Save and Cook advance with page scroll and remain directly selectable. A compact phase-specific summary stays below the flexible preview. The cooking checklist and first step scroll within the preview on short screens. Header clearance is 84px on phones and 108px otherwise. Reduced motion removes pinning and retains direct phase controls. This supersedes the compact horizontal carousel.

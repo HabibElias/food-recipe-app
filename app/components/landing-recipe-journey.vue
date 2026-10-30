@@ -8,9 +8,15 @@ const props = defineProps<{
 const user = useUserStore();
 const root = ref<HTMLElement | null>(null);
 const phase = ref(0);
-const track = ref<HTMLElement | null>(null);
-let touchStart: { x: number; y: number } | undefined;
-let scrollFrame = 0;
+let pageFrame = 0;
+function updateScroll() {
+  pageFrame = 0;
+  if (desktop?.matches || !root.value || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const box = root.value.getBoundingClientRect();
+  const travel = root.value.offsetHeight - window.innerHeight;
+  if (travel > 0) phase.value = Math.max(0, Math.min(2, Math.floor((-box.top / travel) * 3)));
+}
+function pageScroll() { if (!pageFrame) pageFrame = requestAnimationFrame(updateScroll); }
 const checked = ref<string[]>([]);
 const steps = [
   { verb: "Find", title: "Find a little inspiration.", body: "Start with what sounds good. Look for a dish, choose the time you have, or explore a familiar ingredient. A thirty-minute skillet is a good place to begin.", action: "Find your next recipe", to: "/browse" },
@@ -22,7 +28,7 @@ let desktop: MediaQueryList | undefined;
 
 function observeChapters() {
   observer?.disconnect();
-  if (!desktop?.matches) nextTick(() => scrollToPhase(false));
+  if (!desktop?.matches) updateScroll();
   if (!desktop?.matches || !root.value || !("IntersectionObserver" in window)) return;
   const chapters = Array.from(root.value.querySelectorAll<HTMLElement>("[data-chapter]"));
   observer = new IntersectionObserver(() => {
@@ -39,36 +45,6 @@ function observeChapters() {
   root.value.querySelectorAll("[data-chapter]").forEach(chapter => observer?.observe(chapter));
 }
 
-function scrollToPhase(smooth = true) {
-  const card = track.value?.children[phase.value] as HTMLElement | undefined;
-  if (!track.value || !card || desktop?.matches) return;
-  track.value.scrollTo({ left: card.offsetLeft - (track.value.children[0] as HTMLElement).offsetLeft,
-    behavior: smooth && !window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "smooth" : "instant" });
-}
-function trackScroll() {
-  if (desktop?.matches || scrollFrame) return;
-  scrollFrame = requestAnimationFrame(() => {
-    scrollFrame = 0;
-    if (!track.value) return;
-    const cards = Array.from(track.value.children) as HTMLElement[];
-    const origin = cards[0]!.offsetLeft;
-    phase.value = cards.reduce((best, card, index) => Math.abs(card.offsetLeft - origin - track.value!.scrollLeft) < Math.abs(cards[best]!.offsetLeft - origin - track.value!.scrollLeft) ? index : best, 0);
-  });
-}
-function touchBegin(event: TouchEvent) {
-  if (desktop?.matches || (event.target as HTMLElement).closest("a,button,input,label")) return;
-  const point = event.touches[0];
-  if (point) touchStart = { x: point.clientX, y: point.clientY };
-}
-function touchEnd(event: TouchEvent) {
-  const point = event.changedTouches[0];
-  if (touchStart && point) {
-    const dx = point.clientX - touchStart.x;
-    const dy = point.clientY - touchStart.y;
-    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) select(phase.value + (dx < 0 ? 1 : -1));
-  }
-  touchStart = undefined;
-}
 function carouselKey(event: KeyboardEvent) {
   if (desktop?.matches || event.target !== event.currentTarget) return;
   if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -78,7 +54,11 @@ function carouselKey(event: KeyboardEvent) {
 function select(index: number) {
   phase.value = Math.max(0, Math.min(steps.length - 1, index));
   index = phase.value;
-  if (!desktop?.matches) scrollToPhase();
+  if (!desktop?.matches && root.value && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const top = window.scrollY + root.value.getBoundingClientRect().top;
+    const travel = root.value.offsetHeight - window.innerHeight;
+    window.scrollTo({ top: top + travel * ((index + .35) / 3), behavior: "smooth" });
+  }
   if (desktop?.matches) {
     root.value?.querySelector(`[data-chapter="${index}"]`)?.scrollIntoView({
       block: "center", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
@@ -90,22 +70,24 @@ onMounted(() => {
   desktop = window.matchMedia("(min-width: 901px) and (min-height: 820px)");
   desktop.addEventListener("change", observeChapters);
   observeChapters();
+  window.addEventListener("scroll", pageScroll, { passive: true });
+  window.addEventListener("resize", pageScroll);
 });
-onBeforeUnmount(() => { observer?.disconnect(); cancelAnimationFrame(scrollFrame); desktop?.removeEventListener("change", observeChapters); });
+onBeforeUnmount(() => { observer?.disconnect(); window.removeEventListener("scroll", pageScroll); window.removeEventListener("resize", pageScroll); cancelAnimationFrame(pageFrame); desktop?.removeEventListener("change", observeChapters); });
 </script>
 
 <template>
   <section id="how-it-works" ref="root" class="recipe-journey" aria-labelledby="journey-title">
-    <div class="site-frame">
+    <div class="site-frame journey-stage">
       <header class="landing-section-heading journey-heading">
         <h2 id="journey-title">From an idea<br>to your table.</h2>
         <p>One recipe. Three little moments.<br>Here's how a good meal finds its way into your kitchen.</p>
       </header>
       <div class="journey-layout">
-        <div ref="track" class="journey-chapters" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Find, save, and cook" @scroll.passive="trackScroll" @keydown="carouselKey">
+        <div class="journey-chapters" tabindex="0" role="region" aria-roledescription="scroll-driven story" aria-label="Find, save, and cook"  @keydown="carouselKey">
           <article v-for="(step,index) in steps" :key="step.verb" :data-chapter="index" class="journey-chapter" role="group" aria-roledescription="slide" :aria-label="`${index + 1} of ${steps.length}: ${step.verb}`" :class="{ 'is-current': phase === index }">
             <span class="journey-step-number" aria-hidden="true">{{ index + 1 }}</span>
-            <h3>{{ step.title }}</h3><p>{{ step.body }}</p>
+            <h3>{{ step.title }}</h3><p class="journey-long-copy">{{ step.body }}</p><p class="journey-short-copy">{{ ["Find a dish that fits your ingredients and the time you have.", "Keep your favorites in your own recipe book, ready for next time.", "Tick off ingredients and follow one clear step at a time."][index] }}</p>
             <NuxtLink :to="index === 2 ? recipeLink : index === 1 && user.isLoggedIn ? '/bookmarks' : step.to" class="text-link">{{ index === 1 && user.isLoggedIn ? 'Open your recipe book' : step.action }}<Icon name="lucide:arrow-up-right" size="18" /></NuxtLink>
           </article>
         </div>
@@ -113,7 +95,7 @@ onBeforeUnmount(() => { observer?.disconnect(); cancelAnimationFrame(scrollFrame
           <div class="journey-controls" role="group" aria-label="Explore the recipe journey">
             <button v-for="(step,index) in steps" :key="step.verb" type="button" :aria-label="'Preview '+step.verb.toLowerCase()" :aria-pressed="phase === index" aria-controls="recipe-preview" @click="select(index)"><span>{{ index + 1 }}</span>{{ step.verb }}</button>
           </div>
-          <div id="recipe-preview" class="journey-preview" :data-phase="phase" data-ui aria-label="Interactive recipe preview" @touchstart.passive="touchBegin" @touchend.passive="touchEnd" @touchcancel="touchStart = undefined">
+          <div id="recipe-preview" class="journey-preview" :data-phase="phase" data-ui aria-label="Interactive recipe preview">
             <div class="saved-leaf" aria-hidden="true"><span>Your recipe book</span><span>Something worth making again.</span></div>
             <article class="journey-sheet">
               <div class="journey-sheet-photo"><img :src="recipe.image" :alt="recipe.title" width="660" height="500" loading="lazy"></div>
@@ -128,12 +110,6 @@ onBeforeUnmount(() => { observer?.disconnect(); cancelAnimationFrame(scrollFrame
               </div>
               <NuxtLink :to="recipeLink" class="journey-recipe-link">{{ phase === 2 ? 'See the full recipe' : 'From Bowlup Kitchen' }}<Icon name="lucide:arrow-up-right" size="17" /></NuxtLink>
             </article>
-          </div>
-          <div class="journey-carousel-navigation" aria-label="Carousel navigation">
-            <button type="button" class="journey-carousel-arrow" :disabled="phase === 0" aria-label="Previous journey slide" @click="select(phase - 1)"><Icon name="lucide:arrow-left" size="20" /></button>
-            <div class="journey-carousel-progress"><button v-for="(step,index) in steps" :key="step.verb" type="button" :aria-label="`Go to ${step.verb.toLowerCase()}`" :aria-current="phase === index ? 'step' : undefined" @click="select(index)"><span /></button></div>
-            <span class="journey-carousel-status" aria-live="polite" aria-atomic="true">{{ phase + 1 }} / {{ steps.length }}</span>
-            <button type="button" class="journey-carousel-arrow" :disabled="phase === steps.length - 1" aria-label="Next journey slide" @click="select(phase + 1)"><Icon name="lucide:arrow-right" size="20" /></button>
           </div>
           <figcaption>A hands-on preview from Bowlup Kitchen. Try the controls, then open the full recipe to make it your own.</figcaption>
         </figure>

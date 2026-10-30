@@ -30,3 +30,6 @@ The earlier clipped side strips and 24px mobile band were rejected by the user. 
 
 ## Tablet and phone carousel
 The user requested a creative carousel for the second section. Preserve the shared transforming recipe sheet and use a horizontal snap rail of Find, Save, and Cook stories with a next-leaf peek, arrows, progress segments, keyboard controls and preview swipes. Keep the existing wide desktop scroll narrative.
+
+## Screen-fitting revision
+User reported content below the screen and requested a full-screen scroll interaction. Replace the compact carousel with a viewport-sized sticky scene driven by normal vertical page scroll. Fit preview, stage controls and concise active story together. Preserve wide desktop narrative and reduced-motion manual controls.
