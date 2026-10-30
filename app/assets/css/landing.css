@@ -5,13 +5,8 @@
 .landing-page p { line-height:1.75; }
 .landing-page section[id] { scroll-margin-top:36px; }
 .landing-opening { background:var(--ember); padding:88px 0 104px; }
-.landing-opening,.landing-closing { position:relative; isolation:isolate; }
-.landing-opening::before,.landing-closing::before { content:""; position:absolute; inset:0; z-index:-1; background-image:url('/brand/bowlup-pattern-ember.svg'); background-size:448px 448px; opacity:1; pointer-events:none; }
-.landing-opening::before { background-position:right 24px top 20px; }
-.landing-closing::before { background-position:left 32px top 32px; }
+.landing-opening,.landing-closing { position:relative; background-color:var(--ember); background-image:url('/brand/bowlup-pattern-ember.svg'); background-size:900px 900px; background-position:center top; }
 .opening-inner,.landing-closing .closing-layout { position:relative; }
-/* Keep the pattern in the outer margins; reading and search surfaces stay calm. */
-.landing-opening::before,.landing-closing::before { clip-path:polygon(0 0,6% 0,6% 100%,94% 100%,94% 0,100% 0,100% 100%,0 100%); }
 .opening-title-row { display:grid; grid-template-columns:1.5fr .8fr; gap:96px; align-items:end; margin-bottom:72px; }
 .opening-title-row h1 { font-size:clamp(58px,6.4vw,92px); font-weight:650; line-height:1; margin:0; letter-spacing:-.035em; }
 .opening-title-row>p { font-size:17px; margin:0 0 5px; max-width:36ch; color:var(--roast); }
@@ -131,7 +126,7 @@
 .landing-answers { display:grid; grid-template-columns:1fr 1fr; gap:40px 80px; }
 .landing-answers>p { margin:0; color:var(--muted); max-width:57ch; font-size:16px; }
 .landing-answers strong { display:block; color:var(--roast); font-size:18px; margin-bottom:16px; }
-.landing-closing { background:var(--ember); padding-block:var(--landing-section-inset); }
+.landing-closing { background-color:var(--ember); padding-block:var(--landing-section-inset); }
 .closing-layout { display:grid; grid-template-columns:1.2fr 1fr; gap:110px; align-items:center; }
 .closing-layout h2 { font-size:64px; margin-bottom:28px; }
 .closing-layout p { margin:0 0 24px; }
@@ -187,4 +182,5 @@
  .journey-step-number { display:none; }
 }
 
-@media(max-width:900px) { .landing-opening::before,.landing-closing::before { clip-path:none; inset:0 0 auto; height:24px; background-size:336px 336px; background-position:0 -28px; } }
+
+@media(max-width:600px) { .landing-opening,.landing-closing { background-size:675px 675px; } }

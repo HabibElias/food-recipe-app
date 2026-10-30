@@ -368,7 +368,7 @@ Reduced motion removes spatial transforms, animated crop reveals and scripted ca
 
 ## Shapes
 
-The background pattern in `public/brand/bowlup-pattern-ember.svg` repeats the approved icon paths in a staggered 448px tile, using Saffron and quiet Dark Roast on Ember as shown on page 17 of the supplied guidelines. Icons stay upright and proportionate. Desktop patterns occupy the outer margins so content stays on solid orange; tablet and phone patterns become a narrow decorative top band. The approved logo lockups retain clear space, and recipe grids use larger gaps.
+The background pattern in `public/brand/bowlup-pattern-ember.svg` follows the page 17 arrangement: 75-unit spacing, alternate half-step rows, every fourth icon turned sideways and every third in Saffron. A 900px square closes both repeat cycles. Muted Ember-toned icons and quiet Saffron repeat across the entire opening and closing on the same Ember ground. Both sections use a direct CSS background, with no clipped strips, separate overlay or mobile top band. Phone repeats scale to 675px. Logo lockups remain intact and upright.
 
 Pills identify actions, category controls, and app search. Editable fields and landing search use soft corners; photographs and quiet panels use broader corners. App desktop card photos and panels share the panel radius; detail photographs use the detail-photo radius and reduce to 20px on phones. Phone app card photos reduce to the compact-photo radius. Circles are reserved for save controls, compact icon controls, and avatar initials.
 

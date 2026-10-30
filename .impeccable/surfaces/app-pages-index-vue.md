@@ -24,3 +24,6 @@ The user approved the existing direction and requested breathing room, a logo pa
 
 ## Brand guideline spacing follow-up
 Use 160/136px chapter spacing on desktop, 120/104px on tablets and 96/88px on phones. The opening has 88/104px desktop padding and a 72px title-to-content gap. A staggered Saffron/Dark Roast icon repeat follows the supplied PDF pattern example, confined to outer desktop margins and a slim mobile band. Reading and form areas retain solid backgrounds. The requested Impeccable and Taste skill packages were unavailable in this session; existing saved design context was used.
+
+## Pattern correction
+The earlier clipped side strips and 24px mobile band were rejected by the user. Use a continuous direct background across the full opening and closing, matching the page 17 stagger, color cadence and alternating sideways pattern motifs. No separate blank orange area or clipped strip.
