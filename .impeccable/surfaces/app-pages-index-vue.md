@@ -33,3 +33,6 @@ The user requested a creative carousel for the second section. Preserve the shar
 
 ## Screen-fitting revision
 User reported content below the screen and requested a full-screen scroll interaction. Replace the compact carousel with a viewport-sized sticky scene driven by normal vertical page scroll. Fit preview, stage controls and concise active story together. Preserve wide desktop narrative and reduced-motion manual controls.
+
+## Replacement second section — current authority
+User rejected all prior versions of the second section. Replace that whole composition with a Cream photographic story in three full-height movements: Find your kind of good; Keep a little inspiration; Make it your own. This supersedes the earlier recipe-sheet, carousel and tablet arrangements for this section. A large photograph leads, active narrative changes with native vertical scrolling, and a functional bottom timeline supplies manual access. Phone layout is photograph above story; desktop/tablet layout is a photographic split. No reserved header gap or interior content scroll. Reduced motion uses manual selection in normal flow. The rest of the landing page retains its established design.

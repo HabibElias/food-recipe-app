@@ -33,55 +33,55 @@
 .landing-section-heading { display:flex; align-items:end; justify-content:space-between; gap:48px; margin-bottom:56px; }
 .landing-section-heading h2 { margin:0; }
 .landing-section-heading p { max-width:43ch; margin:18px 0 0; color:var(--muted); }
-.recipe-journey { background:var(--roast); color:var(--cream); padding-block:var(--landing-section-inset); }
-.journey-heading { align-items:start; margin-bottom:64px; }
-.journey-heading>p { color:#dfd1c2; margin:6px 0 0; max-width:39ch; font-size:17px; }
-.journey-layout { display:grid; grid-template-columns:1fr 1.15fr; gap:100px; align-items:start; }
-.journey-chapter { min-height:430px; padding:70px 0 80px; opacity:.72; transition:opacity 300ms; }
-.journey-chapter.is-current { opacity:1; }
-.journey-step-number { display:block; font-family:Outfit,sans-serif; font-size:26px; margin-bottom:25px; color:var(--saffron); font-variant-numeric:tabular-nums; }
-.journey-chapter h3 { font-size:33px; margin:0 0 22px; line-height:1.1; }
-.journey-chapter>p { color:#dfd1c2; margin:0 0 24px; max-width:42ch; }
-.journey-chapter>.text-link { font-size:14px; }
-.journey-figure { position:sticky; top:124px; margin:0; padding-bottom:12px; }
-.journey-controls { display:flex; gap:8px; margin-bottom:24px; }
-.journey-controls>button { display:flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px; color:#dfd1c2; border:1px solid #846f5f; font-size:14px; min-height:44px; transition:background-color 180ms,color 180ms; }
-.journey-controls>button[aria-pressed="true"] { background:var(--saffron); border-color:var(--saffron); color:var(--roast); }
-.journey-controls>button>span { font-variant-numeric:tabular-nums; }
-.journey-preview { position:relative; height:580px; margin:0 16px 0 0; color:var(--roast); }
-.journey-sheet { position:absolute; inset:0; border-radius:18px; background:var(--cream); overflow:hidden; transform-origin:50% 70%; transition:transform 700ms var(--landing-ease); }
-.saved-leaf { position:absolute; inset:7px 0; border-radius:18px; background:var(--saffron); transform:translate(0) rotate(0); opacity:0; transition:transform 700ms var(--landing-ease),opacity 250ms; padding:36px; display:flex; flex-direction:column; justify-content:space-between; }
-.saved-leaf>span { font-size:14px; }
-.journey-sheet-photo { position:absolute; left:18px; right:18px; top:18px; height:52%; clip-path:inset(0 round 12px); transition:clip-path 700ms var(--landing-ease); }
-.journey-sheet-photo img { width:100%; height:100%; object-fit:cover; }
-.journey-sheet-title { position:absolute; top:59%; left:26px; right:26px; transition:transform 700ms var(--landing-ease); }
-.journey-sheet-title h3 { font-size:31px; margin:0 0 8px; line-height:1.15; }
-.journey-sheet-title>span { color:var(--muted); font-size:13px; font-variant-numeric:tabular-nums; }
-.journey-bookmark { position:absolute; right:30px; top:30px; background:var(--cream); width:44px; height:44px; padding:9px; border-radius:50%; transition:fill 350ms,color 350ms; }
-.journey-bookmark path { stroke-dasharray:60; stroke-dashoffset:0; transition:stroke-dashoffset 700ms var(--landing-ease); }
-.journey-bookmark.is-saved { fill:var(--saffron); }
-.journey-bookmark.is-saved path { animation:bookmark-ink 700ms var(--landing-ease); }
-.journey-sheet-description { position:absolute; top:73%; left:26px; right:26px; font-size:14px; line-height:1.65; color:var(--muted); margin:0; transition:opacity 180ms; }
-.journey-saved-note { position:absolute; top:83%; left:26px; display:flex; align-items:center; gap:8px; font-size:14px; opacity:0; transform:translateY(8px); transition:opacity 250ms,transform 700ms var(--landing-ease); }
-.journey-preview[data-phase="1"] .saved-leaf { opacity:1; transform:translate(15px,5px) rotate(3deg); }
-.journey-preview[data-phase="1"] .journey-sheet { transform:translate(-7px,-2px) rotate(-3deg) scale(.96); }
-.journey-preview[data-phase="1"] .journey-sheet-description { opacity:0; }
-.journey-preview[data-phase="1"] .journey-saved-note { opacity:1; transform:none; }
-.journey-preview[data-phase="2"] .journey-sheet-photo { clip-path:inset(0 0 64% round 12px); }
-.journey-preview[data-phase="2"] .journey-sheet-title { transform:translateY(-194px); }
-.journey-preview[data-phase="2"] .journey-sheet-description { opacity:0; }
-.journey-cooking { position:absolute; top:43%; left:26px; right:26px; clip-path:inset(100% 0 0); opacity:0; transform:translateY(16px); transition:clip-path 700ms var(--landing-ease),transform 700ms var(--landing-ease),opacity 250ms; }
-.journey-preview[data-phase="2"] .journey-cooking { clip-path:inset(0); opacity:1; transform:none; }
-.journey-cooking-heading { font-size:15px; font-weight:600; margin:0 0 16px; }
-.journey-cooking label { display:flex; gap:10px; align-items:start; font-size:14px; margin-bottom:12px; cursor:pointer; }
-.journey-cooking input { width:17px; height:17px; accent-color:#a53e12; margin-top:3px; flex-shrink:0; }
-.journey-cooking input:checked+span { text-decoration:line-through; color:var(--muted); }
-.journey-first-step { /* taste-skill-ignore hairline: real ingredient/step boundary inside data-ui recipe preview. */ border-top:1px solid var(--line); margin-top:20px; padding-top:16px; }
-.journey-first-step>strong { font-size:15px; }
-.journey-first-step>p { font-size:14px; color:var(--muted); margin:6px 0 0; line-height:1.6; }
-.journey-recipe-link { position:absolute; bottom:20px; left:26px; right:26px; display:flex; align-items:center; justify-content:space-between; font-size:13px; font-weight:550; }
-.journey-recipe-link:hover { text-decoration:underline; }
-.journey-figure>figcaption { color:#dfd1c2; font-size:13px; line-height:1.65; margin:26px 16px 0 0; max-width:55ch; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .landing-kitchen { padding-block:var(--landing-section-space); display:grid; grid-template-columns:1fr 1fr; gap:100px; align-items:center; }
 .landing-kitchen-photo { background:var(--saffron); padding:28px; border-radius:22px; transform:rotate(-2deg); }
 .landing-kitchen-photo img { width:100%; height:440px; object-fit:cover; border-radius:12px; }
@@ -147,138 +147,113 @@
 @keyframes recipe-laid { from { clip-path:inset(7% 0 0 round 16px); transform:translateY(14px) rotate(-4deg); } to { clip-path:inset(0 round 16px); transform:translateY(0) rotate(-1.5deg); } }
 @keyframes bookmark-ink { from { stroke-dashoffset:60; } to { stroke-dashoffset:0; } }
 @media(max-width:1100px) {
- .opening-title-row { gap:40px; grid-template-columns:1.35fr 1fr; }.opening-title-row h1 { font-size:70px; }.opening-lower { gap:45px; }.opening-recipe-caption strong { font-size:22px; }.opening-recipe-caption>span { gap:12px; }.journey-layout { gap:55px; }.journey-sheet-title h3 { font-size:27px; }.landing-kitchen,.share-layout,.landing-founder,.closing-layout { gap:60px; }.landing-kitchen-photo img { height:390px; }.founder-name h3 { font-size:48px; }
+ .opening-title-row { gap:40px; grid-template-columns:1.35fr 1fr; }.opening-title-row h1 { font-size:70px; }.opening-lower { gap:45px; }.opening-recipe-caption strong { font-size:22px; }.opening-recipe-caption>span { gap:12px; }.landing-kitchen,.share-layout,.landing-founder,.closing-layout { gap:60px; }.landing-kitchen-photo img { height:390px; }.founder-name h3 { font-size:48px; }
 }
 @media(max-width:900px) {
  .landing-page { --landing-section-space:120px; --landing-section-inset:104px; }
  .bowlup-app:has(.landing-page) .desktop-nav { display:none; }.bowlup-app:has(.landing-page) .menu-toggle { display:inline-flex; }
  .opening-title-row { grid-template-columns:1fr; gap:24px; }.opening-title-row>p { max-width:62ch; }.opening-title-row h1 { font-size:76px; }.opening-lower { grid-template-columns:1.15fr 1fr; gap:34px; }.opening-recipe-leaf>img { height:300px; }.opening-recipe-caption { align-items:start; }.opening-recipe-caption>span { flex-direction:column; gap:8px; }.opening-recipe-caption strong { font-size:20px; }.opening-search h2 { font-size:27px; }
- .recipe-journey { padding-block:var(--landing-section-inset); }.journey-heading { gap:24px; }.journey-heading>p { font-size:15px; }.journey-layout { grid-template-columns:1fr; gap:30px; }.journey-figure { position:static; grid-row:1; width:min(560px,100%); margin-inline:auto; }.journey-chapters { max-width:560px; width:100%; margin-inline:auto; }.journey-chapter { display:none; min-height:0; padding:0; opacity:1; }.journey-chapter.is-current { display:block; }.journey-step-number { display:none; }.journey-chapter h3 { font-size:31px; }.journey-chapter p { max-width:none; }.journey-preview { margin-right:16px; }.journey-heading h2 { font-size:48px; }
+
  .landing-kitchen { gap:46px; padding-block:var(--landing-section-space); }.landing-kitchen-photo { padding:20px; }.landing-kitchen-photo img { height:340px; }.landing-kitchen-photo p { font-size:23px; }.landing-kitchen-copy>h2 { font-size:42px; }.kitchen-benefit { padding:24px 0; }.kitchen-benefit h3 { font-size:21px; }.kitchen-benefit p { font-size:14px; }.share-layout,.landing-founder,.closing-layout { gap:45px; }.share-layout h2,.founder-introduction h2 { font-size:42px; }.share-recipe-note img { height:230px; }.founder-name { padding-left:26px; }.founder-name h3 { font-size:42px; }.landing-founder { padding-block:var(--landing-section-space); }.landing-starters { padding-bottom:var(--landing-section-space); }.starter-recipe img { height:210px; }.starter-recipe h3 { font-size:22px; }.landing-answers { gap:36px 40px; }.closing-layout h2 { font-size:50px; }
 }
 @media(max-width:600px) {
  .landing-page { --landing-section-space:96px; --landing-section-inset:88px; }
  .landing-page h2 { font-size:36px; }.landing-opening { padding:52px 0 80px; }.opening-title-row { gap:28px; margin-bottom:48px; }.opening-title-row h1 { font-size:48px; letter-spacing:-.03em; }.opening-title-row>p { font-size:16px; line-height:1.7; max-width:40ch; }.opening-lower { grid-template-columns:1fr; gap:48px; }.opening-search { grid-row:1; max-width:none; }.opening-search h2 { font-size:26px; margin-bottom:18px; }.opening-search>label { font-size:13px; }.opening-search>.landing-search-field { margin-bottom:16px; }.opening-search>.select { margin-bottom:18px; }.opening-search-button { min-height:48px; }.opening-how-link { padding-top:16px; }.opening-recipe-leaf { padding:11px 11px 0; transform:rotate(-1deg); }.opening-recipe-leaf>img { height:225px; }.opening-recipe-caption { padding:16px 4px; }.opening-recipe-caption>span { flex-direction:row; align-items:center; }.opening-recipe-caption strong { font-size:21px; }.opening-recipe-caption div>span { font-size:12px; }
- .recipe-journey { padding-block:var(--landing-section-inset); }.journey-heading { display:block; margin-bottom:40px; }.journey-heading h2 { font-size:38px; }.journey-heading>p { margin-top:20px; font-size:16px; }.journey-controls { gap:7px; margin-bottom:20px; }.journey-controls>button { flex:1; padding:10px 12px; justify-content:center; }.journey-preview { height:540px; margin-right:12px; }.journey-sheet-title { left:20px; right:20px; top:58%; }.journey-sheet-title h3 { font-size:26px; }.journey-sheet-title>span { font-size:12px; }.journey-sheet-photo { left:13px; right:13px; top:13px; }.journey-bookmark { right:23px; top:23px; width:40px; height:40px; }.journey-sheet-description { left:20px; right:20px; font-size:14px; top:72%; }.journey-saved-note { left:20px; font-size:13px; }.journey-preview[data-phase="2"] .journey-sheet-title { transform:translateY(-174px); }.journey-cooking { top:42%; left:20px; right:20px; }.journey-cooking-heading { font-size:14px; margin-bottom:13px; }.journey-cooking label { font-size:13px; margin-bottom:12px; }.journey-first-step { margin-top:17px; padding-top:13px; }.journey-first-step>p { font-size:13px; }.journey-first-step>strong { font-size:14px; }.journey-recipe-link { left:20px; right:20px; bottom:18px; font-size:12px; }.journey-figure>figcaption { font-size:13px; margin-top:24px; }.journey-chapter h3 { font-size:28px; margin-bottom:16px; }.journey-chapter p { font-size:16px; }
+
  .landing-kitchen { grid-template-columns:1fr; gap:48px; padding-block:var(--landing-section-space); }.landing-kitchen-copy { grid-row:1; }.landing-kitchen-copy>h2 { font-size:38px; margin-bottom:36px; }.kitchen-benefit { padding:24px 0; }.kitchen-benefit h3 { font-size:23px; }.kitchen-benefit p { font-size:16px; }.landing-kitchen-photo { margin:0 8px; padding:20px; }.landing-kitchen-photo img { height:300px; }.landing-kitchen-photo p { font-size:24px; }.landing-kitchen-photo span { font-size:14px; }
  .landing-share { padding-block:var(--landing-section-inset); }.share-layout { grid-template-columns:1fr; gap:38px; }.share-layout h2 { font-size:38px; }.share-layout>div>p { font-size:16px; }.share-recipe-note { margin-inline:8px; }.share-recipe-note img { height:240px; }.share-recipe-note>p { font-size:24px; }.landing-founder { grid-template-columns:1fr; gap:30px; padding-block:var(--landing-section-space); }.founder-introduction h2 { font-size:35px; }.founder-name { padding:30px 0 0; border-left:0; }.founder-name img { width:62px; height:62px; margin-bottom:20px; }.founder-name h3 { font-size:48px; }.founder-name>span { font-size:14px; }
  .landing-starters { padding-bottom:var(--landing-section-space); }.landing-starters .landing-section-heading { display:block; margin-bottom:40px; }.landing-starters .landing-section-heading h2 { font-size:33px; }.landing-starters .landing-section-heading p { font-size:16px; margin-top:16px; }.landing-starters .landing-section-heading>.text-link { margin-top:20px; font-size:14px; }.starter-recipe-grid { grid-template-columns:1fr; gap:48px; }.starter-recipe img { height:260px; }.starter-recipe h3 { font-size:26px; }.starter-recipe p { font-size:15px; }.starter-recipe div>span:first-child { font-size:13px; }.starter-recipe>a>div { padding-top:18px; }
  .landing-faq { padding-block:var(--landing-section-inset); }.landing-faq h2 { font-size:34px; margin-bottom:40px; }.landing-answers { grid-template-columns:1fr; gap:36px; }.landing-answers>p { font-size:16px; }.landing-answers strong { font-size:18px; }.landing-closing { padding-block:var(--landing-section-inset); }.closing-layout { grid-template-columns:1fr; gap:32px; }.closing-layout h2 { font-size:46px; }.closing-layout p { font-size:16px; }.closing-search { max-width:none; }.bowlup-app:has(.landing-page) .footer-logo { width:230px; }
 }
 @media(prefers-reduced-motion:reduce) {
- .opening-recipe-leaf,.landing-kitchen-photo,.share-recipe-note,.journey-sheet,.saved-leaf,.journey-sheet-title,.journey-cooking,.journey-saved-note,.starter-recipe img { transform:none!important; animation:none!important; transition-property:opacity,color,background-color!important; }
- .journey-sheet-photo { transition:none!important; }.journey-preview[data-phase="2"] .journey-sheet-title { top:25%; }.journey-preview[data-phase="2"] .journey-cooking { top:43%; }.journey-bookmark path { animation:none!important; }.bowlup-app:has(.landing-page)>.site-footer { position:relative; }
+ .opening-recipe-leaf,.landing-kitchen-photo,.share-recipe-note,.starter-recipe img { transform:none!important; animation:none!important; transition-property:opacity,color,background-color!important; }
+ .bowlup-app:has(.landing-page)>.site-footer { position:relative; }
 }
-@media(max-width:600px) { .opening-recipe-caption div>span,.journey-sheet-title>span,.journey-recipe-link { font-size:13px; } }
-@media(max-width:370px) { .opening-title-row h1{font-size:40px}.landing-page h2{font-size:32px}.opening-search h2{font-size:26px}.journey-controls>button{padding-inline:8px}.journey-sheet-title h3{font-size:24px}.opening-recipe-caption>span{font-size:13px;gap:10px} }
+@media(max-width:600px) { .opening-recipe-caption div>span { font-size:13px; } }
+@media(max-width:370px) { .opening-title-row h1{font-size:40px}.landing-page h2{font-size:32px}.opening-search h2{font-size:26px}.opening-recipe-caption>span{font-size:13px;gap:10px} }
 
 /* Short windows use the direct controls so a sticky sheet never exceeds the viewport. */
-@media(min-width:901px) and (max-height:819px) {
- .journey-layout { grid-template-columns:1fr; gap:36px; }
- .journey-figure { position:static; grid-row:1; width:min(560px,100%); margin-inline:auto; }
- .journey-chapters { max-width:560px; width:100%; margin-inline:auto; }
- .journey-chapter { display:none; min-height:0; padding:0; opacity:1; }
- .journey-chapter.is-current { display:block; }
- .journey-step-number { display:none; }
-}
+
 
 
 @media(max-width:600px) { .landing-opening,.landing-closing { background-size:675px 675px; } }
 
-/* A viewport-sized recipe scene advances with the page scroll. */
-.journey-short-copy,.journey-carousel-navigation { display:none; }
-@media(max-width:1180px), (min-width:1181px) and (max-height:819px) {
- .recipe-journey { --journey-header:108px; padding:0; height:300svh; }
- .journey-stage { position:sticky; top:var(--journey-header); height:calc(100svh - var(--journey-header)); padding-block:20px; display:flex; flex-direction:column; gap:16px; }
- .journey-heading { margin:0; display:flex; align-items:center; gap:20px; flex-shrink:0; }
- .journey-heading h2 { font-size:32px; margin:0; line-height:1.05; }
- .journey-heading>p { font-size:13px; margin:0; max-width:28ch; }
- .journey-layout { display:flex; flex-direction:column; flex:1; min-height:0; gap:16px; }
- .journey-figure { position:static; order:0; display:flex; flex-direction:column; flex:1; min-height:0; width:min(560px,100%); padding:0; margin:0 auto; }
- .journey-controls { margin-bottom:12px; flex-shrink:0; }
- .journey-controls>button { flex:1; justify-content:center; }
- .journey-preview { height:auto; flex:1; min-height:180px; margin-right:12px; }
- .journey-figure>figcaption { display:none; }
- .journey-chapters { order:1; display:block; flex-shrink:0; width:min(560px,100%); max-width:560px; padding:0; margin:0 auto; overflow:visible; }
- .journey-chapter { display:none; min-height:0; padding:0; opacity:1; }
- .journey-chapter.is-current { display:block; }
- .journey-step-number,.journey-long-copy { display:none; }
- .journey-short-copy { display:block; }
- .journey-chapter h3 { font-size:25px; margin:0 0 8px; }
- .journey-chapter p { font-size:14px; line-height:1.5; margin:0 0 10px; max-width:none; }
- .journey-chapter>.text-link { font-size:13px; min-height:30px; }
- .journey-sheet-photo { top:12px; left:12px; right:12px; height:50%; }
- .journey-sheet-title { top:55%; left:20px; right:20px; }
- .journey-sheet-title h3 { font-size:25px; }
- .journey-sheet-description { top:73%; left:20px; right:20px; font-size:13px; line-height:1.45; max-height:17%; overflow-y:auto; }
- .journey-recipe-link { bottom:14px; left:20px; right:20px; font-size:13px; }
- .journey-saved-note { top:77%; left:20px; }
- .journey-preview[data-phase="2"] .journey-sheet-photo { display:none; }
- .journey-preview[data-phase="2"] .journey-sheet-title { top:16px; transform:none; }
- .journey-preview[data-phase="2"] .journey-cooking { top:90px; bottom:52px; left:20px; right:20px; overflow-y:auto; clip-path:none; transform:none; }
- .journey-cooking-heading { margin-bottom:10px; }
- .journey-cooking label { margin-bottom:10px; }
- .journey-first-step { margin-top:12px; padding-top:10px; }
- .journey-bookmark { top:20px; right:20px; }
- .journey-preview[data-phase="2"] .journey-bookmark { display:none; }
+
+/* The meal, in three full-screen movements. */
+.meal-story { height:340svh; background:var(--cream); color:var(--roast); }
+.meal-stage { position:sticky; top:0; height:100svh; display:grid; grid-template-columns:1fr 1.15fr; grid-template-rows:minmax(0,1fr) 100px; padding:40px 40px 0 6.5%; gap:0 6%; overflow:clip; }
+.meal-narrative { align-self:center; display:grid; min-width:0; }
+.meal-message { grid-area:1 / 1; opacity:0; visibility:hidden; transform:translateY(24px); transition:opacity .45s,transform .65s var(--landing-ease),visibility .45s; }
+.meal-message.is-active { opacity:1; visibility:visible; transform:none; }
+.landing-page .meal-message h2 { font-size:clamp(54px,5.6vw,88px); line-height:1.02; font-weight:600; letter-spacing:-.035em; margin:0 0 32px; max-width:11ch; }
+.meal-message p { font-size:19px; line-height:1.7; max-width:34ch; margin:0 0 36px; }
+.meal-action { display:inline-flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 24px; background:var(--roast); color:var(--cream); border-radius:999px; font-size:15px; font-weight:600; min-height:50px; }
+.meal-action:hover { background:#4d3626; }
+.meal-visual { position:relative; min-height:0; margin:0; display:grid; grid-template-rows:minmax(0,1fr) auto; align-self:stretch; }
+.meal-image { overflow:hidden; border-radius:140px 140px 16px 16px; background:var(--saffron); transition:border-radius .8s var(--landing-ease); }
+.meal-image img { display:block; width:100%; height:100%; object-fit:cover; transform:scale(1.04); transition:transform 1s var(--landing-ease); }
+.meal-stage[data-phase="1"] .meal-image { border-radius:16px 140px 16px 16px; }
+.meal-stage[data-phase="1"] .meal-image img { transform:scale(1.12) translateX(-2%); }
+.meal-stage[data-phase="2"] .meal-image { border-radius:16px; }
+.meal-stage[data-phase="2"] .meal-image img { transform:scale(1.04) translateY(-1%); }
+.meal-visual figcaption { padding:18px 0 0; display:flex; flex-direction:column; gap:4px; font-size:14px; }
+.meal-visual figcaption>span:first-child { font-weight:600; }
+.meal-save { position:absolute; top:24px; left:24px; right:24px; width:fit-content; max-width:calc(100% - 48px); padding:13px 18px; display:flex; align-items:center; gap:10px; border-radius:999px; background:var(--cream); font-size:14px; }
+.meal-save[aria-pressed="true"] { background:var(--saffron); }
+.meal-timeline { grid-column:1 / -1; display:flex; align-items:center; gap:24px; }
+.meal-timeline>button { flex:1; padding:12px 0; text-align:left; font-size:16px; font-weight:550; min-height:64px; }
+.meal-timeline>button[aria-current] { color:#a53e12; }
+.meal-track { display:block; background:#e6dbce; height:4px; border-radius:4px; margin-top:12px; overflow:hidden; }
+.meal-track>span { display:block; height:100%; background:var(--ember); transform-origin:left; }
+.meal-scroll-cue { display:flex; align-items:center; gap:12px; font-size:13px; padding-left:32px; }
+.bowlup-app:has(.meal-story.is-pinned) .site-header { transform:translateY(-110%); }
+@media(min-width:901px) and (max-height:760px) {
+ .meal-stage { padding-top:24px; grid-template-rows:minmax(0,1fr) 80px; }
+ .landing-page .meal-message h2 { font-size:clamp(42px,4.6vw,68px); margin-bottom:24px; }
+ .meal-message p { font-size:17px; margin-bottom:24px; }
 }
-@media(max-width:760px) { .recipe-journey { --journey-header:84px; } }
+@media(min-width:601px) and (max-width:1180px) {
+ .meal-stage { grid-template-columns:.9fr 1.1fr; padding:32px 28px 0; gap:0 32px; grid-template-rows:minmax(0,1fr) 88px; }
+ .landing-page .meal-message h2 { font-size:clamp(42px,6vw,64px); margin-bottom:24px; }
+ .meal-message p { font-size:17px; margin-bottom:28px; }
+ .meal-image { border-radius:100px 100px 12px 12px; }
+ .meal-scroll-cue { display:none; }
+}
 @media(max-width:600px) {
- .journey-stage { padding-block:16px; gap:14px; }
- .journey-heading h2 { font-size:27px; }
- .journey-heading>p { max-width:20ch; font-size:12px; }
- .journey-heading>p br { display:none; }
- .journey-chapter h3 { font-size:23px; }
- .journey-sheet-title h3 { font-size:23px; }
+ .meal-stage { padding:16px 20px 0; grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) auto 70px; gap:20px 0; }
+ .meal-visual { grid-row:1; min-height:0; }
+ .meal-image { border-radius:80px 80px 12px 12px; }
+ .meal-visual figcaption { flex-direction:row; justify-content:space-between; gap:12px; padding-top:10px; font-size:12px; }
+ .meal-visual figcaption>span:last-child { max-width:17ch; text-align:right; }
+ .meal-narrative { grid-row:2; }
+ .landing-page .meal-message h2 { font-size:clamp(36px,10.4vw,48px); max-width:13ch; margin-bottom:14px; }
+ .meal-message p { font-size:16px; line-height:1.6; max-width:none; margin-bottom:18px; }
+ .meal-action { padding:12px 20px; min-height:46px; font-size:14px; }
+ .meal-timeline { grid-row:3; gap:18px; }
+ .meal-timeline>button { font-size:14px; }
+ .meal-scroll-cue { display:none; }
+ .meal-save { top:16px; left:16px; max-width:calc(100% - 32px); padding:10px 14px; font-size:13px; }
 }
-@media(max-height:650px) and (min-width:601px) {
- .journey-layout { flex-direction:row; align-items:center; }
- .journey-figure { height:100%; width:55%; }
- .journey-chapters { width:40%; }
- .journey-heading h2 br { display:none; }
+@media(max-width:600px) and (max-height:700px) {
+ .meal-stage { padding-top:12px; gap:12px 0; grid-template-rows:minmax(0,1fr) auto 60px; }
+ .landing-page .meal-message h2 { font-size:34px; margin-bottom:10px; }
+ .meal-message p { font-size:14px; line-height:1.5; margin-bottom:12px; }
+ .meal-visual figcaption>span:last-child { display:none; }
+ .meal-action { min-height:44px; padding-block:10px; }
+}
+@media(min-width:601px) and (max-height:500px) {
+ .meal-stage { padding-top:16px; grid-template-rows:minmax(0,1fr) 60px; }
+ .landing-page .meal-message h2 { font-size:34px; margin-bottom:12px; }
+ .meal-message p { font-size:14px; line-height:1.5; margin-bottom:16px; }
+ .meal-action { min-height:44px; padding:10px 18px; }
+ .meal-visual figcaption { font-size:12px; padding-top:10px; }
+ .meal-visual figcaption>span:last-child { display:none; }
 }
 @media(prefers-reduced-motion:reduce) {
- .recipe-journey { height:auto; }
- .journey-stage { position:static; height:auto; min-height:calc(100svh - 108px); }
- .journey-figure { flex:none; }
- .journey-preview { flex:none; height:clamp(300px,50svh,500px); }
+ .meal-story { height:auto; }
+ .meal-stage { position:relative; min-height:100svh; }
+ .meal-message,.meal-image,.meal-image img { transition:none; transform:none!important; }
+ .meal-scroll-cue { visibility:hidden; }
+ .meal-timeline>button[aria-current] .meal-track>span { transform:scaleX(1)!important; }
 }
-@media(max-width:600px) and (max-height:650px) {
- .journey-stage { padding-block:12px; gap:10px; }
- .journey-heading>p { display:none; }
- .journey-heading h2 { font-size:24px; }
- .journey-controls { margin-bottom:8px; }
- .journey-layout { gap:12px; }
- .journey-chapter h3 { font-size:21px; }
-}
-@media(max-height:650px) and (min-width:601px) {
- .journey-stage { padding-block:12px; gap:10px; }
- .journey-heading h2 { font-size:24px; }
- .journey-heading>p { display:none; }
- .journey-preview { min-height:0; }
- .journey-controls { margin-bottom:8px; }
- .journey-sheet-title h3 { font-size:20px; }
- .journey-sheet-description { display:none; }
- .journey-preview[data-phase="2"] .journey-cooking { top:76px; bottom:40px; }
- .journey-bookmark { width:34px; height:34px; top:16px; right:16px; }
-}
-
-/* Tablets keep the story and recipe in view together. */
-@media(min-width:601px) and (max-width:1180px) {
- .journey-layout { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); align-items:center; gap:36px; }
- .journey-chapters { grid-column:1; grid-row:1; width:100%; margin:0; min-width:0; }
- .journey-figure { grid-column:2; grid-row:1; height:100%; max-height:640px; width:100%; margin:0; min-width:0; }
- .journey-chapter h3 { font-size:clamp(27px,3.2vw,36px); }
- .journey-chapter p { font-size:16px; line-height:1.65; margin-bottom:20px; }
- .journey-controls { gap:6px; }
- .journey-controls>button { padding-inline:10px; }
-}
-@media(min-width:601px) and (max-width:1180px) and (max-height:650px) {
- .journey-layout { gap:24px; }
- .journey-chapter h3 { font-size:25px; }
- .journey-chapter p { font-size:14px; margin-bottom:10px; }
-}
-@media(min-width:601px) and (max-width:1180px) and (prefers-reduced-motion:reduce) {
- .journey-figure { height:auto; }
- .journey-preview { height:clamp(300px,60svh,560px); }
-}
+.bowlup-app:has(.meal-story.is-pinned) .site-header:has(:focus-visible),.bowlup-app:has(.meal-story.is-pinned) .site-header:has(.mobile-nav) { transform:none; }
