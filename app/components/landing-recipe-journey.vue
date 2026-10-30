@@ -80,8 +80,8 @@ onBeforeUnmount(() => { observer?.disconnect(); window.removeEventListener("scro
   <section id="how-it-works" ref="root" class="recipe-journey" aria-labelledby="journey-title">
     <div class="site-frame journey-stage">
       <header class="landing-section-heading journey-heading">
-        <h2 id="journey-title">From an idea<br>to your table.</h2>
-        <p>One recipe. Three little moments.<br>Here's how a good meal finds its way into your kitchen.</p>
+        <h2 id="journey-title">From an idea<br> to your table.</h2>
+        <p>One recipe. Three little moments.<br> Here's how a good meal finds its way into your kitchen.</p>
       </header>
       <div class="journey-layout">
         <div class="journey-chapters" tabindex="0" role="region" aria-roledescription="scroll-driven story" aria-label="Find, save, and cook"  @keydown="carouselKey">
