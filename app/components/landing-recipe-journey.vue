@@ -67,7 +67,7 @@ function select(index: number) {
 }
 
 onMounted(() => {
-  desktop = window.matchMedia("(min-width: 901px) and (min-height: 820px)");
+  desktop = window.matchMedia("(min-width: 1181px) and (min-height: 820px)");
   desktop.addEventListener("change", observeChapters);
   observeChapters();
   window.addEventListener("scroll", pageScroll, { passive: true });

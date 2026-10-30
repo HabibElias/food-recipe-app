@@ -444,3 +444,5 @@ On tablet and phone widths (up to 900px), and short desktop windows, the second 
 
 ## Viewport scroll scene
 The compact second section now pins a scene within the visible viewport while a 300svh outer section supplies native vertical scroll progress. Find, Save and Cook advance with page scroll and remain directly selectable. A compact phase-specific summary stays below the flexible preview. The cooking checklist and first step scroll within the preview on short screens. Header clearance is 84px on phones and 108px otherwise. Reduced motion removes pinning and retains direct phase controls. This supersedes the compact horizontal carousel.
+
+Tablet revision: at 601–1180px the pinned second-section scene uses two columns: active story on the left, recipe preview and phase controls on the right. Both remain within the viewport as scrolling advances phases. Phone layouts stay stacked; the wide desktop narrative starts at 1181px.

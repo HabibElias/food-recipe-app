@@ -187,7 +187,7 @@
 
 /* A viewport-sized recipe scene advances with the page scroll. */
 .journey-short-copy,.journey-carousel-navigation { display:none; }
-@media(max-width:900px), (min-width:901px) and (max-height:819px) {
+@media(max-width:1180px), (min-width:1181px) and (max-height:819px) {
  .recipe-journey { --journey-header:108px; padding:0; height:300svh; }
  .journey-stage { position:sticky; top:var(--journey-header); height:calc(100svh - var(--journey-header)); padding-block:20px; display:flex; flex-direction:column; gap:16px; }
  .journey-heading { margin:0; display:flex; align-items:center; gap:20px; flex-shrink:0; }
@@ -261,4 +261,24 @@
  .journey-sheet-description { display:none; }
  .journey-preview[data-phase="2"] .journey-cooking { top:76px; bottom:40px; }
  .journey-bookmark { width:34px; height:34px; top:16px; right:16px; }
+}
+
+/* Tablets keep the story and recipe in view together. */
+@media(min-width:601px) and (max-width:1180px) {
+ .journey-layout { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); align-items:center; gap:36px; }
+ .journey-chapters { grid-column:1; grid-row:1; width:100%; margin:0; min-width:0; }
+ .journey-figure { grid-column:2; grid-row:1; height:100%; max-height:640px; width:100%; margin:0; min-width:0; }
+ .journey-chapter h3 { font-size:clamp(27px,3.2vw,36px); }
+ .journey-chapter p { font-size:16px; line-height:1.65; margin-bottom:20px; }
+ .journey-controls { gap:6px; }
+ .journey-controls>button { padding-inline:10px; }
+}
+@media(min-width:601px) and (max-width:1180px) and (max-height:650px) {
+ .journey-layout { gap:24px; }
+ .journey-chapter h3 { font-size:25px; }
+ .journey-chapter p { font-size:14px; margin-bottom:10px; }
+}
+@media(min-width:601px) and (max-width:1180px) and (prefers-reduced-motion:reduce) {
+ .journey-figure { height:auto; }
+ .journey-preview { height:clamp(300px,60svh,560px); }
 }
