@@ -184,3 +184,34 @@
 
 
 @media(max-width:600px) { .landing-opening,.landing-closing { background-size:675px 675px; } }
+
+/* Compact journey: a swipeable recipe story with a glimpse of the next leaf. */
+.journey-carousel-navigation { display:none; }
+@media(max-width:900px), (min-width:901px) and (max-height:819px) {
+ .journey-layout { min-width:0; gap:28px; }
+ .journey-figure { min-width:0; }
+ .journey-chapters { display:flex; gap:16px; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scrollbar-width:none; padding:4px 0 16px; max-width:560px; }
+ .journey-chapters::-webkit-scrollbar { display:none; }
+ .journey-chapter,.journey-chapter.is-current { display:block; flex:0 0 91%; scroll-snap-align:start; scroll-snap-stop:always; min-height:0; padding:28px; border-radius:18px; background:#39281c; opacity:1; }
+ .journey-chapter:last-child { margin-right:9%; }
+ .journey-chapter.is-current { background:#463020; }
+ .journey-chapter h3 { font-size:30px; max-width:17ch; }
+ .journey-chapter p { font-size:16px; }
+ .journey-carousel-navigation { display:flex; align-items:center; gap:14px; margin:24px 12px 0 0; }
+ .journey-carousel-arrow { display:grid; place-items:center; width:46px; height:46px; border-radius:50%; background:var(--cream); color:var(--roast); flex-shrink:0; transition:background-color .2s; }
+ .journey-carousel-arrow:hover { background:var(--saffron); }
+ .journey-carousel-arrow:disabled { opacity:.3; cursor:default; }
+ .journey-carousel-progress { display:flex; flex:1; gap:8px; }
+ .journey-carousel-progress button { display:flex; align-items:center; flex:1; min-height:44px; }
+ .journey-carousel-progress button span { display:block; width:100%; height:4px; border-radius:4px; background:#846f5f; transition:background-color .2s; }
+ .journey-carousel-progress button[aria-current] span { background:var(--saffron); }
+ .journey-carousel-status { font-size:13px; font-variant-numeric:tabular-nums; color:#dfd1c2; }
+ .journey-preview { touch-action:pan-y; }
+ .journey-figure>figcaption { margin-top:16px; }
+}
+@media(max-width:600px) {
+ .journey-chapter,.journey-chapter.is-current { padding:24px; flex-basis:92%; }
+ .journey-chapter:last-child { margin-right:8%; }
+ .journey-chapter h3 { font-size:28px; }
+ .journey-carousel-navigation { gap:10px; }
+}

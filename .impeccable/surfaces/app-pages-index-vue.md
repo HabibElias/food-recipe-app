@@ -27,3 +27,6 @@ Use 160/136px chapter spacing on desktop, 120/104px on tablets and 96/88px on ph
 
 ## Pattern correction
 The earlier clipped side strips and 24px mobile band were rejected by the user. Use a continuous direct background across the full opening and closing, matching the page 17 stagger, color cadence and alternating sideways pattern motifs. No separate blank orange area or clipped strip.
+
+## Tablet and phone carousel
+The user requested a creative carousel for the second section. Preserve the shared transforming recipe sheet and use a horizontal snap rail of Find, Save, and Cook stories with a next-leaf peek, arrows, progress segments, keyboard controls and preview swipes. Keep the existing wide desktop scroll narrative.
