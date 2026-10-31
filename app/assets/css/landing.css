@@ -433,3 +433,31 @@
  .meal-visual figcaption { font-size:13px; }
 }
 @media(prefers-reduced-motion:reduce) { .hero-meal-reel button:hover { transform:none; } }
+
+/* A shared, scroll-mixed ground joins every chapter without section seams. */
+.landing-page { background:var(--flow-ground,var(--roast)); color:var(--flow-ink,var(--cream)); }
+.landing-page .meal-story,.landing-page .landing-share,.landing-page .landing-faq,.landing-page .landing-closing { background-color:transparent; }
+.landing-page .meal-story { color:inherit; }
+.landing-page .kitchen-benefit p,.landing-page .landing-section-heading p,
+.landing-page .starter-recipe p,.landing-page .starter-recipe-facts,
+.landing-page .landing-answers>p,.landing-page .landing-answers strong { color:var(--flow-ink,var(--roast)); }
+.landing-kitchen-photo,.share-recipe-note { color:var(--roast); }
+.landing-page .share-layout .btn-outline { color:var(--flow-ink,var(--roast)); border-color:currentColor; }
+.landing-page .share-layout .btn-outline:hover { color:var(--roast); background:var(--cream); }
+.landing-page .landing-closing { background-image:none; isolation:isolate; }
+.landing-closing::before { content:""; position:absolute; inset:0; background-image:url('/brand/bowlup-pattern-ember.svg'); background-size:900px 900px; background-position:center top; opacity:var(--chapter-entry,1); pointer-events:none; z-index:-1; }
+.bowlup-app:has(.landing-page)>.site-footer { position:relative; background:var(--flow-ground,var(--roast)); color:var(--flow-ink,var(--cream)); }
+.bowlup-app:has(.landing-page) .site-footer p,.bowlup-app:has(.landing-page) .footer-bottom { color:inherit; }
+@media(prefers-reduced-motion:no-preference) {
+ .landing-kitchen-copy,.share-layout>div:first-child,.landing-starters .landing-section-heading,
+ .landing-faq .site-frame,.closing-layout { transform:translateY(calc((1 - var(--chapter-entry,1)) * 28px)); }
+}
+@media(max-width:600px) { .landing-closing::before { background-size:675px 675px; } }
+/* Static content remains readable before hydration and without JavaScript. */
+.bowlup-app:has(.landing-page) { --flow-ground:var(--cream); --flow-ink:var(--roast); }
+.landing-search-field { color:var(--roast); }
+.landing-closing .opening-search-button { background:var(--saffron); border-color:var(--saffron); color:var(--roast); }
+.landing-closing .opening-search-button:hover { background:var(--cream); border-color:var(--cream); }
+.landing-closing .landing-search-field:focus-within { outline-color:var(--flow-ink,var(--roast)); }
+.bowlup-app[data-flow-ink="dark"] .meal-timeline>button[aria-current] { color:var(--roast); }
+.bowlup-app[data-flow-ink="dark"] .meal-track>span { background:var(--roast); }

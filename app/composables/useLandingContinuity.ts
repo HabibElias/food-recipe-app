@@ -3,11 +3,67 @@ import type { Ref } from "vue";
 export function useLandingContinuity(root: Ref<HTMLElement | null>) {
   let frame = 0;
   let preference: MediaQueryList | undefined;
+  const lightInk = useState<boolean>("landing-light-ink", () => false);
   const clamp = (n: number) => Math.max(0, Math.min(1, n));
+  const channels = (hex: string) => hex.match(/[a-f\d]{2}/gi)!.map(value => parseInt(value, 16));
+  const luminance = (rgb: number[]) => rgb.map(value => {
+    const c = value / 255;
+    return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4;
+  }).reduce((sum, value, index) => sum + value * [ .2126, .7152, .0722 ][index]!, 0);
+
+  function updateChapters(page: HTMLElement) {
+    const app = page.closest<HTMLElement>(".bowlup-app");
+    if (!app) return;
+    const palette = getComputedStyle(page);
+    const color = (name: string) => channels(palette.getPropertyValue(`--${name}`).trim().replace("#", ""));
+    const roast = color("roast"), cream = color("cream");
+    const chapters = [
+      [".landing-kitchen", "cream"], [".landing-share", "saffron"],
+      [".landing-starters", "cream"], [".landing-faq", "surface"],
+      [".landing-closing", "ember"],
+    ];
+    const stops = [{ y: 0, rgb: roast }];
+    const entries: [HTMLElement, number][] = [];
+    let previous = roast;
+    for (const [selector, token] of chapters) {
+      const section = page.querySelector<HTMLElement>(selector!);
+      if (!section) continue;
+      const box = section.getBoundingClientRect();
+      const top = box.top + window.scrollY;
+      const padding = parseFloat(getComputedStyle(section).paddingTop);
+      const start = Math.max(stops.at(-1)!.y + 1, top - window.innerHeight * .4);
+      stops.push({ y: start, rgb: previous });
+      previous = color(token!);
+      stops.push({ y: Math.max(start + 1, top + Math.min(padding * .5, 80)), rgb: previous });
+      const entry = preference?.matches ? 1 : clamp((window.innerHeight - box.top) / (window.innerHeight * .75));
+      entries.push([section, entry]);
+    }
+    const end = page.getBoundingClientRect().bottom + window.scrollY;
+    const start = Math.max(stops.at(-1)!.y + 1, end - window.innerHeight * .4);
+    stops.push({ y: start, rgb: previous }, { y: Math.max(start + 1, end + 25), rgb: roast });
+    const focus = window.scrollY + window.innerHeight * .5;
+    let rgb = roast;
+    for (let index = 1; index < stops.length; index++) {
+      const from = stops[index - 1]!, to = stops[index]!;
+      const progress = clamp((focus - from.y) / (to.y - from.y));
+      const eased = progress * progress * (3 - 2 * progress);
+      rgb = from.rgb.map((value, channel) => Math.round(value + (to.rgb[channel]! - value) * eased));
+      if (focus < to.y) break;
+    }
+    const lightness = luminance(rgb);
+    const lightContrast = (luminance(cream) + .05) / (lightness + .05);
+    const darkContrast = (lightness + .05) / (luminance(roast) + .05);
+    lightInk.value = lightContrast > darkContrast;
+    entries.forEach(([section, entry]) => section.style.setProperty("--chapter-entry", String(entry)));
+    app.dataset.flowInk = lightInk.value ? "light" : "dark";
+    app.style.setProperty("--flow-ground", `rgb(${rgb.join(",")})`);
+    app.style.setProperty("--flow-ink", lightInk.value ? "var(--cream)" : "var(--roast)");
+  }
   function update() {
     frame = 0;
     const page = root.value;
     if (!page) return;
+    updateChapters(page);
     const hero = page.querySelector<HTMLElement>(".photo-opening");
     const story = page.querySelector<HTMLElement>(".meal-story");
     if (!hero || !story) return;
@@ -36,5 +92,9 @@ export function useLandingContinuity(root: Ref<HTMLElement | null>) {
     preference?.removeEventListener("change", schedule);
     window.removeEventListener("scroll", schedule);
     window.removeEventListener("resize", schedule);
+    const app = root.value?.closest<HTMLElement>(".bowlup-app");
+    if (app) delete app.dataset.flowInk;
+    app?.style.removeProperty("--flow-ground");
+    app?.style.removeProperty("--flow-ink");
   });
 }

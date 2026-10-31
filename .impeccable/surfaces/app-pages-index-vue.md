@@ -51,3 +51,6 @@ The user's latest brief replaces the split hero with a full-bleed photographic o
 
 ## Current correction: rotating scenes and one continuous opening
 Latest user direction: transparent header, more food variety, timed backgrounds, brand-matched dark overlay and a smooth animated transition to the second section. Implement nine selectable backgrounds and nine featured existing catalog recipes; Dark Roast connects hero and recipe story with scroll-driven photo/narrative continuity. Cream logo and navigation sit over the image; pause/play and reduced motion remain explicit. This supersedes the solid header and Saffron second-section ground.
+
+## Whole-page continuity
+The latest user request extends the smooth opening transition to every remaining section and footer. Use one scroll-mixed background field with approved chapter colors, contrast-selected Roast/Cream text, a matching approved footer logo and gentle, reversible section movement. Preserve all content and functions; remove the independent footer curtain.
