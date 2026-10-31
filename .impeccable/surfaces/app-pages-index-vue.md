@@ -54,3 +54,6 @@ Latest user direction: transparent header, more food variety, timed backgrounds,
 
 ## Whole-page continuity
 The latest user request extends the smooth opening transition to every remaining section and footer. Use one scroll-mixed background field with approved chapter colors, contrast-selected Roast/Cream text, a matching approved footer logo and gentle, reversible section movement. Preserve all content and functions; remove the independent footer curtain.
+
+## Quiet hero and longer color changes — current authority
+Remove the pause/play button and category-thumbnail chooser as explicitly requested. Keep automatic image scenes at a relaxed 16-second cadence with four-second crossfades, synchronized recipe metadata and preview, form/keyboard/offscreen suspension and dynamic reduced-motion support. Reclaim the removed hero row at every size. Whole-page colors interpolate across a wider scroll range and settle over several seconds rather than snapping on quick scroll; contrast uses the displayed color. This supersedes the earlier selectable thumbnails and explicit slideshow control.

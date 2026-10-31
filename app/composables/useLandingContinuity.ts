@@ -2,6 +2,10 @@ import type { Ref } from "vue";
 
 export function useLandingContinuity(root: Ref<HTMLElement | null>) {
   let frame = 0;
+  let colorFrame = 0;
+  let colorTime = 0;
+  let currentColor: number[] | undefined;
+  let targetColor: number[] = [];
   let preference: MediaQueryList | undefined;
   const lightInk = useState<boolean>("landing-light-ink", () => false);
   const clamp = (n: number) => Math.max(0, Math.min(1, n));
@@ -10,6 +14,40 @@ export function useLandingContinuity(root: Ref<HTMLElement | null>) {
     const c = value / 255;
     return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4;
   }).reduce((sum, value, index) => sum + value * [ .2126, .7152, .0722 ][index]!, 0);
+
+  function blendGround(app: HTMLElement, target: number[], roast: number[], cream: number[]) {
+    targetColor = target;
+    const paint = () => {
+      const rgb = currentColor!.map(Math.round);
+      const lightness = luminance(rgb);
+      const lightContrast = (luminance(cream) + .05) / (lightness + .05);
+      const darkContrast = (lightness + .05) / (luminance(roast) + .05);
+      lightInk.value = lightContrast > darkContrast;
+      app.dataset.flowInk = lightInk.value ? "light" : "dark";
+      app.style.setProperty("--flow-ground", `rgb(${rgb.join(",")})`);
+      app.style.setProperty("--flow-ink", lightInk.value ? "var(--cream)" : "var(--roast)");
+    };
+    if (!currentColor || preference?.matches) {
+      cancelAnimationFrame(colorFrame);
+      colorFrame = 0;
+      currentColor = target;
+      paint();
+      return;
+    }
+    if (colorFrame) return;
+    colorTime = performance.now();
+    const settle = (now: number) => {
+      // About four seconds to settle: quick scrolls never snap the color field.
+      const amount = 1 - Math.exp(-Math.min(now - colorTime, 64) / 900);
+      colorTime = now;
+      currentColor = currentColor!.map((value, index) => value + (targetColor[index]! - value) * amount);
+      const arrived = currentColor.every((value, index) => Math.abs(targetColor[index]! - value) < .25);
+      if (arrived) currentColor = targetColor;
+      paint();
+      colorFrame = arrived ? 0 : requestAnimationFrame(settle);
+    };
+    colorFrame = requestAnimationFrame(settle);
+  }
 
   function updateChapters(page: HTMLElement) {
     const app = page.closest<HTMLElement>(".bowlup-app");
@@ -31,7 +69,7 @@ export function useLandingContinuity(root: Ref<HTMLElement | null>) {
       const box = section.getBoundingClientRect();
       const top = box.top + window.scrollY;
       const padding = parseFloat(getComputedStyle(section).paddingTop);
-      const start = Math.max(stops.at(-1)!.y + 1, top - window.innerHeight * .4);
+      const start = Math.max(stops.at(-1)!.y + 1, top - window.innerHeight * .85);
       stops.push({ y: start, rgb: previous });
       previous = color(token!);
       stops.push({ y: Math.max(start + 1, top + Math.min(padding * .5, 80)), rgb: previous });
@@ -39,7 +77,7 @@ export function useLandingContinuity(root: Ref<HTMLElement | null>) {
       entries.push([section, entry]);
     }
     const end = page.getBoundingClientRect().bottom + window.scrollY;
-    const start = Math.max(stops.at(-1)!.y + 1, end - window.innerHeight * .4);
+    const start = Math.max(stops.at(-1)!.y + 1, end - window.innerHeight * .85);
     stops.push({ y: start, rgb: previous }, { y: Math.max(start + 1, end + 25), rgb: roast });
     const focus = window.scrollY + window.innerHeight * .5;
     let rgb = roast;
@@ -50,14 +88,8 @@ export function useLandingContinuity(root: Ref<HTMLElement | null>) {
       rgb = from.rgb.map((value, channel) => Math.round(value + (to.rgb[channel]! - value) * eased));
       if (focus < to.y) break;
     }
-    const lightness = luminance(rgb);
-    const lightContrast = (luminance(cream) + .05) / (lightness + .05);
-    const darkContrast = (lightness + .05) / (luminance(roast) + .05);
-    lightInk.value = lightContrast > darkContrast;
     entries.forEach(([section, entry]) => section.style.setProperty("--chapter-entry", String(entry)));
-    app.dataset.flowInk = lightInk.value ? "light" : "dark";
-    app.style.setProperty("--flow-ground", `rgb(${rgb.join(",")})`);
-    app.style.setProperty("--flow-ink", lightInk.value ? "var(--cream)" : "var(--roast)");
+    blendGround(app, rgb, roast, cream);
   }
   function update() {
     frame = 0;
@@ -89,6 +121,7 @@ export function useLandingContinuity(root: Ref<HTMLElement | null>) {
   });
   onBeforeUnmount(() => {
     cancelAnimationFrame(frame);
+    cancelAnimationFrame(colorFrame);
     preference?.removeEventListener("change", schedule);
     window.removeEventListener("scroll", schedule);
     window.removeEventListener("resize", schedule);
