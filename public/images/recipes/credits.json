@@ -265,5 +265,30 @@
     "notes": [],
     "saved": "2026-10-31T01:22:05.706Z",
     "modifications": "Resized to 1600px and encoded as WebP; cropped only by the display layout."
+  },
+  {
+    "file": "public/images/recipes/shiro-bowl.webp",
+    "media": "image",
+    "ref": "commons:35976837",
+    "title": "Shiro wet",
+    "creator": "Yonihahasis",
+    "creatorUrl": null,
+    "date": "2014-10-07",
+    "license": "CC BY-SA 4.0",
+    "licenseCode": "by-sa",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "creditRequired": true,
+    "page": "https://commons.wikimedia.org/wiki/File:Shiro_wet.jpg",
+    "via": "Wikimedia Commons",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Shiro_wet.jpg",
+    "width": 1456,
+    "height": 2592,
+    "bytes": 879396,
+    "credit": "\"Shiro wet\" by Yonihahasis, CC BY-SA 4.0, via Wikimedia Commons",
+    "notes": [
+      "Share-alike: an altered version (recoloured, combined with other pictures) must be shared under the same licence."
+    ],
+    "saved": "2026-10-31T13:58:12.823Z",
+    "modifications": "Resized to 1200px and encoded as WebP; cropped only by the display layout. Shared under CC BY-SA 4.0."
   }
 ]

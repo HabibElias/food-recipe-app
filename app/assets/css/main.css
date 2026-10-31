@@ -209,3 +209,5 @@ h1,h2,h3,p { margin-top:0; }
 /* Wordmark clear space stays free on all four sides. */
 .footer-top>div>a { display:inline-block; padding:24px; margin:-24px -24px 0; }
 @media(max-width:760px) { .brand-link { padding:20px 18px; margin-left:-18px; } }
+/* Keep the serving pot in view when the portrait Shiro photo is cropped. */
+img[src$="/shiro-bowl.webp"] { object-position:50% 32%; }

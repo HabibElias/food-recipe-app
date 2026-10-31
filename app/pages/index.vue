@@ -98,7 +98,7 @@ useSeoMeta({
 
     <section class="landing-share" aria-labelledby="share-title"><div class="site-frame share-layout">
       <div><h2 id="share-title" data-reveal="print">Pass a little<br>of your kitchen on.</h2><p>The weekday fix. The family favorite. The dish you finally got right. Give it a name, write down what goes in, and show another cook how it comes together.</p><NuxtLink :to="user.isLoggedIn ? '/recipes/add' : '/auth/sign-up'" class="btn btn-outline">Share your first recipe<Icon name="lucide:arrow-up-right" size="17" /></NuxtLink></div>
-      <div class="share-recipe-note" data-reveal="pass"><img src="/images/recipes/shiro.webp" alt="Shiro served on injera with a fresh salad" width="500" height="360" loading="lazy"><p>Some recipes feel like home.</p><span>Make room for yours.</span></div>
+      <div class="share-recipe-note" data-reveal="pass"><img src="/images/recipes/shiro-bowl.webp" alt="Shiro in a traditional serving pot beside injera" width="500" height="360" loading="lazy"><p>Some recipes feel like home.</p><span>Make room for yours.</span></div>
     </div></section>
 
     <section id="our-kitchen" class="landing-founder site-frame" aria-labelledby="founder-title">
