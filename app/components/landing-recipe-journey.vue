@@ -6,6 +6,7 @@ const phase = ref(0);
 const progress = ref(0);
 const pinned = ref(false);
 const saved = ref(false);
+const checked = ref<string[]>([]);
 const user = useUserStore();
 const chapters = [
  { name: "Find", title: "Find your kind of good.", copy: "A familiar favorite. Something you've never tried. Find the recipe that feels like tonight.", action: "Explore the recipes", to: "/browse" },
@@ -71,8 +72,22 @@ onBeforeUnmount(() => {
     </div>
    </div>
    <figure class="meal-visual">
-    <div class="meal-image"><img :src="recipe.image" :alt="recipe.title" width="1000" height="1000" loading="lazy"></div>
-    <button v-if="phase === 1" type="button" class="meal-save" @pointerdown.prevent :aria-pressed="saved" @click="saved = !saved"><Icon :name="saved ? 'lucide:bookmark-check' : 'lucide:bookmark'" size="20" />{{ saved ? 'Saved in this preview' : 'Try saving this recipe' }}</button>
+    <div class="meal-recipe-stack" :data-ui="true" aria-label="Interactive recipe preview">
+     <div class="meal-book-leaf" aria-hidden="true"><span>Your recipe book</span><span>Something worth making again.</span></div>
+     <article class="meal-recipe-card">
+      <img class="meal-card-photo" :src="recipe.image" :alt="recipe.title" width="660" height="500" loading="lazy">
+      <div class="meal-card-heading"><h3>{{ recipe.title }}</h3><span>{{ recipe.minutes }} min · {{ recipe.ingredients.length }} ingredients</span></div>
+      <button v-if="phase !== 2" class="meal-card-save" type="button" @pointerdown.prevent :aria-pressed="saved" :aria-label="saved ? 'Unsave in this preview' : 'Save in this preview'" @click="saved = !saved"><Icon :name="saved || phase === 1 ? 'lucide:bookmark-check' : 'lucide:bookmark'" size="22" /></button>
+      <p v-if="phase === 0" class="meal-card-description">{{ recipe.description }}</p>
+      <p v-if="phase === 1" class="meal-card-saved"><Icon name="lucide:check" size="18" />{{ saved ? 'Saved in this preview' : 'A place in your recipe book.' }}</p>
+      <div v-if="phase === 2" class="meal-card-cooking">
+       <p>A few things you'll need</p>
+       <label v-for="ingredient in recipe.ingredients.slice(0,3)" :key="ingredient"><input v-model="checked" type="checkbox" :value="ingredient"><span>{{ ingredient }}</span></label>
+       <div class="meal-card-first-step"><strong>Start here.</strong><p>{{ recipe.steps[0] }}</p></div>
+      </div>
+      <NuxtLink :to="recipeLink" class="meal-card-link">{{ phase === 2 ? 'See the full recipe' : 'From Bowlup Kitchen' }}<Icon name="lucide:arrow-up-right" size="17" /></NuxtLink>
+     </article>
+    </div>
     <figcaption><span>{{ recipe.title }}</span><span>{{ phase === 1 ? 'A little inspiration for later.' : phase === 2 ? 'Your next good meal.' : `${recipe.minutes} minutes. Something worth making.` }}</span></figcaption>
    </figure>
    <nav class="meal-timeline" aria-label="Explore how Bowlup works" @keydown="key">

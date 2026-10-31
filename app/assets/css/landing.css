@@ -180,7 +180,7 @@
 
 
 /* The meal, in three full-screen movements. */
-.meal-story { height:340svh; background:var(--cream); color:var(--roast); }
+.meal-story { height:340svh; background:var(--saffron); color:var(--roast); }
 .meal-stage { position:sticky; top:0; height:100svh; display:grid; grid-template-columns:1fr 1.15fr; grid-template-rows:minmax(0,1fr) 100px; padding:40px 40px 0 6.5%; gap:0 6%; overflow:clip; }
 .meal-narrative { align-self:center; display:grid; min-width:0; }
 .meal-message { grid-area:1 / 1; opacity:0; visibility:hidden; transform:translateY(24px); transition:opacity .45s,transform .65s var(--landing-ease),visibility .45s; }
@@ -202,9 +202,9 @@
 .meal-save[aria-pressed="true"] { background:var(--saffron); }
 .meal-timeline { grid-column:1 / -1; display:flex; align-items:center; gap:24px; }
 .meal-timeline>button { flex:1; padding:12px 0; text-align:left; font-size:16px; font-weight:550; min-height:64px; }
-.meal-timeline>button[aria-current] { color:#a53e12; }
-.meal-track { display:block; background:#e6dbce; height:4px; border-radius:4px; margin-top:12px; overflow:hidden; }
-.meal-track>span { display:block; height:100%; background:var(--ember); transform-origin:left; }
+.meal-timeline>button[aria-current] { color:var(--roast); font-weight:750; }
+.meal-track { display:block; background:#c48229; height:4px; border-radius:4px; margin-top:12px; overflow:hidden; }
+.meal-track>span { display:block; height:100%; background:var(--roast); transform-origin:left; }
 .meal-scroll-cue { display:flex; align-items:center; gap:12px; font-size:13px; padding-left:32px; }
 .bowlup-app:has(.meal-story.is-pinned) .site-header { transform:translateY(-110%); }
 @media(min-width:901px) and (max-height:760px) {
@@ -257,3 +257,47 @@
  .meal-timeline>button[aria-current] .meal-track>span { transform:scaleX(1)!important; }
 }
 .bowlup-app:has(.meal-story.is-pinned) .site-header:has(:focus-visible),.bowlup-app:has(.meal-story.is-pinned) .site-header:has(.mobile-nav) { transform:none; }
+
+/* The original interactive recipe sheet, fitted to the new full-height story. */
+.meal-recipe-stack { position:relative; min-height:0; margin:12px 12px 0 0; color:var(--roast); }
+.meal-book-leaf { position:absolute; inset:8px 0; padding:24px; border-radius:20px; background:var(--roast); color:var(--cream); display:flex; flex-direction:column; justify-content:space-between; font-size:13px; opacity:0; transform:rotate(0); transition:transform .65s var(--landing-ease),opacity .3s; }
+.meal-recipe-card { position:absolute; inset:0; display:flex; flex-direction:column; gap:16px; padding:18px 24px; background:var(--cream); border-radius:20px; min-height:0; overflow:hidden; transition:transform .65s var(--landing-ease); }
+.meal-card-photo { flex:1; min-height:0; max-height:54%; width:100%; object-fit:cover; border-radius:12px; }
+.meal-card-heading { flex-shrink:0; }
+.meal-card-heading h3 { font-size:clamp(23px,2.3vw,32px); margin:0 0 6px; line-height:1.15; }
+.meal-card-heading>span { font-size:13px; color:var(--muted); }
+.meal-card-save { position:absolute; right:36px; top:30px; width:44px; height:44px; border-radius:50%; background:var(--cream); display:grid; place-items:center; }
+.meal-card-save[aria-pressed="true"] { background:var(--saffron); }
+.meal-card-description { font-size:14px; line-height:1.6; margin:0; }
+.meal-card-saved { display:flex; align-items:center; gap:8px; font-size:14px; margin:0; }
+.meal-card-link { margin-top:auto; min-height:30px; display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:13px; font-weight:600; flex-shrink:0; }
+.meal-stage[data-phase="1"] .meal-book-leaf { opacity:1; transform:translate(12px,4px) rotate(3deg); }
+.meal-stage[data-phase="1"] .meal-recipe-card { transform:translate(-4px,-2px) rotate(-2deg) scale(.96); }
+.meal-stage[data-phase="2"] .meal-card-photo { flex:none; height:22%; }
+.meal-card-cooking { flex:1; min-height:0; overflow-y:auto; font-size:14px; }
+.meal-card-cooking>p { font-weight:600; margin:0 0 14px; }
+.meal-card-cooking label { display:flex; gap:10px; align-items:start; margin-bottom:12px; }
+.meal-card-cooking input { width:18px; height:18px; margin-top:2px; accent-color:#a53e12; flex-shrink:0; }
+.meal-card-cooking input:checked+span { text-decoration:line-through; color:var(--muted); }
+.meal-card-first-step { margin-top:20px; }
+.meal-card-first-step p { font-size:14px; line-height:1.6; margin:8px 0 0; }
+@media(max-width:600px) {
+ .meal-recipe-card { padding:14px 18px; gap:12px; }
+ .meal-card-heading h3 { font-size:23px; }
+ .meal-card-photo { max-height:46%; }
+ .meal-card-description { font-size:13px; line-height:1.45; }
+ .meal-card-save { top:24px; right:28px; width:38px; height:38px; }
+ .meal-stage[data-phase="2"] .meal-card-photo { display:none; }
+ .meal-card-cooking,.meal-card-first-step p { font-size:13px; }
+ .meal-card-cooking label { margin-bottom:9px; }
+ .meal-card-first-step { margin-top:12px; }
+}
+@media(max-height:700px) {
+ .meal-card-description { max-height:70px; overflow-y:auto; }
+ .meal-recipe-card { gap:10px; padding:14px 18px; }
+ .meal-stage[data-phase="2"] .meal-card-photo { display:none; }
+ .meal-card-heading h3 { font-size:23px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .meal-book-leaf,.meal-recipe-card { transform:none!important; transition:none; }
+}
