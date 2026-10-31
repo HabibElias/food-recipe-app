@@ -5,14 +5,34 @@ import starterRecipes from "~/data/landing-recipes.json";
 const user = useUserStore();
 const landing = ref<HTMLElement | null>(null);
 useLandingMotion(landing);
+useLandingContinuity(landing);
 
-const recipes = starterRecipes as LandingRecipe[];
-const heroRecipes = recipes.filter(recipe => recipe.key !== "v1/shiro-wot");
+const recipes = (starterRecipes as LandingRecipe[]).filter(recipe => recipe.key !== "v1/shiro-wot");
+const heroRecipes = recipes;
 const heroRecipeIndex = ref(0);
 const heroRecipe = computed(() => heroRecipes[heroRecipeIndex.value]!);
-function nextHeroRecipe() {
-  heroRecipeIndex.value = (heroRecipeIndex.value + 1) % heroRecipes.length;
+const slideshowPaused = ref(false);
+const interacting = ref(false);
+let slideshowTimer: ReturnType<typeof setInterval> | undefined;
+let slideshowPreference: MediaQueryList | undefined;
+let changedAt = 0;
+function handleHeroFocus(event: FocusEvent) {
+  const element = event.target as HTMLElement;
+  interacting.value = element.matches("input,select,textarea,:focus-visible") && !element.matches(".photo-hero-next");
 }
+function selectHeroRecipe(index: number) { heroRecipeIndex.value = index; changedAt = Date.now(); }
+function nextHeroRecipe() { selectHeroRecipe((heroRecipeIndex.value + 1) % heroRecipes.length); }
+onMounted(() => {
+  slideshowPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  slideshowPaused.value = slideshowPreference.matches;
+  changedAt = Date.now();
+  slideshowTimer = setInterval(() => {
+    if (!slideshowPaused.value && !interacting.value && !document.hidden && window.scrollY < 40 && Date.now() - changedAt >= 6500) nextHeroRecipe();
+  }, 500);
+  // Warm the remaining local photographs without delaying the first image.
+  heroRecipes.slice(1).forEach(recipe => { const image = new Image(); image.src = recipe.image; });
+});
+onBeforeUnmount(() => { if (slideshowTimer) clearInterval(slideshowTimer); });
 const search = ref("");
 const maxTime = ref(0);
 const recipeIds = ref<Record<string, number>>({});
@@ -55,7 +75,7 @@ useSeoMeta({
 
 <template>
   <div ref="landing" class="landing-page">
-    <section class="photo-opening" aria-labelledby="landing-title">
+    <section class="photo-opening" aria-labelledby="landing-title" @focusin="handleHeroFocus" @focusout="interacting = false">
       <div class="hero-backdrop" aria-hidden="true">
         <Transition name="hero-background"><img :key="heroRecipe.image" :src="heroRecipe.image" alt="" width="1600" height="1067" fetchpriority="high"></Transition>
       </div>
@@ -66,9 +86,12 @@ useSeoMeta({
           <a href="#how-it-works" class="photo-hero-how">See how Bowlup works<Icon name="lucide:arrow-down" size="18" /></a>
         </div>
         <div class="photo-hero-pick">
-          <NuxtLink :to="recipeLink(heroRecipe)" aria-live="polite" aria-atomic="true"><strong>{{ heroRecipe.title }}</strong><span>{{ heroRecipe.minutes }} minutes · View recipe<Icon name="lucide:arrow-up-right" size="18" /></span></NuxtLink>
-          <button type="button" class="photo-hero-next" @click="nextHeroRecipe" aria-label="Another recipe idea"><Icon name="lucide:shuffle" size="21" /></button>
+          <NuxtLink :to="recipeLink(heroRecipe)" :aria-live="slideshowPaused ? 'polite' : 'off'" aria-atomic="true"><strong>{{ heroRecipe.title }}</strong><span>{{ heroRecipe.minutes }} minutes · View recipe<Icon name="lucide:arrow-up-right" size="18" /></span></NuxtLink>
+          <button type="button" class="photo-hero-next" @click="slideshowPaused = !slideshowPaused" :aria-label="slideshowPaused ? 'Play slideshow' : 'Pause slideshow'" :aria-pressed="slideshowPaused"><Icon :name="slideshowPaused ? 'lucide:play' : 'lucide:pause'" size="21" /></button>
         </div>
+        <nav class="hero-meal-reel" aria-label="Choose a featured meal">
+          <button v-for="(meal,index) in heroRecipes" :key="meal.key" type="button" :aria-label="`Show ${meal.title}`" :aria-pressed="heroRecipeIndex === index" @click="selectHeroRecipe(index)"><img :src="meal.image" alt="" width="88" height="60" loading="lazy"><span>{{ meal.category }}</span></button>
+        </nav>
         <form class="hero-finder" role="search" aria-label="Find your first Bowlup recipe" @submit.prevent="findRecipe">
           <div class="hero-finder-query"><label for="landing-search">What sounds good?</label><div class="landing-search-field"><Icon name="lucide:search" size="19" /><input id="landing-search" v-model="search" type="search" placeholder="Pasta, pancakes, roast chicken…"></div></div>
           <div class="hero-finder-time"><label for="landing-time">Time in the kitchen</label><select id="landing-time" v-model.number="maxTime" class="select"><option :value="0">Any time</option><option :value="15">Up to 15 min</option><option :value="30">Up to 30 min</option><option :value="60">Up to 1 hour</option></select></div>

@@ -376,3 +376,60 @@
 }
 /* Six dishes keep their descriptions comfortably readable at every width. */
 .landing-page .starter-recipe p { font-size:16px; }
+
+/* The header floats over the meal; Roast joins the two opening scenes. */
+.site-header.is-home-header { position:fixed; inset:0 0 auto; background:var(--cream); }
+.site-header.is-home-header.is-over-hero { background:transparent; color:var(--cream); }
+.site-header.is-over-hero .icon-button,.site-header.is-over-hero .desktop-signin { color:var(--cream); }
+.site-header.is-over-hero .desktop-signin { background:transparent; border-color:var(--cream); }
+.site-header.is-over-hero .desktop-signin:hover,.site-header.is-over-hero .icon-button:hover { color:var(--roast); background:var(--cream); }
+.site-header.is-over-hero .mobile-nav,.site-header.is-over-hero .account-menu { color:var(--roast); }
+.site-header.is-over-hero:has(.mobile-nav) { background:var(--roast); }
+.photo-opening::before { background:linear-gradient(90deg,#2b1d14e8,#2b1d14b3 48%,#2b1d1473); }
+.photo-opening::after { content:""; position:absolute; inset:auto 0 -1px; height:clamp(180px,30vh,360px); background:linear-gradient(0deg,var(--roast),#2b1d1400); pointer-events:none; z-index:0; }
+.photo-hero-inner { min-height:100svh; padding-block:150px 48px; row-gap:28px; grid-template-rows:1fr auto auto; position:relative; z-index:1; }
+.photo-hero-copy { transition:none; }
+.photo-hero-pick { margin:0 0 20px; padding:0; background:transparent; border-radius:0; }
+.photo-hero-pick strong { font-size:26px; }
+.hero-meal-reel { grid-column:1/-1; display:flex; gap:14px; align-items:center; overflow-x:auto; scrollbar-width:thin; scrollbar-color:var(--saffron) transparent; padding:8px 4px; }
+.hero-meal-reel button { position:relative; flex:0 0 88px; padding:0; opacity:.65; border-radius:8px; overflow:hidden; transition:opacity 220ms,transform 220ms; }
+.hero-meal-reel button img { width:88px; height:60px; object-fit:cover; }
+.hero-meal-reel button span { display:block; background:var(--roast); color:var(--cream); font-size:13px; padding:4px 0; }
+.hero-meal-reel button[aria-pressed="true"] { opacity:1; outline:3px solid var(--saffron); outline-offset:3px; }
+.hero-meal-reel button:hover { opacity:1; transform:translateY(-3px); }
+.photo-opening .hero-finder { grid-row:auto; }
+.meal-story { background:var(--roast); color:var(--cream); }
+.meal-action { background:var(--saffron); color:var(--roast); }
+.meal-action:hover { background:var(--cream); }
+.meal-timeline>button[aria-current] { color:var(--saffron); }
+.meal-track { background:#846f5f; }
+.meal-track>span { background:var(--saffron); }
+.meal-book-leaf { background:var(--saffron); color:var(--roast); }
+@media(prefers-reduced-motion:no-preference) {
+ .hero-backdrop { animation:none; transform:translateY(calc(var(--hero-exit,0) * 16%)) scale(calc(1 + var(--hero-exit,0) * .12)); opacity:calc(1 - var(--hero-exit,0) * .65); }
+ .photo-hero-copy { transform:translateY(calc(var(--hero-exit,0) * -32px)); }
+ .meal-stage { opacity:calc(.25 + var(--story-entry,1) * .75); }
+ .meal-visual { transform:translateY(calc((1 - var(--story-entry,1)) * 80px)) scale(calc(.94 + var(--story-entry,1) * .06)); }
+ .meal-narrative { transform:translateY(calc((1 - var(--story-entry,1)) * 48px)); }
+ .hero-background-enter-active,.hero-background-leave-active { transition:opacity 1400ms ease,transform 2200ms var(--landing-ease); }
+}
+@media(min-width:761px) and (max-height:800px) {
+ .photo-hero-inner { padding-block:118px 28px; row-gap:18px; }
+ .photo-hero-copy { padding-block:0; }
+ .photo-hero-copy h1 { font-size:clamp(48px,5.2vw,72px); }
+ .photo-hero-copy p { margin-block:18px 8px; }
+ .hero-meal-reel button { flex-basis:72px; }
+ .hero-meal-reel button img { width:72px; height:44px; }
+}
+@media(max-width:760px) {
+ .photo-hero-inner { padding-block:116px 28px; grid-template-rows:1fr auto auto auto; gap:20px; }
+ .photo-hero-copy h1 { font-size:clamp(38px,9.5vw,64px); }
+ .photo-hero-pick { margin:4px 0; }
+ .photo-hero-pick strong { font-size:22px; }
+ .hero-meal-reel { gap:12px; }
+ .hero-meal-reel button { flex-basis:72px; }
+ .hero-meal-reel button img { width:72px; height:48px; }
+ .photo-opening::before { background:linear-gradient(90deg,#2b1d14e8,#2b1d14b3); }
+ .meal-visual figcaption { font-size:13px; }
+}
+@media(prefers-reduced-motion:reduce) { .hero-meal-reel button:hover { transform:none; } }

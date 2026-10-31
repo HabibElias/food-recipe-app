@@ -148,5 +148,98 @@
       "Serve with warm pita and chopped tomatoes."
     ],
     "slug": "spiced-chickpeas"
+  },
+  {
+    "key": "v1/misir-wot",
+    "title": "Tomato Lentil Soup",
+    "category": "Dinner",
+    "minutes": 35,
+    "description": "A comforting bowl of red lentils, tomato and warm spices. A little lemon at the end makes the whole pot sing.",
+    "image": "/images/recipes/lentil-soup.webp",
+    "ingredients": [
+      "1 tablespoon olive oil",
+      "1 onion, chopped",
+      "2 garlic cloves, minced",
+      "1 carrot, diced",
+      "1 teaspoon ground cumin",
+      "1 cup red lentils, rinsed",
+      "400 g canned chopped tomatoes",
+      "4 cups vegetable stock",
+      "1 tablespoon lemon juice",
+      "Salt and black pepper to taste"
+    ],
+    "steps": [
+      "Warm the oil in a saucepan. Cook the onion and carrot for 5 minutes, then add garlic and cumin.",
+      "Add the lentils, tomatoes and stock. Bring to a boil, then reduce to a gentle simmer.",
+      "Cook for 20 to 25 minutes until the lentils and vegetables are tender. Blend a little of the soup for a creamier texture, if you like.",
+      "Add lemon juice and season to taste. Serve warm with bread."
+    ]
+  },
+  {
+    "key": "v1/cardamom-rice-pudding",
+    "title": "Cardamom Rice Pudding",
+    "category": "Dessert",
+    "minutes": 35,
+    "description": "Creamy rice pudding with cardamom and vanilla. Enjoy it warm or chilled after dinner.",
+    "image": "/images/recipes/rice-pudding.webp",
+    "ingredients": [
+      "1/2 cup short-grain rice, rinsed",
+      "2 cups milk",
+      "1 cup water",
+      "3 tablespoons sugar",
+      "1/4 teaspoon ground cardamom",
+      "1/2 teaspoon vanilla extract",
+      "A pinch of salt"
+    ],
+    "steps": [
+      "Combine the rice, water and salt in a saucepan. Simmer gently until most of the water is absorbed.",
+      "Stir in milk, sugar and cardamom.",
+      "Cook over low heat, stirring frequently, until the rice is tender and the mixture is creamy, about 20 minutes. Add a little milk if needed.",
+      "Stir in vanilla and serve warm, or cool promptly and refrigerate for a chilled dessert."
+    ]
+  },
+  {
+    "key": "v1/baked-apples",
+    "title": "Cinnamon Baked Apples",
+    "category": "Dessert",
+    "minutes": 35,
+    "description": "Tender baked apples with oats, cinnamon and a little honey. Serve with yogurt or ice cream.",
+    "image": "/images/recipes/baked-apples.webp",
+    "ingredients": [
+      "2 large apples",
+      "3 tablespoons rolled oats",
+      "1 tablespoon softened butter",
+      "1 tablespoon honey or maple syrup",
+      "1/2 teaspoon ground cinnamon",
+      "2 tablespoons water"
+    ],
+    "steps": [
+      "Heat the oven to 190 C. Halve the apples and carefully remove the cores.",
+      "Mix oats, butter, honey and cinnamon. Spoon the mixture into the apple centers.",
+      "Place apples in a small baking dish and pour the water around them.",
+      "Bake for 25 to 30 minutes until tender. Let cool slightly before serving."
+    ]
+  },
+  {
+    "key": "v1/avocado-tomato-toast",
+    "title": "Avocado and Tomato Toast",
+    "category": "Snacks",
+    "minutes": 10,
+    "description": "Crisp toast topped with lemony avocado and fresh tomato for a quick, colorful snack.",
+    "image": "/images/recipes/avocado-toast.webp",
+    "ingredients": [
+      "2 slices of bread",
+      "1 ripe avocado",
+      "1 small tomato, diced",
+      "1 teaspoon lemon juice",
+      "1 teaspoon olive oil",
+      "Salt and black pepper to taste"
+    ],
+    "steps": [
+      "Toast the bread until crisp.",
+      "Mash the avocado with lemon juice, salt and pepper.",
+      "Spread avocado over the toast and top with diced tomato.",
+      "Drizzle with olive oil and serve immediately."
+    ]
   }
 ]

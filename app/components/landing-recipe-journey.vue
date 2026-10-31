@@ -71,7 +71,7 @@ onBeforeUnmount(() => {
      <NuxtLink :to="index === 2 ? recipeLink : index === 1 && user.isLoggedIn ? '/bookmarks' : chapter.to" class="meal-action">{{ index === 1 && user.isLoggedIn ? 'Open your recipe book' : chapter.action }}<Icon name="lucide:arrow-up-right" size="21" /></NuxtLink>
     </div>
    </div>
-   <figure class="meal-visual" data-reveal="arrival">
+   <figure class="meal-visual">
     <div class="meal-recipe-stack" :data-ui="true" aria-label="Interactive recipe preview">
      <div class="meal-book-leaf" aria-hidden="true"><span>Your recipe book</span><span>Something worth making again.</span></div>
      <article class="meal-recipe-card">
