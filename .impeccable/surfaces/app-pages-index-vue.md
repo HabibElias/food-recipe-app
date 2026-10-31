@@ -39,3 +39,6 @@ User rejected all prior versions of the second section. Replace that whole compo
 
 ## Current right-side preview revision
 User explicitly chose to restore the interactive recipe-card preview, with background choice delegated. Use Saffron for the scene ground and the earlier Cream sheet with save state and cooking checklist. Preserve the current full-height scene, left narrative, phone stacking and scroll timeline.
+
+## Current hero refinement
+The user requested an award-level hero using Impeccable and Taste. Preserve the inherited page-is-the-object direction and the approved Bowlup palette, pattern, typography and photography. The opening now gives the real dish a larger upright photo, groups the product explanation below its two-line headline, and consolidates search into a Cream row. “Another idea” cycles real recipe suggestions manually, with matched metadata and destinations and reduced-motion support. The second section is outside this refinement. Design ambition is a quality goal, not a claim of award recognition.

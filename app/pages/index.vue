@@ -7,6 +7,11 @@ const landing = ref<HTMLElement | null>(null);
 useLandingMotion(landing);
 const recipes = starterRecipes as LandingRecipe[];
 const featured = recipes[0]!;
+const heroRecipeIndex = ref(0);
+const heroRecipe = computed(() => recipes[heroRecipeIndex.value]!);
+function nextHeroRecipe() {
+  heroRecipeIndex.value = (heroRecipeIndex.value + 1) % recipes.length;
+}
 const search = ref("");
 const maxTime = ref(0);
 const recipeIds = ref<Record<string, number>>({});
@@ -50,26 +55,28 @@ useSeoMeta({
 <template>
   <div ref="landing" class="landing-page">
     <section class="landing-opening" aria-labelledby="landing-title">
-      <div class="site-frame opening-inner">
-        <div class="opening-title-row">
+      <div class="site-frame hero-composition">
+        <div class="hero-introduction">
           <h1 id="landing-title">Cook something<br>good tonight.</h1>
-          <p>Bowlup is your everyday recipe companion. Find a meal you want to make, keep the ones you love, and cook with clear steps from the first chop to the last bite.</p>
+          <p>Bowlup is your everyday recipe companion. Find your next meal, save your favorites, and follow clear steps from first chop to last bite.</p>
+          <a href="#how-it-works" class="hero-story-link">See how Bowlup works<Icon name="lucide:arrow-down" size="18" /></a>
         </div>
-        <div class="opening-lower">
-          <NuxtLink :to="recipeLink(featured)" class="opening-recipe-leaf" data-ui :aria-label="'Explore '+featured.title">
-            <img :src="featured.image" alt="Eggs cooking in a skillet of tomato and pepper sauce" width="900" height="600" fetchpriority="high">
-            <div class="opening-recipe-caption"><div><strong>{{ featured.title }}</strong><span>From Bowlup Kitchen</span></div><span>{{ featured.minutes }} min<Icon name="lucide:arrow-up-right" size="22" /></span></div>
+        <div class="hero-dish">
+          <NuxtLink :to="recipeLink(heroRecipe)" class="hero-dish-photo" :aria-label="'Explore '+heroRecipe.title">
+            <Transition name="hero-dish-change">
+              <img :key="heroRecipe.image" :src="heroRecipe.image" :alt="heroRecipe.title" width="900" height="600" fetchpriority="high">
+            </Transition>
           </NuxtLink>
-          <form class="opening-search" role="search" aria-label="Find your first Bowlup recipe" @submit.prevent="findRecipe">
-            <h2>What sounds good?</h2>
-            <label for="landing-search">Find a recipe</label>
-            <div class="landing-search-field"><Icon name="lucide:search" size="19" /><input id="landing-search" v-model="search" type="search" placeholder="Shiro, pasta, pancakes…"></div>
-            <label for="landing-time">Time in the kitchen</label>
-            <select id="landing-time" v-model.number="maxTime" class="select"><option :value="0">As long as it takes</option><option :value="15">15 minutes or less</option><option :value="30">30 minutes or less</option><option :value="60">An hour or less</option></select>
-            <button type="submit" class="btn opening-search-button">Find something to cook<Icon name="lucide:arrow-right" size="18" /></button>
-            <a href="#how-it-works" class="opening-how-link">See how Bowlup works<Icon name="lucide:arrow-down" size="17" /></a>
-          </form>
+          <div class="hero-dish-caption">
+            <NuxtLink :to="recipeLink(heroRecipe)" class="hero-dish-title" aria-live="polite" aria-atomic="true"><strong>{{ heroRecipe.title }}</strong><span>{{ heroRecipe.minutes }} min · From Bowlup Kitchen<Icon name="lucide:arrow-up-right" size="16" /></span></NuxtLink>
+            <button type="button" class="hero-another" @click="nextHeroRecipe"><Icon name="lucide:shuffle" size="19" /><span>Another idea</span></button>
+          </div>
         </div>
+        <form class="hero-finder" role="search" aria-label="Find your first Bowlup recipe" @submit.prevent="findRecipe">
+          <div class="hero-finder-query"><label for="landing-search">What sounds good?</label><div class="landing-search-field"><Icon name="lucide:search" size="19" /><input id="landing-search" v-model="search" type="search" placeholder="Shiro, pasta, pancakes…"></div></div>
+          <div class="hero-finder-time"><label for="landing-time">Time in the kitchen</label><select id="landing-time" v-model.number="maxTime" class="select"><option :value="0">As long as it takes</option><option :value="15">15 minutes or less</option><option :value="30">30 minutes or less</option><option :value="60">An hour or less</option></select></div>
+          <button type="submit" class="btn opening-search-button">Find something to cook<Icon name="lucide:arrow-right" size="18" /></button>
+        </form>
       </div>
     </section>
 
