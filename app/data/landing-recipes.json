@@ -1,5 +1,76 @@
 [
   {
+    "key": "v1/tomato-pasta",
+    "title": "One-Pot Tomato and Basil Pasta",
+    "category": "Lunch",
+    "minutes": 25,
+    "description": "Pasta simmered in a tomato sauce with garlic and basil, with just one pot to wash afterward.",
+    "image": "/images/recipes/tomato-pasta.webp",
+    "ingredients": [
+      "200 g dried pasta",
+      "1 tablespoon olive oil",
+      "2 garlic cloves, minced",
+      "400 g canned chopped tomatoes",
+      "2 cups vegetable stock, plus more if needed",
+      "1/2 teaspoon dried oregano",
+      "A handful of fresh basil",
+      "Salt and black pepper to taste"
+    ],
+    "steps": [
+      "Warm olive oil in a large pot and gently cook garlic for 30 seconds.",
+      "Add tomatoes, stock and oregano. Bring to a simmer.",
+      "Add pasta and cook uncovered, stirring frequently, until tender. Add more hot water or stock if the pot becomes dry before the pasta cooks.",
+      "Season to taste and fold in torn basil just before serving."
+    ]
+  },
+  {
+    "key": "v1/banana-pancakes",
+    "title": "Fluffy Banana Pancakes",
+    "category": "Breakfast",
+    "minutes": 20,
+    "description": "Soft banana pancakes made with pantry staples. A relaxed weekend breakfast with fresh fruit.",
+    "image": "/images/recipes/banana-pancakes.webp",
+    "ingredients": [
+      "1 ripe banana",
+      "1 egg",
+      "3/4 cup milk",
+      "1 cup all-purpose flour",
+      "2 teaspoons baking powder",
+      "1 tablespoon sugar",
+      "Pinch of salt",
+      "Butter or oil for the pan"
+    ],
+    "steps": [
+      "Mash the banana in a bowl and whisk in the egg and milk.",
+      "Mix flour, baking powder, sugar and salt separately, then fold into the banana mixture just until combined.",
+      "Heat a lightly greased skillet over medium heat. Add small ladles of batter.",
+      "Cook until bubbles form and the edges set, then flip and cook until the centers are fully set. Serve with fruit."
+    ]
+  },
+  {
+    "key": "v1/lemon-roast-chicken",
+    "title": "Lemon and Herb Roast Chicken",
+    "category": "Dinner",
+    "minutes": 90,
+    "description": "A lemony roast chicken with garlic, herbs and onions. A simple centerpiece for a shared dinner.",
+    "image": "/images/recipes/roast-chicken.webp",
+    "ingredients": [
+      "1 whole chicken, about 1.5 kg",
+      "2 tablespoons olive oil",
+      "1 lemon, halved",
+      "4 garlic cloves, crushed",
+      "1 teaspoon dried thyme",
+      "1 onion, cut into wedges",
+      "Salt and black pepper to taste"
+    ],
+    "steps": [
+      "Heat the oven to 200 C. Place the onion wedges in a roasting dish. Pat the chicken dry with paper towels; do not rinse raw poultry.",
+      "Rub the chicken with oil, thyme, salt and pepper. Place lemon and garlic inside the cavity, then set the chicken on the onions.",
+      "Roast for about 70 to 85 minutes, adjusting for size, until a thermometer reads at least 74 C in the thickest breast and inner thigh without touching bone.",
+      "Rest for 10 minutes before carving. Serve with the roasted onions and pan juices."
+    ]
+  },
+  {
     "key": "v1/chechebsa",
     "title": "Skillet Shakshuka",
     "category": "Breakfast",

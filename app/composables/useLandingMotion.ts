@@ -26,6 +26,9 @@ export function useLandingMotion(root: Ref<HTMLElement | null>) {
           case "pass":
             frames = [{ clipPath: "inset(0 0 12% 0 round 16px)", transform: "translate(24px, 18px) rotate(6deg)" }, { clipPath: "inset(0 round 16px)", transform: "rotate(3deg)" }];
             break;
+          case "arrival":
+            frames = [{ transform: "translateY(32px) scale(.96)", clipPath: "inset(0 0 12% round 20px)" }, { transform: "none", clipPath: "inset(0 round 20px)" }];
+            break;
           case "signature":
             frames = [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0)" }];
             break;

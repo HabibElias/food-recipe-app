@@ -5,15 +5,13 @@ import starterRecipes from "~/data/landing-recipes.json";
 const user = useUserStore();
 const landing = ref<HTMLElement | null>(null);
 useLandingMotion(landing);
-useRecipePhotoBridge(landing);
+
 const recipes = starterRecipes as LandingRecipe[];
-const heroRecipes = recipes.map((recipe, index) => index === 0
-  ? { ...recipe, image: "/images/recipes/shakshuka-table.webp" }
-  : recipe);
+const heroRecipes = recipes.filter(recipe => recipe.key !== "v1/shiro-wot");
 const heroRecipeIndex = ref(0);
 const heroRecipe = computed(() => heroRecipes[heroRecipeIndex.value]!);
 function nextHeroRecipe() {
-  heroRecipeIndex.value = (heroRecipeIndex.value + 1) % recipes.length;
+  heroRecipeIndex.value = (heroRecipeIndex.value + 1) % heroRecipes.length;
 }
 const search = ref("");
 const maxTime = ref(0);
@@ -57,33 +55,28 @@ useSeoMeta({
 
 <template>
   <div ref="landing" class="landing-page">
-    <section class="landing-opening" aria-labelledby="landing-title">
-      <div class="site-frame hero-composition">
-        <div class="hero-introduction">
+    <section class="photo-opening" aria-labelledby="landing-title">
+      <div class="hero-backdrop" aria-hidden="true">
+        <Transition name="hero-background"><img :key="heroRecipe.image" :src="heroRecipe.image" alt="" width="1600" height="1067" fetchpriority="high"></Transition>
+      </div>
+      <div class="site-frame photo-hero-inner">
+        <div class="photo-hero-copy">
           <h1 id="landing-title">Cook something<br>good tonight.</h1>
-          <p>Bowlup is your everyday recipe companion. Find your next meal, save your favorites, and follow clear steps from first chop to last bite.</p>
-          <a href="#how-it-works" class="hero-story-link">See how Bowlup works<Icon name="lucide:arrow-down" size="18" /></a>
+          <p>Your everyday recipe companion. Find a meal you love, save it for later, and make it your own.</p>
+          <a href="#how-it-works" class="photo-hero-how">See how Bowlup works<Icon name="lucide:arrow-down" size="18" /></a>
         </div>
-        <div class="hero-dish">
-          <NuxtLink :to="recipeLink(heroRecipe)" class="hero-dish-photo" :aria-label="'Explore '+heroRecipe.title">
-            <Transition name="hero-dish-change">
-              <img :key="heroRecipe.image" :src="heroRecipe.image" :alt="heroRecipe.title" width="900" height="600" fetchpriority="high">
-            </Transition>
-          </NuxtLink>
-          <div class="hero-dish-caption">
-            <NuxtLink :to="recipeLink(heroRecipe)" class="hero-dish-title" aria-live="polite" aria-atomic="true"><strong>{{ heroRecipe.title }}</strong><span>{{ heroRecipe.minutes }} min · From Bowlup Kitchen<Icon name="lucide:arrow-up-right" size="16" /></span></NuxtLink>
-            <button type="button" class="hero-another" @click="nextHeroRecipe"><Icon name="lucide:shuffle" size="19" /><span>Another idea</span></button>
-          </div>
+        <div class="photo-hero-pick">
+          <NuxtLink :to="recipeLink(heroRecipe)" aria-live="polite" aria-atomic="true"><strong>{{ heroRecipe.title }}</strong><span>{{ heroRecipe.minutes }} minutes · View recipe<Icon name="lucide:arrow-up-right" size="18" /></span></NuxtLink>
+          <button type="button" class="photo-hero-next" @click="nextHeroRecipe" aria-label="Another recipe idea"><Icon name="lucide:shuffle" size="21" /></button>
         </div>
         <form class="hero-finder" role="search" aria-label="Find your first Bowlup recipe" @submit.prevent="findRecipe">
-          <div class="hero-finder-query"><label for="landing-search">What sounds good?</label><div class="landing-search-field"><Icon name="lucide:search" size="19" /><input id="landing-search" v-model="search" type="search" placeholder="Shiro, pasta, pancakes…"></div></div>
-          <div class="hero-finder-time"><label for="landing-time">Time in the kitchen</label><select id="landing-time" v-model.number="maxTime" class="select"><option :value="0">As long as it takes</option><option :value="15">15 minutes or less</option><option :value="30">30 minutes or less</option><option :value="60">An hour or less</option></select></div>
-          <button type="submit" class="btn opening-search-button">Find something to cook<Icon name="lucide:arrow-right" size="18" /></button>
+          <div class="hero-finder-query"><label for="landing-search">What sounds good?</label><div class="landing-search-field"><Icon name="lucide:search" size="19" /><input id="landing-search" v-model="search" type="search" placeholder="Pasta, pancakes, roast chicken…"></div></div>
+          <div class="hero-finder-time"><label for="landing-time">Time in the kitchen</label><select id="landing-time" v-model.number="maxTime" class="select"><option :value="0">Any time</option><option :value="15">Up to 15 min</option><option :value="30">Up to 30 min</option><option :value="60">Up to 1 hour</option></select></div>
+          <button type="submit" class="btn opening-search-button">Find a recipe<Icon name="lucide:arrow-right" size="18" /></button>
         </form>
       </div>
     </section>
 
-    <div class="recipe-photo-transfer" aria-hidden="true"><img :src="heroRecipe.image" alt="" width="900" height="600"></div>
     <LandingRecipeJourney :key="heroRecipe.key" :recipe="heroRecipe" :recipe-link="recipeLink(heroRecipe)" />
 
     <section id="your-kitchen" class="landing-kitchen site-frame" aria-labelledby="kitchen-benefits-title">
@@ -98,13 +91,8 @@ useSeoMeta({
 
     <section class="landing-share" aria-labelledby="share-title"><div class="site-frame share-layout">
       <div><h2 id="share-title" data-reveal="print">Pass a little<br>of your kitchen on.</h2><p>The weekday fix. The family favorite. The dish you finally got right. Give it a name, write down what goes in, and show another cook how it comes together.</p><NuxtLink :to="user.isLoggedIn ? '/recipes/add' : '/auth/sign-up'" class="btn btn-outline">Share your first recipe<Icon name="lucide:arrow-up-right" size="17" /></NuxtLink></div>
-      <div class="share-recipe-note" data-reveal="pass"><img src="/images/recipes/shiro-bowl.webp" alt="Shiro in a traditional serving pot beside injera" width="500" height="360" loading="lazy"><p>Some recipes feel like home.</p><span>Make room for yours.</span></div>
+      <div class="share-recipe-note" data-reveal="pass"><img src="/images/recipes/tomato-pasta.webp" alt="Tomato and basil pasta served on a white plate" width="500" height="360" loading="lazy"><p>Some recipes feel like home.</p><span>Make room for yours.</span></div>
     </div></section>
-
-    <section id="our-kitchen" class="landing-founder site-frame" aria-labelledby="founder-title">
-      <div class="founder-introduction"><h2 id="founder-title">A small beginning.<br>An everyday idea.</h2><p>Bowlup is built by Habib Elias around one simple belief: good food should feel easy.</p><p>The aim is a friendly place to find a meal, keep the recipes you love, and build a little confidence in the kitchen. One good dish at a time.</p></div>
-      <div class="founder-name"><img src="/brand/bowlup-icon-orange.svg" alt="" width="90" height="90" loading="lazy"><h3 data-reveal="signature">Habib Elias</h3><p>Founder & builder of Bowlup</p><span>Made for everyday home cooking.</span></div>
-    </section>
 
     <section id="recipes" class="landing-starters site-frame" aria-labelledby="starters-title">
       <header class="landing-section-heading"><div><h2 id="starters-title">A good place to start.</h2><p>Real dishes from the Bowlup starter kitchen. Find the one that sounds like tonight.</p></div><NuxtLink to="/browse" class="text-link">Explore all recipes<Icon name="lucide:arrow-up-right" size="18" /></NuxtLink></header>
