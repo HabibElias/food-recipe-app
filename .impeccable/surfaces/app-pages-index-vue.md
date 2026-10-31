@@ -42,3 +42,6 @@ User explicitly chose to restore the interactive recipe-card preview, with backg
 
 ## Current hero refinement
 The user requested an award-level hero using Impeccable and Taste. Preserve the inherited page-is-the-object direction and the approved Bowlup palette, pattern, typography and photography. The opening now gives the real dish a larger upright photo, groups the product explanation below its two-line headline, and consolidates search into a Cream row. “Another idea” cycles real recipe suggestions manually, with matched metadata and destinations and reduced-motion support. The second section is outside this refinement. Design ambition is a quality goal, not a claim of award recognition.
+
+## Current image and motion revision
+User requested new hero/second-section imagery and animation between them. Use the licensed overhead Shakshuka image as shared material. Hero selection now supplies the second-section recipe too. The desktop photo handoff follows native scroll; compact layouts reveal the card in place. Honor reduced motion, preserve controls and keep every picture visible without JavaScript.

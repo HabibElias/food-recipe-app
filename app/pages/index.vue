@@ -5,10 +5,13 @@ import starterRecipes from "~/data/landing-recipes.json";
 const user = useUserStore();
 const landing = ref<HTMLElement | null>(null);
 useLandingMotion(landing);
+useRecipePhotoBridge(landing);
 const recipes = starterRecipes as LandingRecipe[];
-const featured = recipes[0]!;
+const heroRecipes = recipes.map((recipe, index) => index === 0
+  ? { ...recipe, image: "/images/recipes/shakshuka-table.webp" }
+  : recipe);
 const heroRecipeIndex = ref(0);
-const heroRecipe = computed(() => recipes[heroRecipeIndex.value]!);
+const heroRecipe = computed(() => heroRecipes[heroRecipeIndex.value]!);
 function nextHeroRecipe() {
   heroRecipeIndex.value = (heroRecipeIndex.value + 1) % recipes.length;
 }
@@ -80,7 +83,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <LandingRecipeJourney :recipe="featured" :recipe-link="recipeLink(featured)" />
+    <div class="recipe-photo-transfer" aria-hidden="true"><img :src="heroRecipe.image" alt="" width="900" height="600"></div>
+    <LandingRecipeJourney :key="heroRecipe.key" :recipe="heroRecipe" :recipe-link="recipeLink(heroRecipe)" />
 
     <section id="your-kitchen" class="landing-kitchen site-frame" aria-labelledby="kitchen-benefits-title">
       <div class="landing-kitchen-photo" data-reveal="photo"><img src="/images/recipes/avocado-toast.webp" alt="Avocado toast topped with colorful tomatoes" width="700" height="760" loading="lazy"><p>Avocado and Tomato Toast<span>A little good in 10 minutes.</span></p></div>

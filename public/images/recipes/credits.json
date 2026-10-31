@@ -242,5 +242,28 @@
     "notes": [],
     "saved": "2026-10-28T23:17:23.082Z",
     "modifications": "Resized and encoded as WebP; cropped only by the display layout."
+  },
+  {
+    "file": "public/images/recipes/shakshuka-table.webp",
+    "media": "image",
+    "ref": "commons:61662417",
+    "title": "Shakshuka (Unsplash)",
+    "creator": "Jarosław Ceborski jarson",
+    "creatorUrl": null,
+    "date": "2017-04-09",
+    "license": "CC0",
+    "licenseCode": "cc0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "creditRequired": false,
+    "page": "https://commons.wikimedia.org/wiki/File:Shakshuka_(Unsplash).jpg",
+    "via": "Wikimedia Commons",
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Shakshuka_%28Unsplash%29.jpg/1920px-Shakshuka_%28Unsplash%29.jpg",
+    "width": 1920,
+    "height": 1275,
+    "bytes": 730443,
+    "credit": "\"Shakshuka (Unsplash)\" by Jarosław Ceborski jarson, CC0, via Wikimedia Commons",
+    "notes": [],
+    "saved": "2026-10-31T01:22:05.706Z",
+    "modifications": "Resized to 1600px and encoded as WebP; cropped only by the display layout."
   }
 ]
