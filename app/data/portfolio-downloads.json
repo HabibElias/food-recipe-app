@@ -1,0 +1,166 @@
+{
+  "archiveSize": "37.1 MB",
+  "pdfSize": "11.9 MB",
+  "screenshots": [
+    {
+      "file": "01-desktop-hero.png",
+      "title": "Photographic opening",
+      "caption": "Transparent navigation, a full-bleed meal photograph, and working recipe search.",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scale": 2
+    },
+    {
+      "file": "02-desktop-discover.png",
+      "title": "Discover a recipe",
+      "caption": "Find movement in the full-height scroll story.",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scale": 2
+    },
+    {
+      "file": "03-desktop-save.png",
+      "title": "Save preview",
+      "caption": "Saved state in the explicitly labeled interactive preview; no account data was written.",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scale": 2
+    },
+    {
+      "file": "04-desktop-cook.png",
+      "title": "Cooking preview",
+      "caption": "First ingredient checked in the local cooking preview.",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scale": 2
+    },
+    {
+      "file": "05-desktop-kitchen.png",
+      "title": "A personal kitchen",
+      "caption": "Editorial composition and kitchen benefits on the continuous background.",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scale": 2
+    },
+    {
+      "file": "06-desktop-sharing.png",
+      "title": "Pass a recipe on",
+      "caption": "Recipe-sharing invitation and a photographic recipe note.",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scale": 2
+    },
+    {
+      "file": "07-desktop-closing.png",
+      "title": "A branded close",
+      "caption": "Approved Bowlup pattern, final search and footer.",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scale": 2
+    },
+    {
+      "file": "08-desktop-browse.png",
+      "title": "Recipe discovery",
+      "caption": "Public catalog, title search, category filter and cooking-time filter.",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scale": 2
+    },
+    {
+      "file": "09-desktop-recipe.png",
+      "title": "Recipe detail",
+      "caption": "A real published recipe with cooking and saving actions.",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scale": 2
+    },
+    {
+      "file": "10-mobile-hero.png",
+      "title": "Mobile opening",
+      "caption": "Responsive hero with a compact search and deliberate photo crop.",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scale": 3
+    },
+    {
+      "file": "11-mobile-discover.png",
+      "title": "Mobile discover",
+      "caption": "The same scroll story adapted to a phone viewport.",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scale": 3
+    },
+    {
+      "file": "12-mobile-save.png",
+      "title": "Mobile save",
+      "caption": "The same scroll story adapted to a phone viewport.",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scale": 3
+    },
+    {
+      "file": "13-mobile-cook.png",
+      "title": "Mobile cook",
+      "caption": "The same scroll story adapted to a phone viewport.",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scale": 3
+    },
+    {
+      "file": "14-mobile-browse.png",
+      "title": "Mobile catalog",
+      "caption": "Public recipe browsing on a phone.",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scale": 3
+    },
+    {
+      "file": "15-mobile-recipe.png",
+      "title": "Mobile recipe",
+      "caption": "Public recipe detail on a phone.",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scale": 3
+    },
+    {
+      "file": "16-tablet-hero.png",
+      "title": "Tablet opening",
+      "caption": "Tablet composition with working search and recipe link.",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "scale": 2
+    }
+  ]
+}

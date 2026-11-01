@@ -2,5 +2,20 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nuxtjs",
   "installCommand": "corepack pnpm install --frozen-lockfile",
-  "buildCommand": "corepack pnpm build"
+  "buildCommand": "corepack pnpm build",
+  "headers": [
+    {
+      "source": "/downloads/bowlup/Bowlup-portfolio-pack.zip",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/zip"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"Bowlup-portfolio-pack.zip\""
+        }
+      ]
+    }
+  ]
 }
